@@ -1,0 +1,24 @@
+TK1£¬Ue1
+
+1.
+
+2.
+Level 1: physical configuration
+Level 2: logical configuration
+Level 3: process network (logical distribution)  
+Level 4: Distributed Algorithm
+
+3.
+1. Client/Server£ºClients send request to server to create initial connection.Server answer the request and provide
+   corresponding service to the client.
+2. Peer-to-Peer£ºEvery node is equal,the resource is directly avaliable to other nodes.Peers are both client and server.
+
+4.
+1.Distributed operating system approach£º
+  Distributed programming based on operating paradigm.The disadvantage is that adoption of large system is nedded. 
+2.Distributed database approach£º
+  Distributed programming based on database.It is independent on application, but hard to realize.
+3.Protocol approach for dedicated purposes£º
+  Distributed programming based on standardized protocol.It is open and global but limited to standard functionalities.
+4.Distributed Programming approach£º
+  It is a combination of equential programming language,extensions and middleware.
