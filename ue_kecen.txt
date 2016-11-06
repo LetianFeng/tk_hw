@@ -1,1 +1,26 @@
-Anwsers from Kecen
+Task 1.1 Definition of Distributed System
+
+A distributed system consists a set of computers and the communication network connecting them. Each computer works independently with their own processors and memories and collaborate with the other computers through message exchange to accomplish sophisticated tasks that is impossible for any single computer to complete. And the abscence of a fraction of the machines in the system doesn't necessarilly paralyze the system, in fact, it will continue to function in most of such scenarios. However, from the aspect outside the system, it is viewed as if it is a single computer with super computing capability.
+
+Task 1.4 Programming Abstractions
+
+1. DOS Approach: In the price of compromising the atonomy of individual computing nodes, a distributed operating system, which is one layer up and in control of these computers, is able to provide functionalities through concurrent programming. 
+
+2. DDBMS Approach: It incorporates multiple database systems and provides general database features. In addition, isolated sequential programming with simple reading and writing from the distributed database system becomes feasible without exchanging messages among distributed applications. But this is also the bottleneck that makes implementation of certain distributed algorithm difficult and more importantly, it gets increasingly hard to scale as the number of databases grows. 
+
+3. Protocol Approach: This approach is desgined to tackle specific problems with standard protocol for communciation thus not a viable large scale solution.
+
+4. Distributed Programming Approach: This is achieved through distributed programs that runs a different computeres throughout the network, possibly with aid from a distributed runtime system. There is no enforcement on operating systems, databases and programming languages as compared to other approaches. 
+
+Task 1.5 Distributed Programming Language Approach
+
+Pros:
+1. The DRTS works closely with the compiler to retrieve information of the distribted programs thus an increase in efficiency.
+2. Abcense of enforcement on language leads to competition and advancement in th field.
+3. Distributed programming languages are designed and implemented to address issues such as heterogeneity, migration and autonomy which to some extend, are compromised in other distributed system approaches.
+4. Global scale support for distributed programming is possible.
+
+Cons:
+1. Have to deal with multiple DRTSes at a time since they are written in different languages.
+2. It is implemented with little consideration of the operating system that distributed programs will run on, thus not optimising the efficiency in this regard.3. From the programmers's perspective, learning new language constructs is not always desired.
+
