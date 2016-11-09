@@ -1,0 +1,27 @@
+Task 1.4
+Four principles are:
+a. Distributed operating system approach
+The basic idea is to use a single DOS to handle all distributed computers through parallel programming, which is easier than a distributed programming. It’s a general priciple because distributed software development is originally supported through parallel programming in operating systems. This method is not popular because computer owners must give away control of their computers, which is hard to accept. Besides it requires the same system in the whole network, which is hard to accomplish because of variety of systems.
+
+b. Distributed database approach
+This idea is similar to the first one, but only involves distributed storage devices and a unique Distributed Database Manage System. This method brings a lot of advantages from DB features, allows a isolated application connects DB through DBMS, ignoring other applications. But also may cause problems, such as reduced flexibility of applying algorithms because all operations are limited to only reading and writing.
+
+c. Protocol approach for dedicated purposes
+It’s only applied for dedicated purposes, that means if a problem comes up repeatedly, then this problem can be standardised, and then a specific protocol is developed to handle this problem.
+This protocol is open and easy to develop, but typically for isolated problems, one protocol can only handle limited problems. Thus it’s suitable for point to point situation, not for building a large system.
+
+d. Distributed Programming approach
+Today this approach no longer involves distributed programming languages. It’s based on sequential programming language, some extensions and middleware, and compiler will not understand requirements form those distributed applications
+
+Task 1.5
+pros
+a. It’s efficient because runtime system works more closely with programming language by getting information concerning the programs through compiler.
+b. There exists competition between languages, which will result in faster advance of languages.
+c. This approach offers good heterogeneity, migration and autonomy properties by using interfaces from programming languages.
+d. It may build a global scale.
+
+cons
+a. Lack of dominating language, may have to install different runtime systems for each language.
+b. Can’t work closely with operating system, may have side effect in efficiency.
+c. It takes developers extract time to learn a new language.
+d. Sometimes programmer can not get enough support from compiler because compiler doesn’t get enough information at compile time.
