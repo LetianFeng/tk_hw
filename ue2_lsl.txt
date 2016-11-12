@@ -1,0 +1,18 @@
+1.For the at-most-once failure semantic, when a request is sent to invoke a function,the system will not attampt retry on failure.There is duplicates recognization
+  mechanism that can recognize the repeated requests and replies£¬so the request will be excuted only once.But if sever crashed£¬there will be no reply to client.So
+  the client won't know if the request is excuted or not.
+  From client side£¬an identifier as additional information should be included in message.A buffer for timeout should be setted.
+  From server side, server should be able to recognize the ifentifier to make sure that each ID is processed only once.
+
+2.a£©Marshalling is the process to convert an object in memory into a data format so that it can be stored or transmitted.
+  It is necessary in distributed system because on distributed systen we need to transport data between different processes and threadsSome information have to be 
+  marshalled to some kind of standard format so it can be transport across the network.
+  b£©
+
+3.RR: request-reply, client send request to server and server reply.
+  RRA: request-reply-ack,client send request to server,server reply the request,then client acknowledge the reception of reply. 
+  Compared to RR, the advantage of RRA is that If client acknowledge the reception of reply, server can delete stored result.
+
+4.Concurrency is relevant to distributed system because distributed system is inherently parallel, parallelism is essential for distributed system.
+  The concurrency model is to be inherited into distribued system.
+  
