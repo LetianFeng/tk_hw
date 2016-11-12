@@ -1,0 +1,12 @@
+Task 2.1
+
+Task 2.2
+a) marshalling is the "translator" of the messages between the client and the server in Remote Procedure Call, it could represent the transferred messages with an unified data format, so that the client and the server could completely understand the message from each other well, and the RPC could be successfully processed. Because the client and the server of a RPC could be running with different programming language and in different operating system, they may use different data format (e.g. integer type with 16bit, 32bit or 64bit, big-endian or little-endian), if marshalling won't be used in this situation, the same message may represent completely different meaning for client and server, and the RPC will be naturally failed.
+
+b)
+
+Task 2.3
+compare to the Request-Reply protocol, Request-Reply-Acknowledge protocol use an additional phase at last to ensure that the client has already received the reply from the server. The advantage of RRA protocol could be found when the reply from the server to the client is failed to transfer. In this situation, with RR protocol the client will send the request again and the server has to response this request from beginning again, it needs additional time to wait for the second response and the server has to spend some time for the same request, that the time should actually spent for some new request. But with RRA protocol the server could send the reply to the client again and save the time. The disadvantage of RRA protocol is also easy to know, that it need one more phase for each Remote Procedure Call, if every transfer is successful, the additional phase will take a little more time to wait for the acknowledge and use a little more communication resource.
+
+Task 2.4
+
