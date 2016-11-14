@@ -1,6 +1,4 @@
-/**
- * Created by letian on 14.11.16.
- */
+
 public class Minion {
     private int x;
     private int y;

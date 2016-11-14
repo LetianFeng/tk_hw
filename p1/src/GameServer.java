@@ -1,22 +1,20 @@
-
-
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GameServer extends UnicastRemoteObject implements GameServerInterface {
 
-    private Map<String, String> userPasswords;
-
     private Minion minion;
 
-    private Map<String, Integer> userPoints;
+    private Map<String, String> userPasswords = new HashMap<>();
+
+    private Map<String, Integer> userPoints = new HashMap<>();
 
     private List<GameClient> userInstances;
-
 
     public GameServer() throws RemoteException {
         super(0);
@@ -46,8 +44,19 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     will be remotely called by client
      */
     @Override
-    public GameClient login(String username, String password) throws RemoteException {
+    public Boolean login(String username, String password) throws RemoteException {
         // TODO
+        if (userPasswords.containsKey(username)) {
+            System.out.println("user name is already exist!");
+            return false;
+        }
+        else {
+            System.out.println("user " + username + " initialized.");
+            userPasswords.put(username, password);
+            userPoints.put(username, 0);
+            GameClient gameClient = new GameClient(username, password);
+            return true;
+        }
 
         // if gameClient isn't in map userP
         //      add it in the map
@@ -59,7 +68,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         //      return it back
         // else
         //      return null
-        return null;
     }
 
     /*
@@ -96,8 +104,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         //      c.distributeChanges(c)
     }
 
-    // just for test
-    public String getMessage() {
-        return "abc";
+    public String findPassword(String username) {
+        return userPasswords.get(username);
     }
 }

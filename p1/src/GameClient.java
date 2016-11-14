@@ -1,8 +1,6 @@
 
 import java.rmi.Naming;
-import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GameClient implements GameClientInterface{
@@ -16,9 +14,9 @@ public class GameClient implements GameClientInterface{
 
     private Map<String, Integer> competitor;
 
-    public GameClient(String u, String p) {
-        this.username = u;
-        this.password = p;
+    public GameClient(String username, String password) {
+        this.username = username;
+        this.password = password;
         this.minion = null;
         this.point = 0;
         competitor = new HashMap<String, Integer>();
@@ -26,13 +24,20 @@ public class GameClient implements GameClientInterface{
 
     public static void main(String args[]) throws Exception {
         GameServerInterface gameServer = (GameServerInterface)Naming.lookup("//localhost/GameServer");
-        System.out.println(gameServer.getMessage());
 
         // 2 following line should be implemented with GUI methods
         String username = "abc";
         String password = "def";
 
-        GameClient gameClient = new GameClient(username, password);
+        Boolean loginStatus = gameServer.login(username, password);
+        System.out.print(loginStatus);
+
+        String abc = gameServer.findPassword(username);
+        System.out.print(abc);
+
+        while(true) {
+
+        }
     }
 
     public String getUsername() {
