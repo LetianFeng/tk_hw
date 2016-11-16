@@ -12,7 +12,8 @@ public class GameClient implements Serializable {
     private String username;
     private String password;
 
-    private Minion minion;
+    public int x;
+    public int y;
 
     private int point;
 
@@ -22,8 +23,9 @@ public class GameClient implements Serializable {
     public GameClient(String username, String password) {
         this.username = username;
         this.password = password;
-        this.minion = null;
-        this.point = 0;
+        x = 0;
+        y = 0;
+        point = 0;
         competitor = new HashMap<String, Integer>();
     }
 
@@ -38,8 +40,14 @@ public class GameClient implements Serializable {
 
         GameClient gameClient = gameServer.login(username, password);
 
-        System.out.print(gameServer.findPassword(username));
+        System.out.println("remote password: " + gameServer.findPassword(username));
 
+        for (int i = 0, j= 0;; i++, j++) {
+        	if (gameServer.sendChanges(i, j, username)) {
+                gameClient = gameServer.loadChanges();
+        	}
+            System.out.println(gameClient.x + " " + gameClient.y);
+        }
     }
 
     public String getUsername() {
@@ -54,24 +62,17 @@ public class GameClient implements Serializable {
     	this.point = point;
     }
 
-    public int[] getMinionCoordinate() {
-        return new int[] {this.minion.getX(), this.minion.getY()};
-    }
-
     public void sendChangesToServer() {
         // TODO
-
-        // call method sendChanges which is implemented in GameServer
-        // use return value to update this instance
-        // deliver XY & points saved in the refreshed gameClient instance to GUI
+        // call method sendChanges() which is implemented in GameServer
+    	
+        // deliver new XY & points saved in the refreshed gameClient instance to GUI
     }
-
-    
         
     
     public void loadChanges() throws RemoteException {
         // TODO
-        // use gameClient to update this instance
+        // call loadChanges() of server to update attributes of this instance
     }
 
     private void sendXYToGUI(int[] xy) {

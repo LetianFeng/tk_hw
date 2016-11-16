@@ -11,7 +11,8 @@ import java.util.Map;
 
 public class GameServer extends UnicastRemoteObject implements GameServerInterface {
 
-    private Minion minion;
+    private int x;
+    private int y;
 
     private Map<String, String> userPasswords;
 
@@ -20,7 +21,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private List<GameClient> userInstances;
 
     public GameServer() throws RemoteException {
-        super(0);
+        super();
+        x = 0;
+        y = 0;
         userPasswords = new HashMap<>();
         userPoints = new HashMap<>();
         userInstances = new LinkedList<GameClient>();
@@ -109,19 +112,25 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
      * will be remotely called by client
      */
     @Override
-    public GameClient sendChanges(int x, int y) throws RemoteException {
+    public boolean sendChanges(int x, int y, String username) throws RemoteException {
         //TODO
-    	return null;
-        // if x,y in client instance == server
-        //      find client in userPoint, point++
-        //      randomNewXY();
-        //      distributeChangesToClients();
-
+    	if (this.x == x && this.y == y) {
+    		// find client in the list, point++
+    		GameClient gameClient = userInstances.get(0);
+            // randomNewXY();
+    		this.x++;
+    		this.y++;
+    		gameClient.x++;
+    		gameClient.y++;
+    		
+            // distributeChangesToClients();
+    		return true;
+    	}
+    	return false;
     }
 
     /**
-     * modify points & xy position in all clients in the list
-     * then call loadChanges() of all gameClients in the list userInstances
+     * after understanding rmi callback, implement this method
      */
     private void distributeChangesToClients() throws RemoteException {
     	// TODO
@@ -136,8 +145,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	@Override
 	public GameClient loadChanges() throws RemoteException {
 		// TODO Auto-generated method stub
-		GameClient gameClient = new GameClient("a", "b");
-		gameClient.setPoint(10000);
-		return gameClient;
+
+    	GameClient gameClient = userInstances.get(0);
+    	
+        return gameClient;
 	}
 }
