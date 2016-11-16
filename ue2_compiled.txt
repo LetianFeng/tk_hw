@@ -1,6 +1,6 @@
-k 2.1
+Task 2.1
 
-The implication from At-Most-Once semantics is that the server will execute the requested procedure only once with its duplicates recognization mechanism and under circumstance where a crash of the server is encountered, server will not attempt to retry executing the requested procedure and no result will be returned.
+The implication from At-Most-Once semantics is that the server will execute the requested procedure only once with its duplicates recognization mechanism when request or reply omission happens, and under circumstance where a crash of the server is encountered, server will not attempt to retry executing the requested procedure and no result will be returned.
 As for the server side, requests should be recognized with unique id and be kept track of until receiving an acknowledgement to avoid unecessary additional executions of procedures. In case of reply omissions, server should also cache execution result for potential request resent from clients.
 As for the client side, unique id and timeout should be set for requests so requests could be resent when request or reply omissions happen. Client should also send acknowledgements for each reply it receives from the server such that memory occupied by cached result on the server can be freed.
 
