@@ -1,0 +1,25 @@
+Task 2.1
+
+The implication from At-Most-Once semantics is that the server will execute the requested procedure only once with its duplicates recognization mechanism and under circumstance where a crash of the server is encountered, server will not attempt to retry executing the requested procedure and no result will be returned.
+As for the server side, requests should be recognized with unique id and be kept track of until receiving an acknowledgement to avoid unecessary additional executions of procedures. In case of reply omissions, server should also cache execution result for potential request resent from clients.
+As for the client side, unique id and timeout should be set for requests so requests could be resent when request or reply omissions happen. Client should also send acknowledgements for each reply it receives from the server such that memory occupied by cached result on the server can be freed.
+
+Task 2.2
+
+a) Marshalling is the process of serializing data structures to be of a unified representation for communication betwwen processes or treads which might be running on different operating system, using different hardware structures and implemented with different programming languages. With marshalling, the data structures which might be represented differently among various systems will now be passed and received as a unified format, thus making communication feasible between different systems.
+
+b) CORBA uses the interface definition language (IDL) to define how data will be presented. When two processes communicating using CORBA, it is assumed that both sides are aware of the underlying structure of the data passed, thus no need to explitely mention their types.
+
+Pro: Different systems might have different representation of primitive types thus hard to collaborate. With CORBA CDR where there is no explicte typing, they are able to communicate under an agreed data format, thus achieving heterogeinity of the distributed system.
+
+Con: Prior knowledge and agreement about the format of the data passed are required for both sending and receiving end, thus incur an overhead during the communication process.
+
+Task 2.3
+
+Advantage: with acknowledgements, server is able to cache results of procedures' call and retransmit the result if duplicate request are sent from clients. This is a boost for the server performance. And upon receiving acknowledgement, server is able to free the space occupied by the cached result. On the otherside, with RR, server will not be informed whether the reply are received by the client, thus caching becoming impossible as it will consume server memory and makeing it impossible to scale.
+
+Disadvantage: Sending acknowledgement incurs an overhead for server-client communication thus performing poorer when reply omission is rarely the case.
+
+Task 2.4
+
+Distributed system is by nature parallel. Since parallel is an approach to realize concurrency, many current programming concepts can be applied here thus many of the concurrency problems are relevant in distributed system as well.
