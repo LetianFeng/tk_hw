@@ -1,9 +1,13 @@
 
+import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameClient implements GameClientInterface{
+public class GameClient implements Serializable {
 
     private String username;
     private String password;
@@ -13,6 +17,7 @@ public class GameClient implements GameClientInterface{
     private int point;
 
     private Map<String, Integer> competitor;
+    
 
     public GameClient(String username, String password) {
         this.username = username;
@@ -29,15 +34,12 @@ public class GameClient implements GameClientInterface{
         String username = "abc";
         String password = "def";
 
-        Boolean loginStatus = gameServer.login(username, password);
-        System.out.print(loginStatus);
+        System.out.println(gameServer.login(username, password));
 
-        String abc = gameServer.findPassword(username);
-        System.out.print(abc);
+        GameClient gameClient = gameServer.login(username, password);
 
-        while(true) {
+        System.out.print(gameServer.findPassword(username));
 
-        }
     }
 
     public String getUsername() {
@@ -46,6 +48,10 @@ public class GameClient implements GameClientInterface{
 
     public String getPassword() {
         return this.password;
+    }
+    
+    public void setPoint(int point) {
+    	this.point = point;
     }
 
     public int[] getMinionCoordinate() {
@@ -60,13 +66,11 @@ public class GameClient implements GameClientInterface{
         // deliver XY & points saved in the refreshed gameClient instance to GUI
     }
 
-    /*
-        here will be a client callback method to be declared in GameClientInterface.java
-     */
-    @Override
-    public void distributeChanges(GameClient gameClient) {
+    
+        
+    
+    public void loadChanges() throws RemoteException {
         // TODO
-
         // use gameClient to update this instance
     }
 

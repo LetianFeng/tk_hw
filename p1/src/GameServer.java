@@ -1,8 +1,11 @@
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,14 +13,17 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
     private Minion minion;
 
-    private Map<String, String> userPasswords = new HashMap<>();
+    private Map<String, String> userPasswords;
 
-    private Map<String, Integer> userPoints = new HashMap<>();
+    private Map<String, Integer> userPoints;
 
     private List<GameClient> userInstances;
 
     public GameServer() throws RemoteException {
         super(0);
+        userPasswords = new HashMap<>();
+        userPoints = new HashMap<>();
+        userInstances = new LinkedList<GameClient>();
     }
 
     public static void main(String args[]) throws Exception {
@@ -38,73 +44,100 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         // Bind this object instance to the name "RmiServer"
         Naming.rebind("//localhost/GameServer", gameServer);
         System.out.println("PeerServer bound in registry");
+        
     }
 
-    /*
-    will be remotely called by client
+
+    /**
+     *  use 2 parameters to create an account
+     *  
+     *  @return true, if no same username on server, otherwise false
      */
+	@Override
+	public boolean register(String username, String password)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/**
+	 * use 2 parameter to log in
+	 * 
+	 * @return corresponding client instance, if both parameter are correct
+	 */
     @Override
-    public Boolean login(String username, String password) throws RemoteException {
-        // TODO
-        if (userPasswords.containsKey(username)) {
-            System.out.println("user name is already exist!");
-            return false;
+    public GameClient login(String username, String password) throws RemoteException {
+        // TODO delete functionality of register(u, p)
+        if (!userPasswords.containsKey(username)) {
+        	userPasswords.put(username, password);
+        	GameClient gameClient = new GameClient(username, password);
+        	userInstances.add(gameClient);
+            System.out.println("new user registered!");
+            return gameClient;
         }
-        else {
-            System.out.println("user " + username + " initialized.");
-            userPasswords.put(username, password);
+        else if (userPasswords.get(username).equals(password)) {
+            System.out.println("user " + username + " logged in!");
             userPoints.put(username, 0);
             GameClient gameClient = new GameClient(username, password);
-            return true;
+        	userInstances.add(gameClient);
+            return gameClient;
         }
-
-        // if gameClient isn't in map userP
-        //      add it in the map
-        //      initialize client instance
-
-        // if gameClient has right pass
-        //      find client instance in map
-        //      update minion & points in gameClient instance
-        //      return it back
-        // else
-        //      return null
-    }
-
-    /*
-    will be remotely called by client in method sendChangesToServer
-     */
-    @Override
-    public GameClient sendChanges(GameClient gameClient) throws RemoteException {
-        //TODO
-
-        // if x,y in client instance == server
-        //      find client in userPoint, point++
-        //      randomNewXY();
-        //      distributeChangesToClients();
-
+        
         return null;
     }
+	
+    /**
+     * 
+     * @return password of username
+     */
+    public String findPassword(String username) {
+    	// TODO implement in the right way!!!
+    	GameClient gameClient = userInstances.get(0);
+        return gameClient.getPassword();
+    }
 
-    /*
-    generate 2 random integer for new minion
+
+    /**
+     * generate 2 random integer for new minion
      */
     private int[] randomNewXY() {
         // TODO
         return null;
     }
 
-    /*
-    should distribute minion & point changes to all clients
-    should use callback interface
-    need more knowledge about rmi client register @ server
+    /**
+     * will be remotely called by client
      */
-    private void distributeChangesToClients() {
-        // for c : userInstances
-        //      update c with new XY & point
-        //      c.distributeChanges(c)
+    @Override
+    public GameClient sendChanges(int x, int y) throws RemoteException {
+        //TODO
+    	return null;
+        // if x,y in client instance == server
+        //      find client in userPoint, point++
+        //      randomNewXY();
+        //      distributeChangesToClients();
+
     }
 
-    public String findPassword(String username) {
-        return userPasswords.get(username);
+    /**
+     * modify points & xy position in all clients in the list
+     * then call loadChanges() of all gameClients in the list userInstances
+     */
+    private void distributeChangesToClients() throws RemoteException {
+    	// TODO
+        // for c : userInstances
+        //      update c with new XY & point
+        //      c.loadChanges()
     }
+
+    /**
+     * find client instance in the list, and then return
+     */
+	@Override
+	public GameClient loadChanges() throws RemoteException {
+		// TODO Auto-generated method stub
+		GameClient gameClient = new GameClient("a", "b");
+		gameClient.setPoint(10000);
+		return gameClient;
+	}
 }
