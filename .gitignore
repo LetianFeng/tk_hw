@@ -1,4 +1,5 @@
 p1/.idea/
 p1/out/
 *.iml
-
+*.class
+*.project

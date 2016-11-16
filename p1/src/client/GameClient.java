@@ -11,7 +11,7 @@ import java.util.Map;
 import server.GameServer;
 import server.GameServerInterface;
 
-public class GameClient implements Serializable {
+public class GameClient implements Serializable, GameClientInterface {
 
     private String username;
     private String password;
@@ -50,12 +50,8 @@ public class GameClient implements Serializable {
         	// sleep()
         	
         	// rewrite in local method sendChanges, only if feed then call it
-        	if (gameServer.sendChanges(i, j, username)) {
-
-                // rewrite in local method loadChanges(), periodically call it
-                gameClient = gameServer.loadChanges();
-        	}
-            System.out.println(gameClient.x + " " + gameClient.y);
+        	gameServer.sendChanges(i, j, username);
+        	
         }
     }
 
@@ -77,12 +73,6 @@ public class GameClient implements Serializable {
     	
         // deliver new XY & points saved in the refreshed gameClient instance to GUI
     }
-        
-    
-    public void loadChanges(GameServer gameServer) throws RemoteException {
-        // TODO
-        // call loadChanges() of server to update attributes of this instance
-    }
 
     private void sendXYToGUI(int[] xy) {
         // TODO
@@ -91,4 +81,16 @@ public class GameClient implements Serializable {
     private void sendCompititorsToGUI(Map<String, Integer> competitor) {
         // TODO
     }
+
+    /**
+     * reserved for server push changes
+     */
+	@Override
+	public void changesHappened(int x, int y) throws RemoteException {
+		// TODO Auto-generated method stub
+		this.x = x;
+		this.y = y;
+
+        System.out.println("Client: " + this.x + " " + this.y);
+	}
 }
