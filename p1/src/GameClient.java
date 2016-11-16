@@ -43,7 +43,12 @@ public class GameClient implements Serializable {
         System.out.println("remote password: " + gameServer.findPassword(username));
 
         for (int i = 0, j= 0;; i++, j++) {
+        	// sleep()
+        	
+        	// rewrite in local method sendChanges, only if feed then call it
         	if (gameServer.sendChanges(i, j, username)) {
+
+                // rewrite in local method loadChanges(), periodically call it
                 gameClient = gameServer.loadChanges();
         	}
             System.out.println(gameClient.x + " " + gameClient.y);
@@ -62,7 +67,7 @@ public class GameClient implements Serializable {
     	this.point = point;
     }
 
-    public void sendChangesToServer() {
+    public void sendChanges() {
         // TODO
         // call method sendChanges() which is implemented in GameServer
     	

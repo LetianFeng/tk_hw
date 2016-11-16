@@ -117,6 +117,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     	if (this.x == x && this.y == y) {
     		// find client in the list, point++
     		GameClient gameClient = userInstances.get(0);
+    		// update points in map
             // randomNewXY();
     		this.x++;
     		this.y++;
