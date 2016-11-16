@@ -1,6 +1,6 @@
-import java.net.MalformedURLException;
+package server;
+
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.*;
@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import client.GameClient;
+
 
 public class GameServer extends UnicastRemoteObject implements GameServerInterface {
 

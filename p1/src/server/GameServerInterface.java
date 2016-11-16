@@ -1,4 +1,8 @@
+package server;
+
 import java.rmi.*;
+
+import client.GameClient;
 
 public interface GameServerInterface extends Remote{
 	

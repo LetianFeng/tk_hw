@@ -1,3 +1,4 @@
+package client;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -6,6 +7,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
+
+import server.GameServerInterface;
 
 public class GameClient implements Serializable {
 
@@ -42,7 +45,7 @@ public class GameClient implements Serializable {
 
         System.out.println("remote password: " + gameServer.findPassword(username));
 
-        for (int i = 0, j= 0;; i++, j++) {
+        for (int i = 0, j= 0; i < 100; i++, j++) {
         	// sleep()
         	
         	// rewrite in local method sendChanges, only if feed then call it
