@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
+import server.GameServer;
 import server.GameServerInterface;
 
 public class GameClient implements Serializable {
@@ -70,7 +71,7 @@ public class GameClient implements Serializable {
     	this.point = point;
     }
 
-    public void sendChanges() {
+    public void sendChanges(GameServer gameServer) {
         // TODO
         // call method sendChanges() which is implemented in GameServer
     	
@@ -78,7 +79,7 @@ public class GameClient implements Serializable {
     }
         
     
-    public void loadChanges() throws RemoteException {
+    public void loadChanges(GameServer gameServer) throws RemoteException {
         // TODO
         // call loadChanges() of server to update attributes of this instance
     }
