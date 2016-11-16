@@ -1,0 +1,49 @@
+k 2.1
+
+The implication from At-Most-Once semantics is that the server will execute the requested procedure only once with its duplicates recognization mechanism and under circumstance where a crash of the server is encountered, server will not attempt to retry executing the requested procedure and no result will be returned.
+As for the server side, requests should be recognized with unique id and be kept track of until receiving an acknowledgement to avoid unecessary additional executions of procedures. In case of reply omissions, server should also cache execution result for potential request resent from clients.
+As for the client side, unique id and timeout should be set for requests so requests could be resent when request or reply omissions happen. Client should also send acknowledgements for each reply it receives from the server such that memory occupied by cached result on the server can be freed.
+
+
+For the at-most-once failure semantic, when a request is sent to invoke a function,the system will not attampt retry on failure.There is duplicates recognization
+  mechanism that can recognize the repeated requests and replies£¬so the request will be excuted only once.But if sever crashed£¬there will be no reply to client.So
+  the client won't know if the request is excuted or not.
+  From client side£¬an identifier as additional information should be included in message.A buffer for timeout should be setted.
+  From server side, server should be able to recognize the ifentifier to make sure that each ID is processed only once.
+
+Task 2.2
+
+a) Marshalling is the process of serializing data structures to be of a unified representation for communication betwwen processes or treads which might be running on different operating system, using different hardware structures and implemented with different programming languages. With marshalling, the data structures which might be represented differently among various systems will now be passed and received as a unified format, thus making communication feasible between different systems.
+
+a) marshalling is the "translator" of the messages between the client and the server in Remote Procedure Call, it could represent the transferred messages with an unified data format, so that the client and the server could completely understand the message from each other well, and the RPC could be successfully processed. Because the client and the server of a RPC could be running with different programming language and in different operating system, they may use different data format (e.g. integer type with 16bit, 32bit or 64bit, big-endian or little-endian), if marshalling won't be used in this situation, the same message may represent completely different meaning for client and server, and the RPC will be naturally failed.
+
+a) Marshalling is the process to convert an object in memory into a data format so that it can be stored or transmitted.
+  It is necessary in distributed system because on distributed systen we need to transport data between different processes and threadsSome information have to be
+  marshalled to some kind of standard format so it can be transport across the network.
+
+b) CORBA uses the interface definition language (IDL) to define how data will be presented. When two processes communicating using CORBA, it is assumed that both sides are aware of the underlying structure of the data passed, thus no need to explitely mention their types.
+
+Pro: Different systems might have different representation of primitive types thus hard to collaborate. With CORBA CDR where there is no explicte typing, they are able to communicate under an agreed data format, thus achieving heterogeinity of the distributed system.
+
+Con: Prior knowledge and agreement about the format of the data passed are required for both sending and receiving end, thus incur an overhead during the communication process.
+
+Task 2.3
+
+compare to the Request-Reply protocol, Request-Reply-Acknowledge protocol use an additional phase at last to ensure that the client has already received the reply from the server. The advantage of RRA protocol could be found when the reply from the server to the client is failed to transfer. In this situation, with RR protocol the client will send the request again and the server has to response this request from beginning again, it needs additional time to wait for the second response and the server has to spend some time for the same request, that the time should actually spent for some new request. But with RRA protocol the server could send the reply to the client again and save the time. The disadvantage of RRA protocol is also easy to know, that it need one more phase for each Remote Procedure Call, if every transfer is successful, the additional phase will take a little more time to wait for the acknowledge and use a little more communication resource.
+
+Advantage: with acknowledgements, server is able to cache results of procedures' call and retransmit the result if duplicate request are sent from clients. This is a boost for the server performance. And upon receiving acknowledgement, server is able to free the space occupied by the cached result. On the otherside, with RR, server will not be informed whether the reply are received by the client, thus caching becoming impossible as it will consume server memory and makeing it impossible to scale.
+
+Disadvantage: Sending acknowledgement incurs an overhead for server-client communication thus performing poorer when reply omission is rarely the case.
+
+RR: request-reply, client send request to server and server reply.
+  RRA: request-reply-ack,client send request to server,server reply the request,then client acknowledge the reception of reply.
+  Compared to RR, the advantage of RRA is that If client acknowledge the reception of reply, server can delete stored result.
+
+
+Task 2.4
+
+Distributed system is by nature parallel. Since parallel is an approach to realize concurrency, many current programming concepts can be applied here thus many of the concurrency problems are relevant in distributed system as well.
+
+
+Concurrency is relevant to distributed system because distributed system is inherently parallel, parallelism is essential for distributed system.
+  The concurrency model is to be inherited into distribued system.
