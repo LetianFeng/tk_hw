@@ -11,6 +11,6 @@ public interface GameServerInterface extends Remote{
     public String findPassword(String username) throws RemoteException;
 
     public boolean sendChanges(int x, int y, String username) throws RemoteException;
-    public GameClient loadChanges() throws RemoteException;
+    public GameClient loadChanges(String username) throws RemoteException;
 
 }

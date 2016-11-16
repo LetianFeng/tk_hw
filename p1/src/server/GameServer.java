@@ -4,6 +4,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.*;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,10 +13,12 @@ import java.util.Map;
 import client.GameClient;
 
 
-public class GameServer extends UnicastRemoteObject implements GameServerInterface {
+public class GameServer extends UnicastRemoteObject implements GameServerInterface, Runnable  {
 
     private int x;
     private int y;
+    
+    private boolean changed;
 
     private Map<String, String> userPasswords;
 
@@ -30,6 +33,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         userPasswords = new HashMap<>();
         userPoints = new HashMap<>();
         userInstances = new LinkedList<GameClient>();
+        changed = false;
     }
 
     public static void main(String args[]) throws Exception {
@@ -50,6 +54,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         // Bind this object instance to the name "RmiServer"
         Naming.rebind("//localhost/GameServer", gameServer);
         System.out.println("PeerServer bound in registry");
+        
+
+		Thread thread = new Thread(gameServer);
+		thread.start();
         
     }
 
@@ -117,6 +125,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     @Override
     public boolean sendChanges(int x, int y, String username) throws RemoteException {
         //TODO
+    	this.x = x;
+    	this.y = y;
+    	this.changed = true;
+    	/*
     	if (this.x == x && this.y == y) {
     		// find client in the list, point++
     		GameClient gameClient = userInstances.get(0);
@@ -129,8 +141,8 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     		
             // distributeChangesToClients();
     		return true;
-    	}
-    	return false;
+    	}*/
+    	return true;
     }
 
     /**
@@ -141,17 +153,43 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         // for c : userInstances
         //      update c with new XY & point
         //      c.loadChanges()
+    	for (GameClient client : this.userInstances) {
+			try {
+				client.changesHappened(x, y);
+			} catch (RemoteException re) {
+				System.out.println("removing listener -" + client);
+				// Remove the listener
+			}
+		}
     }
 
     /**
      * find client instance in the list, and then return
      */
 	@Override
-	public GameClient loadChanges() throws RemoteException {
+	public GameClient loadChanges(String username) throws RemoteException {
 		// TODO Auto-generated method stub
 
     	GameClient gameClient = userInstances.get(0);
     	
         return gameClient;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while (true) {
+			if (this.changed) {
+				System.out.println("Server: " + this.x + " " + this.y);
+				this.changed = false;
+				try {
+					distributeChangesToClients();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 }
