@@ -81,15 +81,6 @@ public class Login {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		lblScore = new JLabel("Password:");
-		lblScore.setBounds(175, 97, 81, 22);
-		frame.getContentPane().add(lblScore);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(266, 100, 105, 24);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
-		
 		lblH = new JLabel("");
 	    Image img = new ImageIcon(this.getClass().getResource("Minion-Hello-icon.png")).getImage();
 	    lblH.setIcon(new ImageIcon(img));
