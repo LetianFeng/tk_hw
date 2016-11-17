@@ -46,7 +46,7 @@ public class GameFrame {
 	public void initialize() {
 		
 		Gframe = new JFrame();
-		Gframe.setBounds(400, 400, 650, 400);
+		Gframe.setBounds(400, 100, 650, 400);
 		Gframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Gframe.getContentPane().setLayout(null);
 
