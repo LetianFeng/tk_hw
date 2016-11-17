@@ -1,6 +1,10 @@
 package GUI;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -78,7 +82,15 @@ public class GameFrame {
 		JLabel lblScore_3 = new JLabel("Score2");
 		lblScore_3.setBounds(180, 32, 54, 15);
 		Gframe.getContentPane().add(lblScore_3);
+		  
+		
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = toolkit.getImage("E:/TK1project/p1/src/GUI/bananas-icon.png");
+		Point cursorHotSpot = new Point(16, 16);
+		Cursor c = toolkit.createCustomCursor(image ,cursorHotSpot, "img");
+		Gframe.setCursor (c);
 	
+		
 		  int i;
 	      for( i = 0; i < 5; i++ ){
 		JLabel lblM = new JLabel("");
