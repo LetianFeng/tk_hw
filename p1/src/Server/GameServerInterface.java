@@ -1,17 +1,17 @@
 package Server;
 
 import java.rmi.*;
+import java.util.Map;
 
 import Client.GameClientInterface;
 
 public interface GameServerInterface extends Remote {
 
-	public int[] login(GameClientInterface client) throws RemoteException;
+	int[] login(GameClientInterface client) throws RemoteException;
 	
-	public boolean logout(GameClientInterface client) throws RemoteException;
+	boolean logout(GameClientInterface client) throws RemoteException;
 
-	public boolean setMinion(int x, int y) throws RemoteException;
+	Map<GameClientInterface, Integer> pushScoresToClient() throws RemoteException;
 
-	// public int[] getMinion() throws RemoteException;
-
+	boolean checkMinion(int x, int y, int minionId, GameClientInterface client) throws RemoteException;
 }

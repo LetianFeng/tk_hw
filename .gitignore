@@ -1,5 +1,7 @@
-p1/.idea/
 p1/out/
+p1/.idea/
+p1/.project
+p1/.classpath
 *.iml
 *.class
 *.project

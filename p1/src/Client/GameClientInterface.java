@@ -5,8 +5,8 @@ import java.rmi.*;
 
 public interface GameClientInterface extends Remote {
 
-	public void minionChanged(int x, int y) throws RemoteException,
-			MalformedURLException, NotBoundException;
+	void minionChanged(int x, int y) throws RemoteException, MalformedURLException, NotBoundException;
 
-	public String getUsername() throws RemoteException;
+	String getUsername() throws RemoteException;
+
 }
