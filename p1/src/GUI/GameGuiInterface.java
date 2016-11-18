@@ -12,4 +12,6 @@ public interface GameGuiInterface {
     void drawScore(String username, int score, int gamerOrder);
 
     void drawNotification(String notification);
+    
+    void cleanScreen();
 }

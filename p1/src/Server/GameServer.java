@@ -68,6 +68,11 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		System.out.println("user logged in: " + client.getUsername());
 		list.add(client);
         userScores.put(client, 0);
+		try {
+			notifyClients();
+		} catch (MalformedURLException | NotBoundException e) {
+			e.printStackTrace();
+		}
 		return new int[] {x, y};
 	}
 

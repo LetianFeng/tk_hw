@@ -42,4 +42,10 @@ public class GameGui implements GameGuiInterface {
 	public void drawScore(String username, int score, int gamerOrder) {
 
 	}
+
+	@Override
+	public void cleanScreen() {
+		
+		
+	}
 }

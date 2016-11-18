@@ -39,7 +39,7 @@ public class GameFrame {
 	public GameFrame() {
 		initialize();
 	}
-
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -89,7 +89,6 @@ public class GameFrame {
 		Point cursorHotSpot = new Point(16, 16);
 		Cursor c = toolkit.createCustomCursor(image ,cursorHotSpot, "img");
 		Gframe.setCursor (c);
-	
 		
 		  int i;
 	      for( i = 0; i < 5; i++ ){

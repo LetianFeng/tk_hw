@@ -82,10 +82,9 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		this.x_from_server = xy[0];
 		this.y_from_server = xy[1];
 
-		System.out.println("Original x : " + xy[0] + " y: " + xy[1]);
-
-		Map<GameClientInterface, Integer> userScores = server.pushScoresToClient();
-		drawScores(userScores);
+		//System.out.println("Original x : " + xy[0] + " y: " + xy[1]);
+		//Map<GameClientInterface, Integer> userScores = server.pushScoresToClient();
+		//drawScores(userScores);
 	}
 
 	public static void main(String args[]) {
