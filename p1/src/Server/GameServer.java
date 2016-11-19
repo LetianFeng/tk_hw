@@ -31,12 +31,14 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		random = new Random();
         x = random.nextInt();
 		y = random.nextInt();
-		minionID = 1;
+		minionID = random.nextInt();
 		minionChanged = false;
 	}
 
 	@Override
 	public boolean checkMinion(int minionID, GameClientInterface client) throws RemoteException {
+		System.out.println("Server: " + this.minionID + " Client: " + minionID);
+
 		if (this.minionID == minionID && !minionChanged) {
 			minionChanged = true;
 			reproduceMinion();
@@ -68,6 +70,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	private void reproduceMinion() {
 		x = random.nextInt();
 		y = random.nextInt();
+		minionID = random.nextInt();
 	}
 
 	@Override
@@ -98,7 +101,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 			// Notify, if possible a listener
 			GameClientInterface client = iterator.next();
 			try {
-				client.minionChanged(1, x, y, userScores);
+				client.minionChanged(minionID, x, y, userScores);
 			} catch (RemoteException re) {
 				// Remove the listener
 			}

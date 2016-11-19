@@ -26,7 +26,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	private GameClient(String url) throws RemoteException {
 		super();
 		serverURL = url;
-		minionID = 0;
+		minionID = 1;
 		gameGui = new GameGui(this);
 		gameGui.openLoginWindow();
 	}
@@ -41,19 +41,24 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	}*/
 
 	@Override
-	public void minionChanged(int oldID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException {
+	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException {
 		// try to pull all the information from the server
-		System.out.println("New minion: id: " + minionID + " x : " + newX + " y: " + newY);
+		System.out.println();
+
+		System.out.println("New minion: id: " + newID + ", x : " + newX + ", y: " + newY);
 		// paint new minion
 		//refreshMinion(x, y);
-		this.minionID = minionID;
+		this.minionID = newID;
 		// pull the score list
 		//Map<GameClientInterface, Integer> userScores = server.pushScoresToClient();
 		System.out.println(userScores);
-		drawScores(userScores);
+		//drawScores(userScores);
 	}
 
+	/*
 	private void drawScores(Map<GameClientInterface, Integer> userScores) throws RemoteException {
+		System.out.println();
+
 		System.out.println("Prepare for the Scores.");
 		int gamerOrder = 0;
 		for (Map.Entry<GameClientInterface, Integer> entry : userScores.entrySet()) {
@@ -65,16 +70,18 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			//gameGui.drawScore(gamer.getUsername()+":", score, gamerOrder);
 			gamerOrder += 1;
 		}
-	}
+	}*/
 
 
-	private void feedValidClick(int x, int y, int minionID, GameServerInterface server, GameClientInterface client) throws RemoteException {
+	private void feedValidClick(GameServerInterface server) throws RemoteException {
+		System.out.println();
+
 		String notification;
-		if (server.checkMinion(minionID, client))
-			notification = "Nice, you got it!";
+		if (server.checkMinion(minionID, this))
+			notification = "Client: Nice, you got it!";
 
 		else
-			notification = "Sorry, somebody is faster. :( ";
+			notification = "Client: Sorry, somebody is faster. :( ";
 		System.out.println(notification);
 		//gameGui.drawNotification(notification);
 	}
@@ -90,36 +97,10 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		//drawScores(userScores);
 	}*/
 
-	public static void main(String args[]) {
-		System.out.println("Looking for game server");
-		
-		try {
-
-			server =  (GameServerInterface) Naming.lookup("rmi://localhost/GameServer");
-
-			GameClient client = new GameClient("rmi://localhost/GameServer");
-
-			Thread.sleep(3000);
-
-			client.feedValidClick(1, client.x_from_server, client.y_from_server, server, client);
-
-			Thread.sleep(4000);
-
-			System.out.println(server.logout(client) ? "logout successful" : "logout failure");
-
-			System.exit(0);
-
-		} catch (NotBoundException nbe) {
-			System.out.println("No game server available");
-		} catch (RemoteException re) {
-			System.out.println("RMI Error - " + re);
-		} catch (Exception e) {
-			System.out.println("Error - " + e);
-		}
-	}
-
 	@Override
 	public boolean login(String username) {
+		System.out.println();
+
 		try {
 			this.username = username;
 			if (server.login(this)) {
@@ -144,5 +125,31 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	@Override
 	public void feedMinion(String minionID) {
 
+	}
+
+	public static void main(String args[]) {
+		System.out.println("Looking for game server");
+
+		try {
+
+			server =  (GameServerInterface) Naming.lookup("rmi://localhost/GameServer");
+
+			GameClient client = new GameClient("rmi://localhost/GameServer");
+
+			client.feedValidClick(server);
+
+			Thread.sleep(1000);
+
+			System.out.println(server.logout(client) ? "logout successful" : "logout failure");
+
+			System.exit(0);
+
+		} catch (NotBoundException nbe) {
+			System.out.println("No game server available");
+		} catch (RemoteException re) {
+			System.out.println("RMI Error - " + re);
+		} catch (Exception e) {
+			System.out.println("Error - " + e);
+		}
 	}
 }

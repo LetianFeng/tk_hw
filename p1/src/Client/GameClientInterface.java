@@ -8,7 +8,7 @@ import Server.GameServerInterface;
 
 public interface GameClientInterface extends Remote {
 
-	void minionChanged(int oldID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException;
+	void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException;
 
 	String getUsername() throws RemoteException;
 
