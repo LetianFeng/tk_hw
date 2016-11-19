@@ -64,7 +64,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	}
 
 	@Override
-	public int[] login(GameClientInterface client) throws RemoteException {
+	public boolean login(GameClientInterface client) throws RemoteException {
 		System.out.println("user logged in: " + client.getUsername());
 		list.add(client);
         userScores.put(client, 0);
@@ -73,7 +73,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		} catch (MalformedURLException | NotBoundException e) {
 			e.printStackTrace();
 		}
-		return new int[] {x, y};
+		return true;
 	}
 
 	@Override
@@ -90,22 +90,21 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	}
 
 	private void notifyClients() throws MalformedURLException, NotBoundException {
-		if (list.isEmpty())
-			return;
 		for (GameClientInterface client : list) {
 			// Notify, if possible a listener
 			try {
-				client.minionChanged(x, y);
+				client.minionChanged(1, x, y, userScores);
 			} catch (RemoteException re) {
 				// Remove the listener
 			}
 		}
 	}
 
+	/*
 	@Override
 	public Map<GameClientInterface, Integer> pushScoresToClient() throws RemoteException {
 		return this.userScores;
-	}
+	}*/
 
 	public static void main(String args[]) {
 		System.out.println("Loading game server service");

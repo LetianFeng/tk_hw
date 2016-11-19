@@ -1,51 +1,84 @@
 package GUI;
- 
-public class GameGui implements GameGuiInterface {
 
-	public GameGui() {
+import Client.GameClientGuiInterface;
+import Client.GameClientInterface;
 
-		// create Login
+import java.util.Random;
 
-		// create Frame and Listen to the Mouse
+public class GameGui implements GameGuiInterface{
 
-	}
+	private int minionID;
 
-	public static void main(String[] args) {
-	
-	}
+	private GameClientGuiInterface client;
 
-	@Override
-	/**
-	 * Draw Notification on top of the Window
-	 */
-	public void drawNotification(String notification) {
+	private boolean loginOrGameWindow;
 
+	public GameGui(GameClientGuiInterface client) {
+		this.client = client;
 	}
 
 	@Override
-	public void initialGUI() {
+	public void openLoginWindow() {
+		System.out.println("Open login Window: ");
+		loginOrGameWindow = true;
+
+		Random random = new Random();
+		String username = Float.toString(random.nextFloat());
+		System.out.println("GUI username: " + username);
+
+		if (client.login(username)) {
+			System.out.println("GUI: Login succeed!");
+			//closeLoginWindow();
+			//openGameWindow();
+		} else {
+			System.out.println("Login failed, try another username!");
+		}
+	}
+
+	@Override
+	public void closeLoginWindow() {
+		// wait 1 second
+		System.out.println("Close login window:");
+	}
+
+	@Override
+	public void openGameWindow() {
+		// wait 1 second
+		System.out.println("Open game window:");
+	}
+
+	@Override
+	public void closeGameWindow() {
 
 	}
 
 	@Override
-	/**
-	 * Draw Minion with its coordinate x,y
-	 */
 	public void drawMinion(int x, int y, int minionId) {
 
 	}
 
 	@Override
-	/**
-	 * Draw Score String with username, score in the suitable place ( related with user order )
-	 */
+	public void cleanMinion(int minionID) {
+
+	}
+
+	@Override
 	public void drawScore(String username, int score, int gamerOrder) {
 
 	}
 
 	@Override
-	public void cleanScreen() {
-		
-		
+	public void cleanScores() {
+
+	}
+
+	@Override
+	public void drawNotification(String notification) {
+
+	}
+
+	@Override
+	public boolean getWindowType() {
+		return loginOrGameWindow;
 	}
 }

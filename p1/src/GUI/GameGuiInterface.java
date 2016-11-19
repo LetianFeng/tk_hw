@@ -21,5 +21,7 @@ public interface GameGuiInterface {
 
     void cleanScores();
 
-    //void drawNotification(String notification);
+    void drawNotification(String notification);
+
+    boolean getWindowType();
 }
