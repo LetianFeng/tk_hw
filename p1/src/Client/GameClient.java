@@ -64,6 +64,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		}
 	}
 
+	/*
 	private void feedValidClick(int x, int y, int minion_id, GameServerInterface server, GameClientInterface client) throws RemoteException {
 		String notification;
 		if (server.checkMinion(x, y, minion_id, client))
@@ -73,7 +74,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			notification = "Sorry, somebody is faster. :( ";
 		System.out.println(notification);
 		gameGui.drawNotification(notification);
-	}
+	}*/
 	
 	private void login(GameServerInterface server) throws MalformedURLException, RemoteException, NotBoundException {
 
