@@ -19,7 +19,7 @@ public class GameGui implements GameGuiInterface{
 
 	@Override
 	public void openLoginWindow() {
-		System.out.println("Open login Window: ");
+		System.out.println("GUI: open login Window: ");
 		loginOrGameWindow = true;
 
 		Random random = new Random();
@@ -31,18 +31,18 @@ public class GameGui implements GameGuiInterface{
 			closeLoginWindow();
 			openGameWindow();
 		} else {
-			System.out.println("Login failed, try another username!");
+			System.out.println("GUI: Login failed, try another username!");
 		}
 	}
 
 	@Override
 	public void closeLoginWindow() {
-		System.out.println("Close login window:");
+		System.out.println("GUI: close login window:");
 	}
 
 	@Override
 	public void openGameWindow() {
-		System.out.println("Open game window:");
+		System.out.println("GUI: open game window:");
 	}
 
 	@Override

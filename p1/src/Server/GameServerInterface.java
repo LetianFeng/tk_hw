@@ -13,5 +13,5 @@ public interface GameServerInterface extends Remote {
 
 	//Map<GameClientInterface, Integer> pushScoresToClient() throws RemoteException;
 
-	boolean checkMinion(int x, int y, int minionId, GameClientInterface client) throws RemoteException;
+	boolean checkMinion(int minionID, GameClientInterface client) throws RemoteException;
 }

@@ -6,13 +6,16 @@ import java.rmi.server.*;
 import java.rmi.registry.*;
 import java.util.*;
 
+import Client.GameClientGuiInterface;
 import Client.GameClientInterface;
 
-public class GameServer extends UnicastRemoteObject implements GameServerInterface, Runnable {
+public class GameServer extends UnicastRemoteObject implements GameServerInterface {
 
 	private Random random;
 	private volatile int x;
 	private volatile int y;
+	private volatile int minionID;
+	private boolean minionChanged;
 	//private GameLogic gl;
 	//private List<GameClientInterface> list = new Vector<>();
 
@@ -23,24 +26,28 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		super();
 		//gl = new GameLogic();
 		// Initial the Score Mapping
-        userScores = new HashTable<>();
+        userScores = new HashMap<GameClientInterface, Integer>();
         // Produce the initial Minion Coordinate
 		random = new Random();
         x = random.nextInt();
 		y = random.nextInt();
+		minionID = 1;
+		minionChanged = false;
 	}
 
 	@Override
-	public boolean checkMinion(int x, int y, int minionId, GameClientInterface client) throws RemoteException {
-		if (validClick(x, y)) {
-			userScores.put(client, userScores.get(client)+1);
+	public boolean checkMinion(int minionID, GameClientInterface client) throws RemoteException {
+		if (this.minionID == minionID && !minionChanged) {
+			minionChanged = true;
 			reproduceMinion();
+			userScores.put(client, userScores.get(client)+1);
 			// Notify registered listeners
 			try {
 				notifyClients();
 			} catch (MalformedURLException | NotBoundException e) {
 				e.printStackTrace();
 			}
+			minionChanged = false;
 			return true;
 		}
 		else
@@ -84,14 +91,12 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		return true;
 	}
 
-	@Override
-	public void run() {
-
-	}
-
 	private void notifyClients() throws MalformedURLException, NotBoundException {
-		for (GameClientInterface client : userScores.) {
+		Iterator<GameClientInterface> iterator = userScores.keySet().iterator();
+
+		while (iterator.hasNext()) {
 			// Notify, if possible a listener
+			GameClientInterface client = iterator.next();
 			try {
 				client.minionChanged(1, x, y, userScores);
 			} catch (RemoteException re) {
@@ -113,9 +118,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 			LocateRegistry.createRegistry(1099);
 			GameServer gameServer = new GameServer();
 			Naming.rebind("rmi://localhost/GameServer", gameServer);
-
-			Thread thread = new Thread(gameServer);
-			thread.start();
 		} catch (RemoteException re) {
 			System.err.println("Remote Error - " + re);
 		} catch (Exception e) {

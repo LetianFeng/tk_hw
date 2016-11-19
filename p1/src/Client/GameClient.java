@@ -68,9 +68,9 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	}
 
 
-	private void feedValidClick(int x, int y, int minion_id, GameServerInterface server, GameClientInterface client) throws RemoteException {
+	private void feedValidClick(int x, int y, int minionID, GameServerInterface server, GameClientInterface client) throws RemoteException {
 		String notification;
-		if (server.checkMinion(x, y, minion_id, client))
+		if (server.checkMinion(minionID, client))
 			notification = "Nice, you got it!";
 
 		else
@@ -99,11 +99,9 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 			GameClient client = new GameClient("rmi://localhost/GameServer");
 
-			//client.login(server);
-
 			Thread.sleep(3000);
 
-			client.feedValidClick(client.x_from_server, client.y_from_server, 1, server, client);
+			client.feedValidClick(1, client.x_from_server, client.y_from_server, server, client);
 
 			Thread.sleep(4000);
 
@@ -123,13 +121,12 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	@Override
 	public boolean login(String username) {
 		try {
+			this.username = username;
 			if (server.login(this)) {
-				this.username = username;
 				System.out.println("Client: Login succeed!");
-				gameGui.closeLoginWindow();
-				gameGui.openGameWindow();
 				return true;
 			} else {
+				this.username = null;
 				System.out.println("Username already exist, try another!");
 				return false;
 			}
