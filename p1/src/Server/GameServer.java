@@ -13,17 +13,17 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	private Random random;
 	private volatile int x;
 	private volatile int y;
-	private GameLogic gl;
-	private List<GameClientInterface> list = new Vector<>();
+	//private GameLogic gl;
+	//private List<GameClientInterface> list = new Vector<>();
 
 	private Map<GameClientInterface, Integer> userScores;
 	// mapping from client to username maybe better, otherwise one client will request the client name from all other clients
 
 	private GameServer() throws RemoteException {
 		super();
-		gl = new GameLogic();
+		//gl = new GameLogic();
 		// Initial the Score Mapping
-        userScores = new HashMap<>();
+        userScores = new HashTable<>();
         // Produce the initial Minion Coordinate
 		random = new Random();
         x = random.nextInt();
@@ -66,7 +66,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	@Override
 	public boolean login(GameClientInterface client) throws RemoteException {
 		System.out.println("user logged in: " + client.getUsername());
-		list.add(client);
+		//list.add(client);
         userScores.put(client, 0);
 		try {
 			notifyClients();
@@ -79,7 +79,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	@Override
 	public boolean logout(GameClientInterface client) throws RemoteException {
 		System.out.println("user logged out: " + client.getUsername());
-		list.remove(client);
+		//list.remove(client);
 		userScores.remove(client);
 		return true;
 	}
@@ -90,7 +90,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	}
 
 	private void notifyClients() throws MalformedURLException, NotBoundException {
-		for (GameClientInterface client : list) {
+		for (GameClientInterface client : userScores.) {
 			// Notify, if possible a listener
 			try {
 				client.minionChanged(1, x, y, userScores);
@@ -108,22 +108,12 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
 	public static void main(String args[]) {
 		System.out.println("Loading game server service");
-		// Only required for dynamic class loading
-		// System.setSecurityManager ( new RMISecurityManager() );
+
 		try {
 			LocateRegistry.createRegistry(1099);
-			// Load the service
 			GameServer gameServer = new GameServer();
-			// Check to see if a registry was specified
-			// Registration format //registry_hostname:port service
-			// Note the :port field is optional
-			String registration = "rmi://localhost/GameServer";
-			// Register with service so that clients can
-			// find us
-			Naming.rebind(registration, gameServer);
-			// Create a thread, and pass the game server.
-			// This will activate the run() method, and
-			// trigger regular temperature changes.
+			Naming.rebind("rmi://localhost/GameServer", gameServer);
+
 			Thread thread = new Thread(gameServer);
 			thread.start();
 		} catch (RemoteException re) {

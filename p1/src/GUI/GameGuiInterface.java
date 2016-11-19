@@ -15,11 +15,9 @@ public interface GameGuiInterface {
 
     void drawMinion(int x, int y, int minionId);
 
-    void cleanMinion(int minionID);
-
     void drawScore(String username, int score, int gamerOrder);
 
-    void cleanScores();
+    void cleanScreen();
 
     void drawNotification(String notification);
 

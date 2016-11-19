@@ -28,8 +28,8 @@ public class GameGui implements GameGuiInterface{
 
 		if (client.login(username)) {
 			System.out.println("GUI: Login succeed!");
-			//closeLoginWindow();
-			//openGameWindow();
+			closeLoginWindow();
+			openGameWindow();
 		} else {
 			System.out.println("Login failed, try another username!");
 		}
@@ -37,13 +37,11 @@ public class GameGui implements GameGuiInterface{
 
 	@Override
 	public void closeLoginWindow() {
-		// wait 1 second
 		System.out.println("Close login window:");
 	}
 
 	@Override
 	public void openGameWindow() {
-		// wait 1 second
 		System.out.println("Open game window:");
 	}
 
@@ -58,17 +56,12 @@ public class GameGui implements GameGuiInterface{
 	}
 
 	@Override
-	public void cleanMinion(int minionID) {
-
-	}
-
-	@Override
 	public void drawScore(String username, int score, int gamerOrder) {
 
 	}
 
 	@Override
-	public void cleanScores() {
+	public void cleanScreen() {
 
 	}
 
