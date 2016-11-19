@@ -28,8 +28,6 @@ public class GameGui implements GameGuiInterface{
 
 		if (client.login(username)) {
 			System.out.println("GUI: Login succeed!");
-			closeLoginWindow();
-			openGameWindow();
 		} else {
 			System.out.println("GUI: Login failed, try another username!");
 		}
@@ -43,6 +41,7 @@ public class GameGui implements GameGuiInterface{
 	@Override
 	public void openGameWindow() {
 		System.out.println("GUI: open game window:");
+		loginOrGameWindow = false;
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class GameGui implements GameGuiInterface{
 
 	@Override
 	public void drawScore(String username, int score, int gamerOrder) {
-
+		System.out.println("GUI: username: " + username + "score: " + score + "game oder: " + gamerOrder);
 	}
 
 	@Override

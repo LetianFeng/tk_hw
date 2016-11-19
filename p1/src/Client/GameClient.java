@@ -16,8 +16,8 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 	// These two values are only used to test communication between server and client
 	private int minionID;
-	private int x_from_server;
-	private int y_from_server;
+	private int x;
+	private int y;
 
 	private GameGuiInterface gameGui;
 
@@ -26,7 +26,6 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	private GameClient(String url) throws RemoteException {
 		super();
 		serverURL = url;
-		minionID = 1;
 		gameGui = new GameGui(this);
 		gameGui.openLoginWindow();
 	}
@@ -42,40 +41,33 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 	@Override
 	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException {
-		// try to pull all the information from the server
-		System.out.println();
 
+		System.out.println();
 		System.out.println("New minion: id: " + newID + ", x : " + newX + ", y: " + newY);
 		// paint new minion
-		//refreshMinion(x, y);
 		this.minionID = newID;
-		// pull the score list
-		//Map<GameClientInterface, Integer> userScores = server.pushScoresToClient();
-		System.out.println(userScores);
-		//drawScores(userScores);
+		drawScores(userScores);
 	}
 
-	/*
+
 	private void drawScores(Map<GameClientInterface, Integer> userScores) throws RemoteException {
-		System.out.println();
 
 		System.out.println("Prepare for the Scores.");
 		int gamerOrder = 0;
+		// TODO need to sort entries
 		for (Map.Entry<GameClientInterface, Integer> entry : userScores.entrySet()) {
 			GameClientInterface gamer = entry.getKey();
 			int score = entry.getValue();
 			// paint the score on screen
-			System.out.print(gamer.getUsername()+": ");
-			System.out.println(score);
-			//gameGui.drawScore(gamer.getUsername()+":", score, gamerOrder);
+			//System.out.print(gamer.getUsername()+": ");
+			//System.out.println(score);
+			gameGui.drawScore(gamer.getUsername(), score, gamerOrder);
 			gamerOrder += 1;
 		}
-	}*/
+	}
 
 
 	private void feedValidClick(GameServerInterface server) throws RemoteException {
-		System.out.println();
-
 		String notification;
 		if (server.checkMinion(minionID, this))
 			notification = "Client: Nice, you got it!";
@@ -86,25 +78,15 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		//gameGui.drawNotification(notification);
 	}
 
-	/*
-	private void login(GameServerInterface server) throws MalformedURLException, RemoteException, NotBoundException {
-
-		if(server.login(this))
-			System.out.println("Client: Login succeed!");
-
-		//System.out.println("Original x : " + xy[0] + " y: " + xy[1]);
-		//Map<GameClientInterface, Integer> userScores = server.pushScoresToClient();
-		//drawScores(userScores);
-	}*/
-
 	@Override
 	public boolean login(String username) {
-		System.out.println();
 
 		try {
 			this.username = username;
 			if (server.login(this)) {
 				System.out.println("Client: Login succeed!");
+				gameGui.closeLoginWindow();
+				gameGui.openGameWindow();
 				return true;
 			} else {
 				this.username = null;
