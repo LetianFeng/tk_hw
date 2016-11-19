@@ -6,5 +6,5 @@ public interface GameClientGuiInterface {
 
     boolean logout();
 
-    void feedMinion(String minionID);
+    void feedMinion(int minionID);
 }

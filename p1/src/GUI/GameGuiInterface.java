@@ -13,7 +13,7 @@ public interface GameGuiInterface {
 
     void closeGameWindow();
 
-    void drawMinion(int x, int y, int minionId);
+    void drawMinion(int x, int y, int minionID);
 
     void drawScore(String username, int score, int gamerOrder);
 

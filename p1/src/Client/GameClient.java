@@ -22,14 +22,14 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	private GameGuiInterface gameGui;
 
 	private static GameServerInterface server;
-	
+
 	private GameClient(String url) throws RemoteException {
 		super();
 		serverURL = url;
 		gameGui = new GameGui(this);
 		gameGui.openLoginWindow();
 	}
-	
+
 	public String getUsername() {
 		return this.username;
 	}
@@ -43,9 +43,10 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException {
 
 		System.out.println();
-		System.out.println("New minion: id: " + newID + ", x : " + newX + ", y: " + newY);
 		// paint new minion
 		this.minionID = newID;
+        this.x = newX;
+        this.y = newY;
 		drawScores(userScores);
 	}
 
@@ -64,18 +65,6 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			gameGui.drawScore(gamer.getUsername(), score, gamerOrder);
 			gamerOrder += 1;
 		}
-	}
-
-
-	private void feedValidClick(GameServerInterface server) throws RemoteException {
-		String notification;
-		if (server.checkMinion(minionID, this))
-			notification = "Client: Nice, you got it!";
-
-		else
-			notification = "Client: Sorry, somebody is faster. :( ";
-		System.out.println(notification);
-		//gameGui.drawNotification(notification);
 	}
 
 	@Override
@@ -105,7 +94,17 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	}
 
 	@Override
-	public void feedMinion(String minionID) {
+	public void feedMinion(int minionID) {
+        String notification;
+        try {
+            if (server.checkMinion(minionID, this))
+                notification = "Nice, you got it!";
+            else
+                notification = "Sorry, somebody is faster. :( ";
+            gameGui.drawNotification(notification);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
 	}
 
@@ -118,7 +117,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 			GameClient client = new GameClient("rmi://localhost/GameServer");
 
-			client.feedValidClick(server);
+			client.feedMinion(client.minionID);
 
 			Thread.sleep(1000);
 

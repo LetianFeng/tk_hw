@@ -56,7 +56,7 @@ public class GameGui implements GameGuiInterface{
 
 	@Override
 	public void drawScore(String username, int score, int gamerOrder) {
-		System.out.println("GUI: username: " + username + "score: " + score + "game oder: " + gamerOrder);
+		System.out.println("GUI: username: " + username + ", score: " + score + ", game oder: " + gamerOrder);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class GameGui implements GameGuiInterface{
 
 	@Override
 	public void drawNotification(String notification) {
-
+		System.out.println("GUI: " + notification);
 	}
 
 	@Override
