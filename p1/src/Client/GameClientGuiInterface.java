@@ -1,5 +1,6 @@
 package Client;
 
+
 public interface GameClientGuiInterface {
 
     boolean login(String username);
@@ -7,4 +8,6 @@ public interface GameClientGuiInterface {
     boolean logout();
 
     void feedMinion(int minionID);
+
+    String getUsername();
 }

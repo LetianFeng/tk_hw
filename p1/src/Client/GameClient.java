@@ -8,11 +8,12 @@ import java.util.*;
 import GUI.GameGui;
 import GUI.GameGuiInterface;
 import Server.GameServerInterface;
+import Server.Minion;
 
 public class GameClient extends UnicastRemoteObject implements GameClientInterface, GameClientGuiInterface{
 
 	private String serverURL;
-	private String username;
+	public String username;
 
 	// These two values are only used to test communication between server and client
 	private int minionID;
@@ -47,24 +48,8 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		this.minionID = newID;
         this.x = newX;
         this.y = newY;
-		drawScores(userScores);
-	}
-
-
-	private void drawScores(Map<GameClientInterface, Integer> userScores) throws RemoteException {
-
-		System.out.println("Prepare for the Scores.");
-		int gamerOrder = 0;
-		// TODO need to sort entries
-		for (Map.Entry<GameClientInterface, Integer> entry : userScores.entrySet()) {
-			GameClientInterface gamer = entry.getKey();
-			int score = entry.getValue();
-			// paint the score on screen
-			//System.out.print(gamer.getUsername()+": ");
-			//System.out.println(score);
-			gameGui.drawScore(gamer.getUsername(), score, gamerOrder);
-			gamerOrder += 1;
-		}
+        gameGui.drawMinion(newX, newY, newID);
+		gameGui.drawScores(userScores);
 	}
 
 	@Override
@@ -72,10 +57,11 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 		try {
 			this.username = username;
-			if (server.login(this)) {
+            Minion minion = server.login(this);
+			if (minion != null) {
 				System.out.println("Client: Login succeed!");
 				gameGui.closeLoginWindow();
-				gameGui.openGameWindow();
+				gameGui.openGameWindow(minion);
 				return true;
 			} else {
 				this.username = null;
@@ -83,6 +69,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 				return false;
 			}
 		} catch (Exception e) {
+            e.printStackTrace();
 			System.out.println("Client meets problem with connecting server!");
 			return false;
 		}
@@ -90,7 +77,13 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 	@Override
 	public boolean logout() {
-		return false;
+        try {
+            boolean logoutSuccess = server.logout(this);
+            System.out.println(logoutSuccess ? "logout successful" : "logout failure");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
 	}
 
 	@Override
@@ -117,11 +110,9 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 			GameClient client = new GameClient("rmi://localhost/GameServer");
 
-			client.feedMinion(client.minionID);
+			//Thread.sleep(1000);
 
-			Thread.sleep(1000);
-
-			System.out.println(server.logout(client) ? "logout successful" : "logout failure");
+			//System.out.println(server.logout(client) ? "logout successful" : "logout failure");
 
 			System.exit(0);
 

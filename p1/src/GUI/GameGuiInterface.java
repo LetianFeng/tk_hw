@@ -1,5 +1,10 @@
 package GUI;
 
+import Client.GameClientInterface;
+import Server.Minion;
+
+import java.util.Map;
+
 public interface GameGuiInterface {
 
     // should implement all the GUI relevant action (e.g. Game Window Initialization, Minion Drawing, Score Drawing
@@ -9,13 +14,13 @@ public interface GameGuiInterface {
 
     void closeLoginWindow();
 
-    void openGameWindow();
+    void openGameWindow(Minion minion);
 
     void closeGameWindow();
 
     void drawMinion(int x, int y, int minionID);
 
-    void drawScore(String username, int score, int gamerOrder);
+    void drawScores(Map<GameClientInterface, Integer> userScores);
 
     void cleanScreen();
 

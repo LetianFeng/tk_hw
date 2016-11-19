@@ -7,7 +7,7 @@ import Client.GameClientInterface;
 
 public interface GameServerInterface extends Remote {
 
-	boolean login(GameClientInterface client) throws RemoteException;
+	Minion login(GameClientInterface client) throws RemoteException;
 	
 	boolean logout(GameClientInterface client) throws RemoteException;
 

@@ -74,16 +74,16 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	}
 
 	@Override
-	public boolean login(GameClientInterface client) throws RemoteException {
+	public Minion login(GameClientInterface client) throws RemoteException {
 		System.out.println("user logged in: " + client.getUsername());
 		//list.add(client);
-        userScores.put(client, 0);
 		try {
 			notifyClients();
 		} catch (MalformedURLException | NotBoundException e) {
 			e.printStackTrace();
 		}
-		return true;
+		userScores.put(client, 0);
+		return new Minion(x, y, minionID, userScores);
 	}
 
 	@Override
