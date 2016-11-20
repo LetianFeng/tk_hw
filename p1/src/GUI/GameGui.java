@@ -46,6 +46,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 		drawMinion(minion.x, minion.y, minion.minionID);
 		drawScores(minion.userScores);
 
+		// click minion for 10 times
 		try {
 			for (int i=0; i<10; i++) {
 				Thread.sleep(1000);

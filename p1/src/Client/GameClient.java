@@ -2,7 +2,6 @@ package Client;
 
 import java.rmi.*;
 import java.rmi.server.*;
-import java.util.*;
 
 import GUI.GameGui;
 import GUI.GameGuiInterface;
@@ -35,11 +34,10 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
     }
 
 	@Override
-	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) {
+	public void minionChanged(Minion minion) {
         gameGui.cleanScreen();
-        gameGui.drawMinion(newX, newY, newID);
-
-        gameGui.drawScores(userScores);
+        gameGui.drawMinion(minion.x, minion.y, minion.minionID);
+        gameGui.drawScores(minion.userScores);
 	}
 
 	@Override

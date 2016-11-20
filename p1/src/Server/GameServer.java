@@ -6,7 +6,6 @@ import java.rmi.server.*;
 import java.rmi.registry.*;
 import java.util.*;
 
-import Client.GameClientGuiInterface;
 import Client.GameClientInterface;
 
 public class GameServer extends UnicastRemoteObject implements GameServerInterface {
@@ -17,7 +16,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	private volatile int minionID;
 	private boolean minionChanged;
 	//private GameLogic gl;
-	//private List<GameClientInterface> list = new Vector<>();
 
 	private Map<GameClientInterface, Integer> userScores;
 	// mapping from client to username maybe better, otherwise one client will request the client name from all other clients
@@ -39,6 +37,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	public void checkMinion(int minionID, GameClientInterface client) throws RemoteException {
 
 		if (this.minionID == minionID && !minionChanged) {
+			// basic protection from conflict, can be implemented with thread in future
 			minionChanged = true;
 			reproduceMinion();
 			userScores.put(client, userScores.get(client)+1);
@@ -54,15 +53,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 			client.sendNotification("Sorry, somebody is faster. :( ");
 	}
 
-	/*
-	 * check whether the coordinate from client x, y is a valid click, could be optimize the distance algorithms.
-	 */
-	/*
-	private boolean validClick(int client_x, int client_y) {
-
-		return ((this.x-10 < client_x) && (client_x < this.x+10) && (this.y-10 < client_y) && (client_y < this.y+10));
-	}*/
-
 	/**
 	 * reproduce the minion with coordinate when a click from client is valid.
 	 */
@@ -76,12 +66,14 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	public Minion login(GameClientInterface client) throws RemoteException {
 		if (!userScores.keySet().contains(client)) {
 			System.out.println("user logged in: " + client.getUsername());
+			// notify all clients except for the new one
 			try {
 				notifyClients();
 			} catch (MalformedURLException | NotBoundException e) {
 				e.printStackTrace();
 			}
 			userScores.put(client, 0);
+			// notify the new client with return value
 			return new Minion(x, y, minionID, userScores);
 		} else {
 			return null;
@@ -91,28 +83,21 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	@Override
 	public boolean logout(GameClientInterface client) throws RemoteException {
 		System.out.println("user logged out: " + client.getUsername());
-		//list.remove(client);
 		userScores.remove(client);
 		return true;
 	}
 
 	private void notifyClients() throws MalformedURLException, NotBoundException {
 
-		for (GameClientInterface client : userScores.keySet()) {;
+		for (GameClientInterface client : userScores.keySet()) {
 			// Notify, if possible a listener
 			try {
-				client.minionChanged(minionID, x, y, userScores);
+				client.minionChanged(new Minion(x, y, minionID, userScores));
 			} catch (RemoteException re) {
 				// Remove the listener
 			}
 		}
 	}
-
-	/*
-	@Override
-	public Map<GameClientInterface, Integer> pushScoresToClient() throws RemoteException {
-		return this.userScores;
-	}*/
 
 	public static void main(String args[]) {
 		System.out.println("Loading game server service");
