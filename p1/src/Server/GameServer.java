@@ -36,13 +36,14 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	}
 
 	@Override
-	public boolean checkMinion(int minionID, GameClientInterface client) throws RemoteException {
+	public void checkMinion(int minionID, GameClientInterface client) throws RemoteException {
 		System.out.println("Server: " + this.minionID + " Client: " + minionID);
 
 		if (this.minionID == minionID && !minionChanged) {
 			minionChanged = true;
 			reproduceMinion();
 			userScores.put(client, userScores.get(client)+1);
+			client.sendNotification("Nice, you got it!");
 			// Notify registered listeners
 			try {
 				notifyClients();
@@ -50,19 +51,18 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 				e.printStackTrace();
 			}
 			minionChanged = false;
-			return true;
-		}
-		else
-			return false;
+		} else
+			client.sendNotification("Sorry, somebody is faster. :( ");
 	}
 
 	/**
 	 * check whether the coordinate from client x, y is a valid click, could be optimize the distance algorithms.
 	 */
+	/*
 	private boolean validClick(int client_x, int client_y) {
 
 		return ((this.x-10 < client_x) && (client_x < this.x+10) && (this.y-10 < client_y) && (client_y < this.y+10));
-	}
+	}*/
 
 	/**
 	 * reproduce the minion with coordinate when a click from client is valid.
@@ -75,15 +75,18 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
 	@Override
 	public Minion login(GameClientInterface client) throws RemoteException {
-		System.out.println("user logged in: " + client.getUsername());
-		//list.add(client);
-		try {
-			notifyClients();
-		} catch (MalformedURLException | NotBoundException e) {
-			e.printStackTrace();
+		if (!userScores.keySet().contains(client)) {
+			System.out.println("user logged in: " + client.getUsername());
+			try {
+				notifyClients();
+			} catch (MalformedURLException | NotBoundException e) {
+				e.printStackTrace();
+			}
+			userScores.put(client, 0);
+			return new Minion(x, y, minionID, userScores);
+		} else {
+			return null;
 		}
-		userScores.put(client, 0);
-		return new Minion(x, y, minionID, userScores);
 	}
 
 	@Override

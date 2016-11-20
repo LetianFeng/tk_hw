@@ -8,6 +8,4 @@ public interface GameClientGuiInterface {
     boolean logout();
 
     void feedMinion(int minionID);
-
-    String getUsername();
 }

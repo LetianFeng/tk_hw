@@ -12,4 +12,6 @@ public interface GameClientInterface extends Remote {
 
 	String getUsername() throws RemoteException;
 
+	void sendNotification(String notification) throws RemoteException;
+
 }

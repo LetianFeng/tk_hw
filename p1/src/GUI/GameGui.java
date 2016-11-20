@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.Random;
 
-public class GameGui implements GameGuiInterface{
+public class GameGui implements GameGuiInterface, Runnable{
 
 	private int minionID;
 
@@ -50,6 +50,11 @@ public class GameGui implements GameGuiInterface{
 		drawMinion(minion.x, minion.y, minion.minionID);
 		drawScores(minion.userScores);
 
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		client.feedMinion(minionID);
 		closeGameWindow();
 	}
@@ -104,5 +109,10 @@ public class GameGui implements GameGuiInterface{
 	@Override
 	public boolean getWindowType() {
 		return loginOrGameWindow;
+	}
+
+	@Override
+	public void run() {
+
 	}
 }

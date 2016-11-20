@@ -15,11 +15,6 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	private String serverURL;
 	public String username;
 
-	// These two values are only used to test communication between server and client
-	private int minionID;
-	private int x;
-	private int y;
-
 	private GameGuiInterface gameGui;
 
 	private static GameServerInterface server;
@@ -35,19 +30,20 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		return this.username;
 	}
 
+    @Override
+    public void sendNotification(String notification) {
+        gameGui.drawNotification(notification);
+    }
+
 	/*
 	private void refreshMinion(int x, int y) {
 		gameGui.drawMinion(x, y, 1);
 	}*/
 
 	@Override
-	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) throws RemoteException, MalformedURLException, NotBoundException {
+	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) {
 
 		System.out.println();
-		// paint new minion
-		this.minionID = newID;
-        this.x = newX;
-        this.y = newY;
         gameGui.drawMinion(newX, newY, newID);
 		gameGui.drawScores(userScores);
 	}
@@ -88,13 +84,15 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 	@Override
 	public void feedMinion(int minionID) {
-        String notification;
+        //String notification;
         try {
-            if (server.checkMinion(minionID, this))
-                notification = "Nice, you got it!";
-            else
-                notification = "Sorry, somebody is faster. :( ";
-            gameGui.drawNotification(notification);
+            server.checkMinion(minionID, this);
+
+            //else
+            //notification = "Nice, you got it!";
+            //notification = "Sorry, somebody is faster. :( ";
+            //gameGui.drawNotification(notification);
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -109,10 +107,6 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			server =  (GameServerInterface) Naming.lookup("rmi://localhost/GameServer");
 
 			GameClient client = new GameClient("rmi://localhost/GameServer");
-
-			//Thread.sleep(1000);
-
-			//System.out.println(server.logout(client) ? "logout successful" : "logout failure");
 
 			System.exit(0);
 
