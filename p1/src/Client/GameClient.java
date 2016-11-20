@@ -3,8 +3,8 @@ package client;
 import java.rmi.*;
 import java.rmi.server.*;
 
-import GUI.GameGui;
-import GUI.GameGuiInterface;
+import gui.GameGui;
+import gui.GameGuiInterface;
 import server.GameServerInterface;
 import server.Minion;
 

@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 import java.util.Random;
 
 public class Number {

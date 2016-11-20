@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Image;
