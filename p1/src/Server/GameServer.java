@@ -26,7 +26,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		super();
 		//gl = new GameLogic();
 		// Initial the Score Mapping
-        userScores = new HashMap<GameClientInterface, Integer>();
+        userScores = new HashMap<>();
         // Produce the initial Minion Coordinate
 		random = new Random();
         x = random.nextInt();
@@ -37,7 +37,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
 	@Override
 	public void checkMinion(int minionID, GameClientInterface client) throws RemoteException {
-		System.out.println("Server: " + this.minionID + " Client: " + minionID);
 
 		if (this.minionID == minionID && !minionChanged) {
 			minionChanged = true;
@@ -55,7 +54,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 			client.sendNotification("Sorry, somebody is faster. :( ");
 	}
 
-	/**
+	/*
 	 * check whether the coordinate from client x, y is a valid click, could be optimize the distance algorithms.
 	 */
 	/*
@@ -98,11 +97,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 	}
 
 	private void notifyClients() throws MalformedURLException, NotBoundException {
-		Iterator<GameClientInterface> iterator = userScores.keySet().iterator();
 
-		while (iterator.hasNext()) {
+		for (GameClientInterface client : userScores.keySet()) {;
 			// Notify, if possible a listener
-			GameClientInterface client = iterator.next();
 			try {
 				client.minionChanged(minionID, x, y, userScores);
 			} catch (RemoteException re) {

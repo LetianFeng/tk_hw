@@ -25,6 +25,4 @@ public interface GameGuiInterface {
     void cleanScreen();
 
     void drawNotification(String notification);
-
-    boolean getWindowType();
 }

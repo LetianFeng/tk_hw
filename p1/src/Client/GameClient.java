@@ -1,6 +1,5 @@
 package Client;
 
-import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.util.*;
@@ -35,17 +34,12 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
         gameGui.drawNotification(notification);
     }
 
-	/*
-	private void refreshMinion(int x, int y) {
-		gameGui.drawMinion(x, y, 1);
-	}*/
-
 	@Override
 	public void minionChanged(int newID, int newX, int newY, Map<GameClientInterface, Integer> userScores) {
-
-		System.out.println();
+        gameGui.cleanScreen();
         gameGui.drawMinion(newX, newY, newID);
-		gameGui.drawScores(userScores);
+
+        gameGui.drawScores(userScores);
 	}
 
 	@Override
@@ -84,22 +78,15 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 	@Override
 	public void feedMinion(int minionID) {
-        //String notification;
         try {
             server.checkMinion(minionID, this);
-
-            //else
-            //notification = "Nice, you got it!";
-            //notification = "Sorry, somebody is faster. :( ";
-            //gameGui.drawNotification(notification);
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
 	}
 
-	public static void main(String args[]) {
+    public static void main(String args[]) {
 		System.out.println("Looking for game server");
 
 		try {

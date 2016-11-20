@@ -14,8 +14,6 @@ public class GameGui implements GameGuiInterface, Runnable{
 
 	private GameClientGuiInterface client;
 
-	private boolean loginOrGameWindow;
-
 	public GameGui(GameClientGuiInterface client) {
 		this.client = client;
 	}
@@ -23,7 +21,6 @@ public class GameGui implements GameGuiInterface, Runnable{
 	@Override
 	public void openLoginWindow() {
 		System.out.println("GUI: open login Window: ");
-		loginOrGameWindow = true;
 
 		Random random = new Random();
 		String username = Float.toString(random.nextFloat());
@@ -46,16 +43,17 @@ public class GameGui implements GameGuiInterface, Runnable{
 	@Override
 	public void openGameWindow(Minion minion) {
 		System.out.println("GUI: open game window:");
-		loginOrGameWindow = false;
 		drawMinion(minion.x, minion.y, minion.minionID);
 		drawScores(minion.userScores);
 
 		try {
-			Thread.sleep(1000);
+			for (int i=0; i<10; i++) {
+				Thread.sleep(1000);
+				client.feedMinion(minionID);
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		client.feedMinion(minionID);
 		closeGameWindow();
 	}
 
@@ -67,7 +65,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 
 	@Override
 	public void drawMinion(int x, int y, int minionId) {
-		System.out.println("GUI: recerve a new minion: x: " + x + ", y: " + y + ", ID: " + minionId);
+		System.out.println("GUI: receive a new minion: x: " + x + ", y: " + y + ", ID: " + minionId);
 		this.minionID = minionId;
 	}
 
@@ -75,40 +73,41 @@ public class GameGui implements GameGuiInterface, Runnable{
 	public void drawScores(Map<GameClientInterface, Integer> userScores){
 
 		System.out.println("GUI: Prepare for the Scores:");
-		int gamerOrder = 0;
-		// TODO need to sort entries
-		for (Map.Entry<GameClientInterface, Integer> entry : userScores.entrySet()) {
-			GameClientInterface gamer = entry.getKey();
-			int score = entry.getValue();
-			// paint the score on screen
-			//System.out.print(gamer.getUsername()+": ");
-			//System.out.println(score);
+		int gamerOrder = 1;
+
+		// sort scores and draw it
+		int userScoresSize = userScores.size();
+		for (int i=0; i<userScoresSize; i++, gamerOrder ++) {
+			Map.Entry<GameClientInterface, Integer> highestScore = null;
+
+			for (Map.Entry<GameClientInterface, Integer> entry : userScores.entrySet()) {
+				if (highestScore == null)
+					highestScore = entry;
+				highestScore = (highestScore.getValue() > entry.getValue()) ? highestScore : entry;
+			}
+			userScores.remove(highestScore.getKey());
+
+			GameClientInterface gamer = highestScore.getKey();
 			try {
-				drawScore(gamer.getUsername(), score, gamerOrder);
+				drawScore(gamer.getUsername(), highestScore.getValue(), gamerOrder);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
-			gamerOrder += 1;
 		}
 	}
 
-	public void drawScore(String username, int score, int gamerOrder) {
+	private void drawScore(String username, int score, int gamerOrder) {
 		System.out.println("GUI: username: " + username + ", score: " + score + ", game oder: " + gamerOrder);
 	}
 
 	@Override
 	public void cleanScreen() {
-
+		System.out.println();
 	}
 
 	@Override
 	public void drawNotification(String notification) {
 		System.out.println("GUI: " + notification);
-	}
-
-	@Override
-	public boolean getWindowType() {
-		return loginOrGameWindow;
 	}
 
 	@Override
