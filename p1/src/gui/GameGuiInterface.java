@@ -1,7 +1,7 @@
 package GUI;
 
-import Client.GameClientInterface;
-import Server.Minion;
+import client.GameClientInterface;
+import server.Minion;
 
 import java.util.Map;
 

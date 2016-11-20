@@ -1,8 +1,8 @@
-package Client;
+package client;
 
 import java.net.MalformedURLException;
 import java.rmi.*;
-import Server.Minion;
+import server.Minion;
 
 public interface GameClientInterface extends Remote {
 

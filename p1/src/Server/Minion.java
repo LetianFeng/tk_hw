@@ -1,6 +1,6 @@
-package Server;
+package server;
 
-import Client.GameClientInterface;
+import client.GameClientInterface;
 
 import java.io.Serializable;
 import java.util.Map;

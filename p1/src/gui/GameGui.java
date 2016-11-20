@@ -1,8 +1,8 @@
 package GUI;
 
-import Client.GameClientGuiInterface;
-import Client.GameClientInterface;
-import Server.Minion;
+import client.GameClientGuiInterface;
+import client.GameClientInterface;
+import server.Minion;
 
 import java.rmi.RemoteException;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package Server;
+package server;
 
 import java.net.MalformedURLException;
 import java.rmi.*;
@@ -6,7 +6,7 @@ import java.rmi.server.*;
 import java.rmi.registry.*;
 import java.util.*;
 
-import Client.GameClientInterface;
+import client.GameClientInterface;
 
 public class GameServer extends UnicastRemoteObject implements GameServerInterface {
 

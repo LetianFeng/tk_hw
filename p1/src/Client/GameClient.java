@@ -1,12 +1,12 @@
-package Client;
+package client;
 
 import java.rmi.*;
 import java.rmi.server.*;
 
 import GUI.GameGui;
 import GUI.GameGuiInterface;
-import Server.GameServerInterface;
-import Server.Minion;
+import server.GameServerInterface;
+import server.Minion;
 
 public class GameClient extends UnicastRemoteObject implements GameClientInterface, GameClientGuiInterface{
 
