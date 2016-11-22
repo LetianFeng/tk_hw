@@ -1,5 +1,6 @@
 package client;
 
+import java.util.UUID;
 
 public interface GameClientGuiInterface {
 
@@ -7,6 +8,6 @@ public interface GameClientGuiInterface {
 
     boolean logout();
 
-    void feedMinion(int minionID);
+    void feedMinion(UUID minionID);
 
 }
