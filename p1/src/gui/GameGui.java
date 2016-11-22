@@ -2,13 +2,20 @@ package gui;
 
 import client.GameClientGuiInterface;
 import client.GameClientInterface;
-import server.Minion;
+import game.Minion;
+import game.Player;
+import game.Room;
+import game.Util;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -20,6 +27,8 @@ public class GameGui implements GameGuiInterface, Runnable{
 	private LoginFrame loginFrame;
 	private GameFrame gameFrame;
 	private int listX, listY, minionX, minionY;
+	private HashMap<UUID, JLabel> minionMap = new HashMap<UUID,JLabel>();
+	private Vector<JLabel> playerVector = new Vector<JLabel>();
 
 	public GameGui(GameClientGuiInterface client) {
 		this.client = client;
@@ -55,29 +64,43 @@ public class GameGui implements GameGuiInterface, Runnable{
 		System.out.println();
 		*/
 	}
-
+/*
 	@Override
 	public void openGameWindow(Minion minion) {
 		gameFrame = new GameFrame(client);
 		gameFrame.setVisible(true);
 		drawMinion(minion.x, minion.y, minion.minionID);
         drawScores(minion.userScores);
-		/*
-		System.out.println("GUI: open game window:");
-		drawMinion(minion.x, minion.y, minion.minionID);
-		drawScores(minion.userScores);
-
-		// click minion for 10 times
-		try {
-			for (int i=0; i<10; i++) {
-				Thread.sleep(1000);
-				client.feedMinion(minionID);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		*/
 		//closeGameWindow();
+	}
+*/
+	
+	public void openGameWindow(Room room) {
+		gameFrame = new GameFrame(client);
+		gameFrame.setVisible(true);
+		 Iterator it = room.getMinions().entrySet().iterator();
+	        while (it.hasNext()) {
+	            Map.Entry<UUID, Minion> pair = (Map.Entry<UUID, Minion>)it.next();
+	            Minion minion_t = pair.getValue();
+	            final JLabel minionLabel = new JLabel(minion_t.getMinionID().toString());
+	            minionLabel.addMouseListener(new MouseAdapter() {
+	                public void mouseClicked(MouseEvent e) {
+	                    client.feedMinion(minion_t.getMinionID());
+	                    //minionLabel.setVisible(false);
+	                }
+	            }
+	            );
+	            ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("Minion-Dancing-icon-small.png"));
+	            minionLabel.setIcon(imgIcon);
+	            minionLabel.setBounds((int)minion_t.getX(), (int)minion_t.getY(), 128, 134);
+	            minionMap.put(minion_t.getMinionID(), minionLabel);
+	            drawMinion(minion_t.getX(), minion_t.getY(), minion_t.getMinionID());
+	        }
+	        /*for (Minion minion : room.getMinions()) {
+	            drawMinion(minion.getX(), minion.getY(), minion.getMinionID());    
+	        }*/
+	         
+	        drawScores(room.getPlayers());
 	}
 
 	@Override
@@ -88,48 +111,59 @@ public class GameGui implements GameGuiInterface, Runnable{
 	}
 
 	@Override
-	public void drawMinion(int x, int y, int minionId) {
+	public void drawMinion(float x, float y, UUID minionId) {
 		System.out.println("GUI: receive a new minion: x: " + x + ", y: " + y + ", ID: " + minionId);
 		//this.minionID = minionId;
-		final String id = Integer.toString(minionId);
-		final JLabel minionLabel = new JLabel(id);
-		minionLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				client.feedMinion(Integer.valueOf(id));
-				minionLabel.setVisible(false);
-			}
-		}
-		);
-		ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("Minion-Dancing-icon-small.png"));
-		minionLabel.setIcon(imgIcon);
-		minionLabel.setBounds(x, y, 128, 134);
-		gameFrame.getContentPane().add(minionLabel);
+		final String id = minionId.toString();
+		//final JLabel minionLabel = new JLabel(id);
+		final UUID minionUUID = minionId;
+		//if(minionMap.size() == 3) {
+			JLabel minionLabel = minionMap.get(minionId);
+			gameFrame.getContentPane().remove(minionLabel);
+		
+			/*
+			minionLabel.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					client.feedMinion(UUID.fromString(id));
+					minionLabel.setVisible(false);
+					minionMap.remove(minionUUID);
+				}
+			});
+			*/
+			
+			//ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("Minion-Dancing-icon-small.png"));
+			//minionLabel.setIcon(imgIcon);
+			minionLabel.setBounds((int)x, (int)y, 128, 134);
+			gameFrame.getContentPane().add(minionLabel);
+		//}
+		//else {
+			//minionMap.put(minionId, minionLabel);
+			minionLabel.setBounds((int)x, (int)y, 128, 134);
+			gameFrame.getContentPane().add(minionLabel);
+		//}
 	}
 
 	@Override
-	public void drawScores(Map<GameClientInterface, Integer> userScores){
+	public void drawScores(Map<String, Player> players) {
 
-		System.out.println("GUI: Prepare for the Scores:");
-		int gamerOrder = 1;
-
-		// sort scores and draw it
-		int userScoresSize = userScores.size();
-		for (int i=0; i<userScoresSize; i++, gamerOrder ++) {
-			Map.Entry<GameClientInterface, Integer> highestScore = null;
-
-			for (Map.Entry<GameClientInterface, Integer> entry : userScores.entrySet()) {
-				if (highestScore == null)
-					highestScore = entry;
-				highestScore = (highestScore.getValue() > entry.getValue()) ? highestScore : entry;
+		System.out.println("GUI: Prepare for the Scores(" + players.size() + "):");
+		Map<String, Player> players_t = Util.sortPlayerByScoreDesc(players);
+		
+		try {
+			int gamerOrder = 1;
+			Iterator it = players_t.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, Player> pair = (Map.Entry<String, Player>)it.next();
+				Player player_t = pair.getValue();
+				drawScore(player_t.getName(), player_t.getScore(), gamerOrder);
+				gamerOrder++;
 			}
-			userScores.remove(highestScore.getKey());
-
-			GameClientInterface gamer = highestScore.getKey();
-			try {
-				drawScore(gamer.getUsername(), highestScore.getValue(), gamerOrder);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+			/*for (Player player : players) {
+				drawScore(player.getName(), player.getScore(), gamerOrder);
+				gamerOrder++;
+			}*/
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -152,7 +186,9 @@ public class GameGui implements GameGuiInterface, Runnable{
 		System.out.printf("lblScore added"+ lbScore.getText()+"\n");
 		listX = 10;
 		listY = listY + 20;
-		
+		playerVector.add(lbGamerOrder);
+		playerVector.add(lbPlayer);
+		playerVector.add(lbScore);
 		gameFrame.revalidate();
 		gameFrame.repaint();
 	}
@@ -162,7 +198,11 @@ public class GameGui implements GameGuiInterface, Runnable{
 		System.out.println("clean screen");
 		listX = listY = 10;
 		minionX = minionY = 0;
-		gameFrame.getContentPane().removeAll();
+		Iterator<JLabel> it = playerVector.iterator();
+		while(it.hasNext()) {
+			JLabel tempLabel = it.next();
+			gameFrame.getContentPane().remove(tempLabel);
+		}
 	}
 
 	@Override
@@ -174,5 +214,10 @@ public class GameGui implements GameGuiInterface, Runnable{
 	@Override
 	public void run() {
 
+	}
+	
+	@Override
+	public GameFrame getGameFrame() {
+		return this.gameFrame;
 	}
 }

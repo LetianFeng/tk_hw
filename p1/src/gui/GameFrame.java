@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import client.GameClientGuiInterface;
-import server.Minion;
 
 public class GameFrame extends JFrame{
 	//components
