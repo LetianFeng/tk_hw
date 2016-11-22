@@ -65,10 +65,14 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	}
 
 	@Override
-	public boolean logout() {
+	public boolean logout() {//cz
         try {
             boolean logoutSuccess = server.logout(this);
             System.out.println(logoutSuccess ? "logout successful" : "logout failure");
+            if(logoutSuccess) {
+	            System.out.println("system out");
+	            System.exit(0);
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
