@@ -7,5 +7,8 @@ p1/src/.classpath
 *.swp
 *.class
 *.project
+bin/
+.classpath
+p1/.gitignore
 
 .DS_Store
