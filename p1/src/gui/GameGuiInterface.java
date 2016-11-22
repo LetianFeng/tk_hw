@@ -1,12 +1,9 @@
 package gui;
 
 import client.GameClientInterface;
-import game.Room;
-import game.Player;
+import server.Minion;
 
 import java.util.Map;
-import java.util.UUID;
-import java.util.LinkedList;
 
 public interface GameGuiInterface {
 
@@ -17,13 +14,13 @@ public interface GameGuiInterface {
 
     void closeLoginWindow();
 
-    void openGameWindow(Room room);
+    void openGameWindow(Minion minion);
 
     void closeGameWindow();
 
-    void drawMinion(float x, float y, UUID minionID);
+    void drawMinion(int x, int y, int minionID);
 
-    void drawScores(Map<String, Player> players);
+    void drawScores(Map<GameClientInterface, Integer> userScores);
 
     void cleanScreen();
 
