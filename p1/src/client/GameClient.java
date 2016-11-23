@@ -11,24 +11,22 @@ import game.*;
 
 public class GameClient extends UnicastRemoteObject implements GameClientInterface, GameClientGuiInterface{
 
-	//private String serverURL;
-	//public String username;
+	private static final long serialVersionUID = 3088746649237351506L;
+
 	public Room local_room = new Room(UUID.randomUUID());
-
 	private GameGuiInterface gameGui;
-
 	private static GameServerInterface server;
 
-	private GameClient(String url) throws RemoteException {
+	private GameClient() throws RemoteException {
 		super();
-		//serverURL = url;
-		gameGui = new GameGui(this);
-		gameGui.openLoginWindow();
+		try{
+			gameGui = new GameGui(this);
+			gameGui.openLoginWindow();
+		}catch(Exception e) {
+			server.logout(this, this.local_room.getID());
+			e.printStackTrace();
+		}
 	}
-
-	/*public String getUsername() {
-		return this.username;
-	}*/
 
     @Override
     public void sendNotification(String notification) {
@@ -39,17 +37,22 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	public void minionChanged(Minion minion, Player player) {
 		if(gameGui.getGameFrame() != null) {
 	        gameGui.cleanScreen();
-	        if (minion == null && player != null) {
-	        	// new player has entered the room
+	        if (minion == null && player != null) { 	
+	        	// player has left the room
 	        	if (this.local_room.getPlayers().containsKey(player.getName())) {
 	        		this.local_room.getPlayers().remove(player.getName());
-	        		gameGui.drawNotification("Player " + player.getName() + " has left the room.");
-	        	} else {
+	        		gameGui.drawNotification("Player " + player.getName() 
+	        										   + " has left the room.");
+	        	} 
+	        	// new play has entered the room
+	        	else {
 	        		this.local_room.getPlayers().put(player.getName(), player);
-	        		gameGui.drawNotification("Player " + player.getName() + " has joined the room.");
+	        		gameGui.drawNotification("Player " + player.getName() 
+	        									       + " has joined the room.");
 	        	}
-	        } else if (minion != null && player != null){
-	        	// a player has fed minion
+	        } 
+	        // a play has fed a minion
+	        else if (minion != null && player != null){
 	        	gameGui.drawMinion(minion.getX(), minion.getY(), minion.getMinionID());
 	        	Player player_t = local_room.getPlayers().get(player.getName());
 	        	player_t.setScore(player_t.getScore() + 1);
@@ -62,7 +65,6 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	public boolean login(String username) {
 
 		try {
-			//this.username = username;
             Room room = server.login(this, username, null);
 			if (room != null) {
 				System.out.println("Client: Login succeed! Entered room " + room.getID());
@@ -72,10 +74,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 				gameGui.closeLoginWindow();
 				gameGui.openGameWindow(this.local_room);
 				return true;
-			} 
-			
-			else {
-				//this.username = null;
+			} else {
 				System.out.println("Username already exist, try another!");
 				return false;
 			}
@@ -84,8 +83,6 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			System.out.println("Client meets problem with connecting server!");
 			return false;
 		}
-		
-		//return true;
 	}
 
 	@Override
@@ -107,20 +104,22 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
 	}
 
     public static void main(String args[]) {
+    	
 		System.out.println("Looking for game server");
-
 		try {
-
-			server =  (GameServerInterface) Naming.lookup("rmi://localhost/GameServer");
-
-			GameClient client = new GameClient("rmi://localhost/GameServer");
-
-			//System.exit(0);
-
+			String hostname = Util.defaultHost;
+			String servername = Util.defaultHost;
+			if (args.length > 1){
+	            servername = args[0];
+	            hostname = args[1];
+	        }
+			System.setProperty("java.rmi.server.hostname", hostname);
+			server =  (GameServerInterface) Naming.lookup("rmi://" + servername 
+																   + "/GameServer");
+			GameClient client = new GameClient();
 		} catch (NotBoundException nbe) {
 			System.out.println("No game server available");
 		} catch (RemoteException re) {

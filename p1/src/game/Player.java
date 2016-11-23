@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public class Player implements Serializable{
 	
+	private static final long serialVersionUID = 6005600696136154045L;
+	
 	private UUID userID;
 	private String username;
 	private int score;

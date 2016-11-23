@@ -1,17 +1,17 @@
 package game;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Room implements Serializable {
 	
+	private static final long serialVersionUID = 8283459995054988989L;
+	
 	private UUID roomID;
 	private Map<UUID, Minion> minions;
 	private Map<String, Player> players;
-	private String RMIUrl;
 	
 	public Room() {
 		this.roomID = UUID.randomUUID();
@@ -21,14 +21,12 @@ public class Room implements Serializable {
 			Minion m = Util.createNewMinion();
 			minions.put(m.getMinionID(), m);
 		}
-		this.RMIUrl = Util.defaultRMI;
 	}
 	
 	public Room(UUID roomID) {
 		this.roomID = (roomID == null) ? UUID.randomUUID() : roomID;
 		this.players = new HashMap<String, Player>();
 		this.minions = new HashMap<UUID, Minion>();
-		this.RMIUrl = Util.defaultRMI;
 	}
 	
 	public UUID getID() {
