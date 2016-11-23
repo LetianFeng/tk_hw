@@ -72,8 +72,8 @@ public class GameGui implements GameGuiInterface, Runnable{
 	public void drawMinion(float x, float y, UUID minionId) {
 		JLabel minionLabel = minionMap.get(minionId);
 		gameFrame.getContentPane().remove(minionLabel);
-		minionLabel.setBounds((int)((x+0.5)*0.66*(Constant.gameFrameLength-300)), 
-				(int)(y*(Constant.gameFrameWidth - 100)), Constant.minionLabelLength, Constant.minionLabelWidth);
+		minionLabel.setBounds((int)((x+0.5)*0.66*(Constant.gameFrameWidth-300)), 
+				(int)(y*(Constant.gameFrameHeight - 100)), Constant.minionLabelWidth, Constant.minionLabelHeight);
 		System.out.printf("x is "+x+" y is "+y);
 		gameFrame.getContentPane().add(minionLabel);
 	}
@@ -96,13 +96,13 @@ public class GameGui implements GameGuiInterface, Runnable{
 	}
 
 	private void drawScore(String username, int score, int gamerOrder) {
-		JLabel lbGamerOrder = createLabel(Integer.toString(gamerOrder), listX, listY, 10,Constant.messageLabelWidth);
+		JLabel lbGamerOrder = createLabel(Integer.toString(gamerOrder), listX, listY, 10,Constant.messageLabelHeight);
 		gameFrame.getContentPane().add(lbGamerOrder);
 		listX = listX + 20;
-		JLabel lbPlayer = createLabel(username+": ", listX, listY, 100, Constant.messageLabelWidth);
+		JLabel lbPlayer = createLabel(username+": ", listX, listY, 100, Constant.messageLabelHeight);
 		gameFrame.getContentPane().add(lbPlayer);
 		listX = listX + 100;
-		JLabel lbScore = createLabel(Integer.toString(score), listX, listY, 20, Constant.messageLabelWidth);
+		JLabel lbScore = createLabel(Integer.toString(score), listX, listY, 20, Constant.messageLabelHeight);
 		gameFrame.getContentPane().add(lbScore);
 		listX = 30;
 		listY = listY + 20;
@@ -129,13 +129,13 @@ public class GameGui implements GameGuiInterface, Runnable{
 		//new MessageFrame(notification);
 		
 		if(this.gameFrame != null) {
-			JLabel notificationLabel = createLabel(notification, 150, 150, Constant.notificationLabelLength,
-					Constant.notificationLabelWidth);
+			JLabel notificationLabel = createLabel(notification, 150, 150, Constant.notificationLabelWidth,
+					Constant.notificationLabelHeight);
 			int notificationNumber = notificationVector.size();
 			if(notificationNumber < Constant.maxNotificationNumber) {
 				notificationLabel.setBounds(Constant.notificationStartX, Constant.notificationStartY+
-						Constant.notificationLabelWidth*notificationNumber, 
-						Constant.notificationLabelLength,Constant.notificationLabelWidth);
+						Constant.notificationLabelHeight*notificationNumber, 
+						Constant.notificationLabelWidth,Constant.notificationLabelHeight);
 				notificationVector.add(notificationLabel);
 				gameFrame.getContentPane().add(notificationLabel);
 			}
@@ -147,8 +147,8 @@ public class GameGui implements GameGuiInterface, Runnable{
 				notificationVector.add(notificationLabel);
 				for(int i = 0; i < notificationVector.size(); i++) {
 					notificationVector.get(i).setBounds(Constant.notificationStartX, Constant.notificationStartY+
-							Constant.notificationLabelWidth*i, Constant.notificationLabelLength,
-							Constant.notificationLabelWidth);
+							Constant.notificationLabelWidth*i, Constant.notificationLabelWidth,
+							Constant.notificationLabelHeight);
 				}
 				gameFrame.revalidate();
 				gameFrame.repaint();
@@ -179,7 +179,7 @@ public class GameGui implements GameGuiInterface, Runnable{
         );
 		ImageIcon imgIcon = new ImageIcon(this.getClass().getResource(Constant.minionIconName));
         minionLabel.setIcon(imgIcon);
-        minionLabel.setBounds(x, y, Constant.minionLabelLength, Constant.minionLabelWidth);
+        minionLabel.setBounds(x, y, Constant.minionLabelWidth, Constant.minionLabelHeight);
         //minionMap.put(minionId, minionLabel);
         return minionLabel;
 	}

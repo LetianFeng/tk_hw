@@ -16,13 +16,13 @@ public class MessageFrame extends JFrame{
 	
 	public void initialize(String message) {
 		this.setName(message);
-		this.setBounds(Constant.messageFrameX, Constant.messageFrameY, Constant.messageFrameLength, Constant.messageFrameWidth);
+		this.setBounds(Constant.messageFrameX, Constant.messageFrameY, Constant.messageFrameWidth, Constant.messageFrameHeight);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		System.out.printf("mesage label is: "+message +"\n");
 		JLabel notifyLabel = new JLabel(message);
-		notifyLabel.setBounds(Constant.messageLabelX, Constant.messageLabelY, Constant.messageLabeLength, Constant.messageLabelWidth);
+		notifyLabel.setBounds(Constant.messageLabelX, Constant.messageLabelY, Constant.messageLabeWidth, Constant.messageLabelHeight);
 		
 		JButton btn = new JButton("OK");
 		btn.setForeground(Color.BLACK);

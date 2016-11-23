@@ -32,7 +32,7 @@ public class GameFrame extends JFrame{
 		}
 		
 		protected void initialize() {
-			this.setBounds(Constant.gameFrameX, Constant.gameFrameY, Constant.gameFrameLength, Constant.gameFrameWidth);
+			this.setBounds(Constant.gameFrameX, Constant.gameFrameY, Constant.gameFrameWidth, Constant.gameFrameHeight);
 			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			Toolkit toolkit = Toolkit.getDefaultToolkit();
 
