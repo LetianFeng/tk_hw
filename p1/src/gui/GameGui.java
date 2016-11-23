@@ -169,7 +169,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 		return this.gameFrame;
 	}
 	
-	private JLabel createLabel(UUID minionId, int x, int y) {
+	private JLabel createLabel(final UUID minionId, int x, int y) {
 		JLabel minionLabel = new JLabel(minionId.toString());
 		minionLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
