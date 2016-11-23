@@ -219,10 +219,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		System.out.println("Loading game server service");
 
 		try {
-			System.setProperty("java.rmi.server.hostname","192.168.0.201");
+			System.setProperty("java.rmi.server.hostname","127.0.0.1");
 			LocateRegistry.createRegistry(1099);
 			GameServer gameServer = new GameServer();
-			Naming.rebind("rmi://192.168.0.201/GameServer", gameServer);
+			Naming.rebind("rmi://localhost/GameServer", gameServer);
 		} catch (RemoteException re) {
 			System.err.println("Remote Error - " + re);
 		} catch (Exception e) {

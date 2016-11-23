@@ -32,11 +32,12 @@ public class Util {
 		float coord_y = randomCoord();
 		minion.setX(coord_x);
 		minion.setY(coord_y);
+		System.out.println("New coordinates generated at " + coord_x + " " + coord_y);
 	}
 	
 	public static float randomCoord() {
 		 Random rand = new Random();
-		 return rand.nextFloat()*200;
+		 return rand.nextFloat();
 	}
 	
 	public static Minion getMinionInRoom(UUID minionID, UUID roomID) {

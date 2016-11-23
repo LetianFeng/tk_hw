@@ -109,7 +109,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 
 		try {
 
-			server =  (GameServerInterface) Naming.lookup("rmi://192.168.0.201/GameServer");
+			server =  (GameServerInterface) Naming.lookup("rmi://localhost/GameServer");
 
 			GameClient client = new GameClient("rmi://localhost/GameServer");
 

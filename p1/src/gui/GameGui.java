@@ -92,7 +92,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 	            );
 	            ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("Minion-Dancing-icon-small.png"));
 	            minionLabel.setIcon(imgIcon);
-	            minionLabel.setBounds((int)minion_t.getX(), (int)minion_t.getY(), 128, 134);
+	            minionLabel.setBounds((int)(minion_t.getX()*(gameFrame.getWidth() - 128)), (int)(minion_t.getY()*(gameFrame.getHeight() - 134)), 128, 134);
 	            minionMap.put(minion_t.getMinionID(), minionLabel);
 	            drawMinion(minion_t.getX(), minion_t.getY(), minion_t.getMinionID());
 	        }
@@ -133,13 +133,13 @@ public class GameGui implements GameGuiInterface, Runnable{
 			
 			//ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("Minion-Dancing-icon-small.png"));
 			//minionLabel.setIcon(imgIcon);
-			minionLabel.setBounds((int)x, (int)y, 128, 134);
+			minionLabel.setBounds((int)(x*(gameFrame.getWidth() - 128)), (int)(y*(gameFrame.getHeight() - 134)), 128, 134);
 			gameFrame.getContentPane().add(minionLabel);
 		//}
 		//else {
 			//minionMap.put(minionId, minionLabel);
-			minionLabel.setBounds((int)x, (int)y, 128, 134);
-			gameFrame.getContentPane().add(minionLabel);
+			//minionLabel.setBounds((int)x, (int)y, 128, 134);
+			//gameFrame.getContentPane().add(minionLabel);
 		//}
 	}
 
@@ -208,7 +208,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 	@Override
 	public void drawNotification(String notification) {
 		System.out.println("GUI: " + notification);
-		MessageFrame notifyFrame = new MessageFrame(notification);
+		//MessageFrame notifyFrame = new MessageFrame(notification);
 	}
 
 	@Override
