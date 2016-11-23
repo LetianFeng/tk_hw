@@ -1,0 +1,38 @@
+Task 1 
+
+A monitor is a module that guards a code block for thread safety and data integrity. A thread must acquire the lock from monitor before accessing the code block and release it when done. Other thread will not be able to acquire the lock before it is released. By this, monitor prevents the protected code block being accessed simultaneously by multiple threads such that it avoids concurrency problems like race condition.
+
+
+Task 2
+
+Access: Yes. We are able to invoke remote procedures as if we are calling a local method. 
+
+Location: Yes. Remote procedures are accessed through client stub such that there is no need to care about where the server is hosted as long as a connection is available.
+
+Concurrency: No. RMI doesn't handle concurrency issue out-of-the-box. Any access to a remote object will not block it for further access and we have to take care of thread safety by our own.
+
+Replication: No. RMI doesn't concern data replication.
+
+Failure: No. RMI concerns only two ends of a connection which means, if server or client fails, the RMI will fail.
+
+Mobility: No. RMI connection is established through binding between client and server stubs. If the IP addresses are changed, the binding will break and the RMI connection is lost. 
+
+Performance: Probably no. Since RMI involves message passing via a network, local and remote operation will differ depending on connection quality. Overhead is also inevitable during message passing and processing. However, performance improvements are possible such as minimizing message size and adopting appropriate serialization method.
+
+Scaling: No. RMI requires serialization which could be costly in terms of time and resource. In addition, only JVM machines are supported therefore impose a constraint on system.
+
+
+Task 3
+
+Unit(ms)
+t_cli_arg = 3
+t_cli_marshal + t_cli_demarshal = 1
+t_cli_send = t_cli_rec = 0.4
+t_ser_process = 10
+t_ser_marshal + t_ser_demarshal = 1
+t_ser_send = t_ser_rec = 0.4
+t_net = 3.5
+
+Single Thread: (t_cli_arg + t_cli_marshal + t_cli_send + t_net + t_ser_rec + t_ser_demarshal + t_ser_process + t_ser_marshal + t_ser_send + t_net + t_cli_rec + t_cli_demarshal) * 2 = 47.2ms
+
+Two Threads: t_cli_arg + t_cli_marshal + t_cli_send + t_net + (t_ser_rec + t_ser_demarshal + t_ser_process + t_ser_marshal + t_ser_send) * 2 + t_net + t_cli_rec + t_cli_demarshal = 35.4ms
