@@ -22,8 +22,13 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	private GameClient(String url) throws RemoteException {
 		super();
 		//serverURL = url;
-		gameGui = new GameGui(this);
-		gameGui.openLoginWindow();
+		try{
+			gameGui = new GameGui(this);
+			gameGui.openLoginWindow();
+		}catch(Exception e) {
+			server.logout(this, this.local_room.getID());
+			e.printStackTrace();
+		}
 	}
 
 	/*public String getUsername() {
@@ -114,8 +119,8 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 		System.out.println("Looking for game server");
 
 		try {
-
-			server =  (GameServerInterface) Naming.lookup("rmi://localhost/GameServer");
+			//System.setProperty("java.rmi.server.hostname", "192.168.0.100");
+			server =  (GameServerInterface) Naming.lookup("rmi://192.168.0.102/GameServer");
 
 			GameClient client = new GameClient("rmi://localhost/GameServer");
 

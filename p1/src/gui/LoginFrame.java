@@ -33,7 +33,8 @@ public class LoginFrame extends JFrame{
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				client.logout();
+				//client.logout();
+				System.exit(0);
 			}
 		}
 		);
@@ -82,7 +83,8 @@ public class LoginFrame extends JFrame{
 		btnCancel.setBounds(222, 158, 105, 35);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				client.logout();
+				//client.logout();
+				System.exit(0);
 			}
 		});
 		this.getContentPane().add(btnCancel);

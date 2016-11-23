@@ -105,6 +105,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		}	
 		
 		if (!minion.getStatus()) {
+			try {
 			minion.setStatus(Util.minionIsBeingAccessed);
 			client.sendNotification("You got the minion with id: " + minion.getMinionID() 
 																   + ", at position (" 
@@ -115,12 +116,14 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 			Util.updateMinionPosition(minion);
 			Util.incrementPlayerScore(player.getName(), roomID, room_list);
 			
-			try {
+			
 				notifyClients(minion, player);
+				minion.setStatus(Util.minionIsAvailableForAccess);
 			} catch (MalformedURLException | NotBoundException e) {
+				minion.setStatus(Util.minionIsAvailableForAccess);
 				e.printStackTrace();
 			}
-			minion.setStatus(Util.minionIsAvailableForAccess);
+
 		} else {
 			client.sendNotification("Player " + player.getName() + " has a faster hand.");
 		}
@@ -161,6 +164,8 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		// if (index != -1) room = room_list.get(index);
 		
 		Room room = joinRoom(client, player, room_list.get(roomID));
+		
+		System.out.println("user " + player.getName() + " has logged in and entered room  " + room.getID().toString());
 		
 		try {
 			notifyClients(null, player);
@@ -217,6 +222,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 				client.minionChanged(minion, player);
 			} catch (RemoteException re) {
 				// Remove the listener
+				continue;
 			}
 		}
 	}
@@ -225,10 +231,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		System.out.println("Loading game server service");
 
 		try {
-			System.setProperty("java.rmi.server.hostname","localhost");
+			System.setProperty("java.rmi.server.hostname","192.168.0.100");
 			LocateRegistry.createRegistry(1099);
 			GameServer gameServer = new GameServer();
-			Naming.rebind("rmi://localhost/GameServer", gameServer);
+			Naming.rebind("rmi://192.168.0.100/GameServer", gameServer);
 		} catch (RemoteException re) {
 			System.err.println("Remote Error - " + re);
 		} catch (Exception e) {
