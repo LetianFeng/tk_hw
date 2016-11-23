@@ -28,7 +28,7 @@ public class GameFrame extends JFrame{
 		}
 		
 		protected void initialize() {
-			this.setBounds(100, 100, 650, 400);
+			this.setBounds(Constant.gameFrameX, Constant.gameFrameY, Constant.gameFrameLength, Constant.gameFrameWidth);
 			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {

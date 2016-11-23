@@ -29,7 +29,7 @@ public class LoginFrame extends JFrame{
 	
 	protected void initialize() {
 		this.setName("loginFrame");
-		this.setBounds(100, 100, 450, 300);
+		this.setBounds(Constant.loginFrameX, Constant.loginFrameY, Constant.loinFrameLength, Constant.loinFrameWidth);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -66,12 +66,7 @@ public class LoginFrame extends JFrame{
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String userName = textUsername.getText();
-				if(client.login(userName)) {
-					System.out.printf("username "+userName+" valid\n");
-					//loginFrameDispose();
-					//gameFrame.Gframe.setVisible(true);
-				}
-				else {
+				if(!client.login(userName)) {
 					String msg = "duplicate user name";
 					MessageFrame msgFrame = new MessageFrame(msg);
 					System.out.printf("username "+userName+" invalid\n");
@@ -87,15 +82,10 @@ public class LoginFrame extends JFrame{
 		btnCancel.setBounds(222, 158, 105, 35);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//to do close login window and shut down client
-				//System.exit(0);
 				client.logout();
 			}
 		});
 		this.getContentPane().add(btnCancel);
 		this.setVisible(true);
-	}
-	private void loginFrameDispose() {
-		this.dispose();
 	}
 }
