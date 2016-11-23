@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public class Minion implements Serializable{
 
+	private static final long serialVersionUID = -1164179147851424143L;
+	
 	private UUID minionID;
 	private float coord_x;
 	private float coord_y;

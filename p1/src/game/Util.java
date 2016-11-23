@@ -5,18 +5,16 @@ import java.util.UUID;
 import java.util.regex.*;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 public class Util {
 	
 	public static String texture = "/resource/minion-front.jpg";
-	public static String defaultRMI = "//localhost/GameServer";
+	public static String defaultHost = "localhost";
 	public static int numOfMinions = 3;
 	public static boolean minionIsBeingAccessed = true;
 	public static boolean minionIsAvailableForAccess = false;
@@ -54,10 +52,16 @@ public class Util {
 		 Pattern p = Pattern.compile("(^.*_)([0-9]+)");
 		 Matcher m = p.matcher(username);
 		 if (m.find()) {
-			 System.out.println("Resolved from " + username + " to " + username + (m.group(1) + (Integer.parseInt(m.group(2)) + 1)));
+			 System.out.println("Resolved from " + username 
+					 							 + " to " 
+					 							 + username 
+					 							 + (m.group(1) 
+					 							 + (Integer.parseInt(m.group(2)) + 1)));
 			 return resolveDuplicateName(m.group(1) + (Integer.parseInt(m.group(2)) + 1), players);
 		 } else {
-			 System.out.println("Resolved from " + username + " to " + username + "_1");
+			 System.out.println("Resolved from " + username 
+					 							 + " to " 
+					 							 + username + "_1");
 			 return resolveDuplicateName(username + "_1", players);
 		 }
 	}
@@ -69,8 +73,7 @@ public class Util {
 		player_t.setScore(player_t.getScore() + 1);
 	}
 	
-	public static Map<String, Player> sortPlayerByScoreDesc(Map<String, Player> unsortMap)
-    {
+	public static Map<String, Player> sortPlayerByScoreDesc(Map<String, Player> unsortMap) {
 
         List<Entry<String, Player>> list = new LinkedList<Entry<String, Player>>(unsortMap.entrySet());
 
@@ -99,5 +102,4 @@ public class Util {
 
         return sortedMap;
     }
-
 }
