@@ -54,7 +54,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		client.sendNotification("User with id: " 
 									+ player.getName()
 									+ " joined room "
-									+ r.getID());
+									);
 		
 		return r;
 	}
@@ -72,7 +72,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		Room room = room_list.get(roomID);
 		if (room == null) {
 			client.sendNotification("The room with id, " 
-										+ roomID 
 										+ " doesn't exist.");
 			return;
 		}
@@ -89,13 +88,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		if (!minion.getStatus()) {
 			try {
 				minion.setStatus(Util.minionIsBeingAccessed);
-				client.sendNotification("You got the minion with id: " 
-											+ minion.getMinionID() 
-										    + ", at position (" 
-											+ minion.getX()
-										    + ", "
-										    + minion.getY()
-										    + ")");
+				client.sendNotification("You got the minion" );
 				Util.updateMinionPosition(minion);
 				Util.incrementPlayerScore(player.getName(), roomID, room_list);
 				notifyClients(minion, player);

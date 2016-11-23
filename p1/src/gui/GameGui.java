@@ -32,7 +32,8 @@ public class GameGui implements GameGuiInterface, Runnable{
 
 	public GameGui(GameClientGuiInterface client) {
 		this.client = client;
-		listX = listY = 10;
+		listX = 30;
+		listY = 30;
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 	public void drawMinion(float x, float y, UUID minionId) {
 		JLabel minionLabel = minionMap.get(minionId);
 		gameFrame.getContentPane().remove(minionLabel);
-		minionLabel.setBounds((int)((x+0.5)*0.66*(Constant.gameFrameLength-900)), 
+		minionLabel.setBounds((int)((x+0.5)*0.66*(Constant.gameFrameLength-300)), 
 				(int)(y*(Constant.gameFrameWidth - 100)), Constant.minionLabelLength, Constant.minionLabelWidth);
 		System.out.printf("x is "+x+" y is "+y);
 		gameFrame.getContentPane().add(minionLabel);
@@ -98,12 +99,12 @@ public class GameGui implements GameGuiInterface, Runnable{
 		JLabel lbGamerOrder = createLabel(Integer.toString(gamerOrder), listX, listY, 10,Constant.messageLabelWidth);
 		gameFrame.getContentPane().add(lbGamerOrder);
 		listX = listX + 20;
-		JLabel lbPlayer = createLabel(username+": ", listX, listY, 60, Constant.messageLabelWidth);
+		JLabel lbPlayer = createLabel(username+": ", listX, listY, 100, Constant.messageLabelWidth);
 		gameFrame.getContentPane().add(lbPlayer);
 		listX = listX + 100;
 		JLabel lbScore = createLabel(Integer.toString(score), listX, listY, 20, Constant.messageLabelWidth);
 		gameFrame.getContentPane().add(lbScore);
-		listX = 10;
+		listX = 30;
 		listY = listY + 20;
 		playerVector.add(lbGamerOrder);
 		playerVector.add(lbPlayer);
@@ -115,7 +116,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 	@Override
 	public void cleanScreen() {
 		System.out.println("clean screen");
-		listX = listY = 10;
+		listX = listY = 30;
 		Iterator<JLabel> it = playerVector.iterator();
 		while(it.hasNext()) {
 			JLabel tempLabel = it.next();
@@ -168,7 +169,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 		return this.gameFrame;
 	}
 	
-	private JLabel createLabel(final UUID minionId, int x, int y) {
+	private JLabel createLabel(UUID minionId, int x, int y) {
 		JLabel minionLabel = new JLabel(minionId.toString());
 		minionLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
