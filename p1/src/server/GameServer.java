@@ -200,6 +200,12 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		System.out.println("user disconnected: " + player_list.get(client).getName());
 		//userScores.remove(client);
 		player_list.remove(client);
+		
+		try {
+			notifyClients(null, player);
+		} catch (MalformedURLException | NotBoundException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
@@ -219,7 +225,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		System.out.println("Loading game server service");
 
 		try {
-			System.setProperty("java.rmi.server.hostname","127.0.0.1");
+			System.setProperty("java.rmi.server.hostname","localhost");
 			LocateRegistry.createRegistry(1099);
 			GameServer gameServer = new GameServer();
 			Naming.rebind("rmi://localhost/GameServer", gameServer);

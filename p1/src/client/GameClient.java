@@ -41,7 +41,13 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 	        gameGui.cleanScreen();
 	        if (minion == null && player != null) {
 	        	// new player has entered the room
-	        	this.local_room.getPlayers().put(player.getName(), player);
+	        	if (this.local_room.getPlayers().containsKey(player.getName())) {
+	        		this.local_room.getPlayers().remove(player.getName());
+	        		gameGui.drawNotification("Player " + player.getName() + " has left the room.");
+	        	} else {
+	        		this.local_room.getPlayers().put(player.getName(), player);
+	        		gameGui.drawNotification("Player " + player.getName() + " has joined the room.");
+	        	}
 	        } else if (minion != null && player != null){
 	        	// a player has fed minion
 	        	gameGui.drawMinion(minion.getX(), minion.getY(), minion.getMinionID());

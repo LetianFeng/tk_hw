@@ -119,8 +119,9 @@ public class GameGui implements GameGuiInterface, Runnable{
 		final UUID minionUUID = minionId;
 		//if(minionMap.size() == 3) {
 			JLabel minionLabel = minionMap.get(minionId);
-			gameFrame.getContentPane().remove(minionLabel);
-		
+			//minionLabel.setIcon(new ImageIcon(this.getClass().getResource("Minion-Dancing-icon-small.png")));
+			//gameFrame.getContentPane().remove(minionLabel);
+			gameFrame.getContentPane().remove(new JLabel(minionId.toString()));
 			/*
 			minionLabel.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
