@@ -37,7 +37,7 @@ public class GameFrame extends JFrame{
 			Toolkit toolkit = Toolkit.getDefaultToolkit();
 
 			System.out.print(System.getProperty("user.dir"));
-		Image image = toolkit.getImage("p1/src/gui/bananas-icon.png");
+		Image image = toolkit.getImage("../src/gui/bananas-icon.png");
 		Point cursorHotSpot = new Point(16, 16);
 		Cursor c = toolkit.createCustomCursor(image ,cursorHotSpot, "img");
 
