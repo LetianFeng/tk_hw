@@ -1,0 +1,25 @@
+1. Monitor could encapsule the resource of memory (variables) in an protected space that are only accessable by the monitor self. All the operation (write or read) to this resource has to be actually handled by the monitor at last, so two or more access to this resource at the same time could be detected and prevented, when a earlier thread is already processing the resource, all the later thread will be blocked outside the resource. With this mechanism the race condition, which is dangerous and could lead to unexpected results, is impossible to occur.
+
+2. 
+
+1. access transparency, is available in Java RMI, because only with the name of object, all the remote methods could be called as same as local methods and don't be called specially.
+2. Location transparency, is not available by Java RMI, because the exact location (network address) has to be known when a remote object is accessed.
+
+3. Concurrency transparency
+ Several processes operate concurrently using shared resources without interference
+between them
+4. Replication transparency
+ Multiple instances of resources used ( reliability, performance) w/o knowledge of
+replicas by users & programmers
+5. Failure transparency
+ Concealment of faults, allowing users & programs to complete tasks despite HW/SW
+failure
+6. Mobility transparency
+ Movement of resources/clients w/o affecting users & programs
+7. Performance transparency
+ Local/remote op (exec, data access) don’t differ by orders of magnitude (most
+persistent problem!)
+ allows system to reconfigure to improve performance as loads vary
+8. Scaling transparency
+ Allows system/applications to expand in scale without change to system structure or
+application algorithms
