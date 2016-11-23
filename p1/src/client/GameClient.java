@@ -23,9 +23,9 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			gameGui = new GameGui(this);
 			gameGui.openLoginWindow();
 		}catch(Exception e) {
-			server.logout(this, this.local_room.getID());
 			e.printStackTrace();
 		}
+		server.logout(this, this.local_room.getID());
 	}
 
     @Override
@@ -120,6 +120,7 @@ public class GameClient extends UnicastRemoteObject implements GameClientInterfa
 			server =  (GameServerInterface) Naming.lookup("rmi://" + servername 
 																   + "/GameServer");
 			GameClient client = new GameClient();
+			
 		} catch (NotBoundException nbe) {
 			System.out.println("No game server available");
 		} catch (RemoteException re) {
