@@ -8,3 +8,5 @@ Executables are built into dist folder.
 1 command line argument is needed (server IP)
 2 command line arguments are needed (server IP, host IP)
 Order matters here.
+
+When no command line argument, server and client will both run on localhost by default.

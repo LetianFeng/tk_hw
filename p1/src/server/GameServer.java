@@ -51,10 +51,8 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 		
 		player_list.put(client, player);
 		r.getPlayers().put(player.getName(), player);
-		client.sendNotification("User with id: " 
-									+ player.getName()
-									+ " joined room "
-									);
+		client.sendNotification(player.getName()
+									+ ", welcome and start feeding minion now!");
 		
 		return r;
 	}

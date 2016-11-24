@@ -13,6 +13,8 @@ import javax.swing.*;
 import client.GameClientGuiInterface;
 
 public class LoginFrame extends JFrame{
+
+	private static final long serialVersionUID = -570396141388638298L;
 	//components
 	private JTextField textUsername;
     private JLabel lbUsername;
@@ -66,9 +68,9 @@ public class LoginFrame extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				String userName = textUsername.getText();
 				if(!client.login(userName)) {
-					String msg = "duplicate user name";
+					String msg = "Error connecting to the server.";
 					MessageFrame msgFrame = new MessageFrame(msg);
-					System.out.printf("username "+userName+" invalid\n");
+					System.out.println(msg);
 				}
 			}
 		});

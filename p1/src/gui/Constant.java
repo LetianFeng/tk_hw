@@ -1,8 +1,7 @@
 package gui;
 
 public class Constant {
-	//drawminion changed, mouse banana
-	//length of message label should be given
+
 	//login frame properties
 	final static int loginFrameX = 100;
 	final static int loginFrameY = 100;
@@ -29,7 +28,7 @@ public class Constant {
 	//message label properties
 	final static int messageLabeWidth = 300;
 	final static int messageLabelHeight = 15;
-	final static int messageLabelX = 80;
+	final static int messageLabelX = 50;
 	final static int messageLabelY = 20;
 	
 	//notification label properties

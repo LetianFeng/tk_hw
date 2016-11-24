@@ -1,12 +1,9 @@
 package gui;
 
-import client.GameClientInterface;
 import game.Room;
 import game.Player;
-
 import java.util.Map;
 import java.util.UUID;
-import java.util.LinkedList;
 
 public interface GameGuiInterface {
 

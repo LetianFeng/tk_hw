@@ -1,7 +1,6 @@
 package gui;
 
 import client.GameClientGuiInterface;
-import client.GameClientInterface;
 import game.Minion;
 import game.Player;
 import game.Room;
@@ -9,11 +8,9 @@ import game.Util;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -50,7 +47,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 	public void openGameWindow(Room room) {
 		gameFrame = new GameFrame(client);
 		gameFrame.setVisible(true);
-		 Iterator it = room.getMinions().entrySet().iterator();
+		 Iterator<Map.Entry<UUID, Minion>> it = room.getMinions().entrySet().iterator();
 	        while (it.hasNext()) {
 	            Map.Entry<UUID, Minion> pair = (Map.Entry<UUID, Minion>)it.next();
 	            Minion minion_t = pair.getValue();           
@@ -81,7 +78,7 @@ public class GameGui implements GameGuiInterface, Runnable{
 		Map<String, Player> players_t = Util.sortPlayerByScoreDesc(players);
 		try {
 			int gamerOrder = 1;
-			Iterator it = players_t.entrySet().iterator();
+			Iterator<Map.Entry<String, Player>> it = players_t.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, Player> pair = (Map.Entry<String, Player>)it.next();
 				Player player_t = pair.getValue();

@@ -12,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class MessageFrame extends JFrame{
+
+	private static final long serialVersionUID = -5551595662801733565L;
+
 	public MessageFrame(String message) {
 		initialize(message);
 	}
