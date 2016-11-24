@@ -65,7 +65,6 @@ public class GameGui implements GameGuiInterface, Runnable{
 	public void closeGameWindow() {
 		client.logout();
 		gameFrame.dispose();
-		System.out.println("GUI: close game window!");
 	}
 
 	@Override
@@ -74,7 +73,6 @@ public class GameGui implements GameGuiInterface, Runnable{
 		gameFrame.getContentPane().remove(minionLabel);
 		minionLabel.setBounds((int)((x+0.5)*0.66*(Constant.gameFrameWidth-300)), 
 				(int)(y*(Constant.gameFrameHeight - 100)), Constant.minionLabelWidth, Constant.minionLabelHeight);
-		System.out.printf("x is "+x+" y is "+y);
 		gameFrame.getContentPane().add(minionLabel);
 	}
 
@@ -115,7 +113,6 @@ public class GameGui implements GameGuiInterface, Runnable{
 
 	@Override
 	public void cleanScreen() {
-		System.out.println("clean screen");
 		listX = listY = 30;
 		Iterator<JLabel> it = playerVector.iterator();
 		while(it.hasNext()) {
@@ -146,8 +143,12 @@ public class GameGui implements GameGuiInterface, Runnable{
 				gameFrame.getContentPane().add(notificationLabel);
 				notificationVector.add(notificationLabel);
 				for(int i = 0; i < notificationVector.size(); i++) {
+					System.out.printf("full, i :\n"+i);
+					System.out.printf("x is :"+Constant.notificationStartX);
+					System.out.printf("y is :"+(Constant.notificationStartY+
+							Constant.notificationLabelWidth*i));
 					notificationVector.get(i).setBounds(Constant.notificationStartX, Constant.notificationStartY+
-							Constant.notificationLabelWidth*i, Constant.notificationLabelWidth,
+							Constant.notificationLabelHeight*i, Constant.notificationLabelWidth,
 							Constant.notificationLabelHeight);
 				}
 				gameFrame.revalidate();

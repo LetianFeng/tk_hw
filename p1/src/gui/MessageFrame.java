@@ -18,7 +18,7 @@ public class MessageFrame extends JFrame{
 	
 	public void initialize(String message) {
 		this.setName(message);
-		this.setBounds(Constant.messageFrameX, Constant.messageFrameY, Constant.messageFrameLength, Constant.messageFrameWidth);
+		this.setBounds(Constant.messageFrameX, Constant.messageFrameY, Constant.messageFrameWidth, Constant.messageFrameHeight);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -30,13 +30,13 @@ public class MessageFrame extends JFrame{
 		
 		System.out.printf("mesage label is: "+message +"\n");
 		JLabel notifyLabel = new JLabel(message);
-		notifyLabel.setBounds(Constant.messageLabelX, Constant.messageLabelY, Constant.messageLabeLength, Constant.messageLabelWidth);
+		notifyLabel.setBounds(Constant.messageLabelX, Constant.messageLabelY, Constant.messageLabeWidth, Constant.messageLabelHeight);
 		
 		JButton btn = new JButton("OK");
 		btn.setForeground(Color.BLACK);
 		btn.setBackground(Color.LIGHT_GRAY);
 		btn.setFont(new Font("Ebrima", Font.PLAIN, 12));
-		btn.setBounds(100, 100, 105, 35);
+		btn.setBounds(150, 100, 105, 35);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				disposeFrame();
