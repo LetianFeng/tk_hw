@@ -7,7 +7,7 @@
 bin/
 p1/out/
 p1/dist/
-p1/.idea/
+.idea/
 p1/.project
 p1/.gitignore
 p1/.classpath
