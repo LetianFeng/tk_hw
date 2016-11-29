@@ -8,6 +8,7 @@ import java.util.Map;
 public interface ClientGUIInterface {
 
     // search rooms according to the date range, change gui to room tab and call relevant methods for drawing
+    // if gui can simply construct Date objects for this parameter, be free to change them!
     void searchRooms(int startYear, int startMonth, int startDate, int endYear, int endMonth, int endDate);
 
     // change to next tab and draw services

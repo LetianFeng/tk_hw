@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
-public class layout {
+public class Layout {
 
 	private JFrame frame;
 	final static String BUTTONPANEL = "Travel date";
@@ -40,7 +40,7 @@ public class layout {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					layout window = new layout();
+					Layout window = new Layout();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +52,7 @@ public class layout {
 	/**
 	 * Create the application.
 	 */
-	public layout() {
+	public Layout() {
 		initialize();
 	}
 	
