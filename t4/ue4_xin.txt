@@ -1,0 +1,18 @@
+4.1
+
+
+4.2
+Public Cloud, Private Cloud, Community Cloud, Hybrid Cloud
+
+4.3
+Infrastructure as a Service, the cloud provider only provide the (virtual) hardware (and the basic operating system) for the user, the user has to build, manage and maintain the service platform and software by himself. It's flexible for users with different platform, but need more time to implement a service. e.g. Amazon EC2.
+
+Platform as a Service, the cloud provider directly provide a complete service platform (database, web-frontend) for the user, the user could implement a service quickly with existed framworks and doesn't need to manage the operating system and platform by himself, but could only use the platform which is offered by the cloud provider. e.g. Amazon Elastic Beanstalk.
+
+Software as a Service, the cloud provider has already integrated all the neccessary hardware and software for a type of service and provide a easy used interface (graphic user interface in browser) for the user, the user doesn't need to build and manage all the software any more, just change the content of material for the service, but could only use some specific softwares. e.g.
+
+4.4
+In GFS, chunkserver is the actually storage place for all the content of files (as the form of chunk). It need to provide the metadata of files to the master, so that the master could know which file is responsible by which chunkserver. Moreover, it also need to return the data of requested chunk to the client.
+
+4.5
+
