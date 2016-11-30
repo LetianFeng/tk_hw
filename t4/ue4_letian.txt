@@ -1,0 +1,25 @@
+4.1
+Cloud computing is a collection of resources and services provided by a remote provider over the Internet.
+Other than traditional local computing system, users don't need to worry about details to setup and maintain a computing system, such as costs of infrastructures, system reliability, flexibilty and plan for future, service provider will take over them.
+Users can DIY their demanded services without big upfront investment and could change their requirement rapidly.
+Provider pools different resources to serve multiple users and monitor the usage of resources to control and optimize efficiency and reliability.
+Moreover, there are much more types of services than traditional storage & computing, e.g. server, web application, data analysis.
+Example: Amazon EC2
+
+4.2
+
+
+4.3
+
+
+4.4
+Explain the role of chunkservers in the Google File System
+a) Storage for file chunks with size 64MB;
+b) Process read request from clients and send back corresponding chunk data;
+c) Receive data from client, send acknoledgement for received data to client;
+d) If chunkserver is primary, it receives write request from client, executes write commands, and forwards them to secondary chunkservers, after all secondaries replied, primary chunkserver replies to client that write action is fininshed;
+e) If chunkserver is secondary, it receive write request from primary chunkserver, executes write command and reply to the primary;
+f) Maintain consistent mutation order across replicas by identifying primary copy
+g) Multiple replications are stored in different chunkservers, so that if a failure happens, master could find a backup for file request from clients.
+
+4.5
