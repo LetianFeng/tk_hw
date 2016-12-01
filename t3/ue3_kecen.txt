@@ -1,0 +1,20 @@
+Task 1
+
+A monitor is a module that guards a code block for thread safety and data integrity. A thread must aquire the lock from monitor before accessing the code block and release it when done. Other thread will not be able to aquire the lock before it is released. By this, monitor prevents the protected code block being accessed simultaneously by multiple threads.
+
+Task 2
+
+Access: No. We are able to invoke remote procedures as if we are calling a local method. However, the difference is that we also need to handle RemoteException 
+Location: Yes. Remote procedures are accessed through client stub such that there is no need to care about where the server is hosted as long as a connection is available.
+Concurrency: No. RMI doesn't handle concurrency issue out-of-the-box. Any access to a remote object will not block it for further access.
+Replication: No. RMI doesn't concern data replication.
+Failure: No. RMI concerns only two ends of a connection which means, if server or client fails, the RPC will fail.
+Mobility: No. RMI connection is established through binding betwen client and server stubs. If server is moved to another IP address, the binding will break. However, it is not an issue for the client.
+Performance: It depends on actual implementation. Since RMI involves message passing via a network, local and remote operation will probably differ depending on connection quality. However, performance improvements are possible such as minimizing message size and adopting approapriate serialization method. 
+Scaling: No. RMI requires serialization which could be costly in terms of time and resource. In addition, only JVM machines are supported therefore impose a constraint on system.
+
+Task 3
+
+Single Thread: (t_cli_arg + t_cli_marshal + t_cli_send + t_net + t_ser_rec + t_ser_demarshal + t_ser_process + t_ser_marshal + t_ser_send + t_net + t_cli_rec + t_cli_demarshal) * 2 = 51.2ms
+
+Two Threads: t_cli_arg + t_cli_marshal + t_cli_send + t_net + (t_ser_rec + t_ser_demarshal + t_ser_process + t_ser_marshal + t_ser_send) * 2 + t_net + t_cli_rec + t_cli_demarshal = 38.4ms

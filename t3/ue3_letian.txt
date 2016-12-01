@@ -1,0 +1,22 @@
+1.1
+
+1.2
+Access transparentcy:
+Yes. After establishing the rmi server & client instances on the other side, both sides can invoke methods of a remote object as same as a method of a local object.
+Location transparentcy:
+No. IP address of server is needed for the connection set-up. 
+Concurrency transparentcy:
+No. RMI is only used to deal with the remote method invokation, concurrency is implemented with another java key-word "synchronized".
+Replication transparentcy:
+No. There is no choice to replicate a server with same ip-address, which is the only information client can get.
+Failure transparentcy:
+No. RMI has no ability to check consistency or sequence of transmitted data, also no mechanism for retransmision, so if failure happens, programs will be absolutely down. 
+Mobility transparentcy:
+No. If server changed to another ip address, the same change should be exactly configured by client side, otherwise client cannot be connected to the server any more. 
+Performance transparentcy:
+No. The performance of remote invokation strongly depends on network, if congestion happens in the network, remote operation will be much slower than local operation. In addition, rmi doesn't provides tools or programs for reconfiguring the system for different loads, so all remote operations consume same time-costs no matter how much their loads are.
+Scailing transparentcy:
+No. 
+1.3
+
+12921430
