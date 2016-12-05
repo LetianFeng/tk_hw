@@ -1,6 +1,7 @@
 package guiapperance;
 
 import java.awt.EventQueue;
+import javax.swing.JOptionPane;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,7 @@ public class layout {
 	public int servicetablerow = 0;
 	public DefaultTableModel model;
 	public JScrollPane scrollPane;
+	public JPanel card1;
 
 	/**
 	 * Launch the application.
@@ -100,6 +102,7 @@ public class layout {
 		JButton buttonOne = new JButton("Search");
 		buttonOne.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//invalidDate("Error");
 				tabbedPane.setSelectedIndex(1);
 			}
 		});
@@ -144,7 +147,7 @@ public class layout {
         this.generateTable();
      //   card2.add(scrollPane,BorderLayout.CENTER);
 		// JScrollPane jps = new JScrollPane(table);
-		// card2.add(jps);
+		// card2.add(jps);invalidDate(String errorInfo
         
         JScrollPane scrollPane = new JScrollPane(table);
     //    scrollPane.getViewport().setViewPosition(new Point(1,1));
@@ -275,5 +278,9 @@ public void drawservicetable(String serviceName, double price, String descriptio
 	model.setValueAt(String.valueOf(price), servicetablerow, 3);
 	servicetablerow ++;
 	
+}
+
+public void invalidDate(String errorInfo){
+	JOptionPane.showMessageDialog(null, errorInfo);
 }
 	}
