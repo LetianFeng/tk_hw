@@ -30,7 +30,7 @@ public class layout {
 	final static String BUTTONPANEL = "Travel date";
 	final static String TEXTPANEL = "Choose Room";
 	final static String extraservice = "Extra Service";
-	final static String checkout = "Check out";
+	final static String checkout = "Receipt";
 	final static int extraWindowWidth = 900;
 	final static int extraWindowHeight = 500;
 	private JLabel checkintext;
@@ -41,7 +41,7 @@ public class layout {
 	public DefaultTableModel model;
 	public JScrollPane scrollPane;
 	public JPanel card1;
-
+	public JPanel card4;
 	/**
 	 * Launch the application.
 	 */
@@ -62,13 +62,13 @@ public class layout {
 	 * Create the application.
 	 */
 	public layout() {
-		initialize();
+		initializeAll();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initializeAll() {
 		frame = new JFrame(("Welcome to Sunshine Hotel!"));
 		frame.setBounds(250, 50, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -206,11 +206,7 @@ public class layout {
 		tabbedPane.addTab(checkout, card4);
 		card4.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel();
-		// Your Booking is processed successfully.Your booking ID is
-		lblNewLabel_1.setText("abc");
-		lblNewLabel_1.setBounds(175, 100, 500, 30);
-		card4.add(lblNewLabel_1);
+
 
 		JLabel lblNewLabel_2 = new JLabel("What a pity, your booking is failed.");
 		lblNewLabel_2.setBounds(175, 300, 300, 30);
@@ -219,12 +215,7 @@ public class layout {
 	}
 	private void generateTable(){
 		
-	//	Object[] columnNames = { "Room type", "Amount", "Price", "Book" };
-		// String[][] data ={{"Double room","2","60", "0"},{"Single
-		// room","1","40","1"},{"Double room","2","60", "0"},{"Double
-		// room","2","60", "0"}};
-		// DefaultTableModel model = new DefaultTableModel(data, columnNames);
-		//JScrollPane scrollPane = new JScrollPane();
+
 		
 		table = new JTable();
 
@@ -282,5 +273,33 @@ public void drawservicetable(String serviceName, double price, String descriptio
 
 public void invalidDate(String errorInfo){
 	JOptionPane.showMessageDialog(null, errorInfo);
+}
+
+void drawConfirmMessage(String Message){
+	JOptionPane.showMessageDialog(null, Message);
+
+}
+
+public void drawTotalPrice(double totalPrice){
+
+JLabel pricelabel = new JLabel();
+// Your Booking is processed successfully.Your booking ID is
+pricelabel.setText(String.valueOf(totalPrice));
+pricelabel.setBounds(175, 100, 500, 30);
+card4.add(pricelabel);
+}
+
+
+
+
+
+
+
+void drawFailure(String failedService){
+	JLabel failuremessage = new JLabel();
+	failuremessage.setText(failedService);
+	failuremessage.setBounds(175, 100, 500, 30);
+	card4.add(failuremessage);
+	
 }
 	}
