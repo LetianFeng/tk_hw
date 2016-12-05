@@ -2,6 +2,7 @@ package guiapperance;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,6 +38,7 @@ public class layout {
 	private JTextField textField;
 	public int servicetablerow = 0;
 	public DefaultTableModel model;
+	public JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -125,28 +127,34 @@ public class layout {
 
 	}
 	private void initializeChooseRoom(JTabbedPane tabbedPane) {
-		JPanel card2 = new JPanel() {
+		JPanel card2 = new JPanel();
 			// Make the panel wider than it really needs, so
 			// the window's wide enough for the tabs to stay
 			// in one row.
-			public Dimension getPreferredSize() {
+/*			public Dimension getPreferredSize() {
 				Dimension size = super.getPreferredSize();
 				size.width += extraWindowWidth;
 				size.height += extraWindowHeight;
 				return size;
 			}
 		};
-		// card2.setLayout(null);
-
+		**/
+	   card2.setLayout(null);
 		
         this.generateTable();
+     //   card2.add(scrollPane,BorderLayout.CENTER);
 		// JScrollPane jps = new JScrollPane(table);
 		// card2.add(jps);
-		card2.add(table,BorderLayout.CENTER);
+        
+        JScrollPane scrollPane = new JScrollPane(table);
+    //    scrollPane.getViewport().setViewPosition(new Point(1,1));
+        card2.add(scrollPane);
+        scrollPane.setBounds(180, 100, 600, 300);
+		//card2.add(table,BorderLayout.CENTER);
 		JTableHeader tableheader = table.getTableHeader();
-		card2.add(tableheader,BorderLayout.NORTH);
+		card2.add(tableheader);
 		JButton buttonTwo = new JButton("Add to Basket");
-		buttonTwo.setBounds(400, 400, 300, 35);
+		buttonTwo.setBounds(300, 450, 300, 35);
 		Image img = new ImageIcon(this.getClass().getResource("shopping-cart-icon.png")).getImage();
 		buttonTwo.setIcon(new ImageIcon(img));
 		buttonTwo.addActionListener(new ActionListener() {
@@ -213,14 +221,16 @@ public class layout {
 		// room","1","40","1"},{"Double room","2","60", "0"},{"Double
 		// room","2","60", "0"}};
 		// DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		//JScrollPane scrollPane = new JScrollPane();
+		
 		table = new JTable();
 
 		/*
 		 * public boolean isCellEditable(int data,int columns){ return false; }
 		 * };
 		 **/
-		table.setPreferredScrollableViewportSize(new Dimension(450, 63));
-		// table.setFillsViewportHeight(true);
+	//	table.setPreferredScrollableViewportSize(new Dimension(450, 63));
+	//	table.setFillsViewportHeight(true);
 		model = new DefaultTableModel() {
 			public Class<?> getColumnClass(int column) {
 
@@ -250,14 +260,14 @@ public class layout {
 		model.addColumn("Amount");
 		model.addColumn("Price");
         this.drawservicetable("double room", 200, "good", 2);
-		
-		//for (int i = 0; i < 8; i++) {
+	    
+     //   scrollPane.setViewportView(table);
 			
 		}
 	
-	//	}
+	
 public void drawservicetable(String serviceName, double price, String description, int availableAmount){
-	//to do
+	
 	model.addRow(new Object[0]);
 	model.setValueAt(false, servicetablerow, 0);
 	model.setValueAt(serviceName, servicetablerow, 1);
