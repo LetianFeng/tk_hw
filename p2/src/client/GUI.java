@@ -12,7 +12,8 @@ public class GUI implements  GUIInterface{
 
     public static void main(String[] args) throws MalformedURLException {
         GUI gui = new GUI();
-        Client client = new Client(gui);
+//      ClientSoap client = new ClientSoap(gui);
+        ClientRest client = new ClientRest(gui);
         Date startDate = new Date(2016-1900, 12-1, 9);
         Date endDate = new Date(2016-1900, 12-1, 11);
         client.searchRooms(startDate, endDate);

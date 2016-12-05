@@ -3,7 +3,6 @@ package client;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import server.entry.Booking;
-import server.server.ServerRest;
 import server.server.ServerSoapInterface;
 
 import javax.xml.namespace.QName;
@@ -16,32 +15,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-public class Client implements ClientGUIInterface{
+public class ClientSoap implements ClientGUIInterface{
 
-    ServerSoapInterface soapServer;
-    ServerRest restServer;
+    private ServerSoapInterface soapServer;
+    private GUIInterface gui;
+    private Date startDate;
+    private Date endDate;
+    private ArrayList<server.entry.Service> serviceList;
 
-    GUIInterface gui;
-
-    Date startDate;
-    Date endDate;
-
-    ArrayList<server.entry.Service> serviceList;
-
-    public  Client(GUIInterface gui) throws MalformedURLException {
+    public ClientSoap(GUIInterface gui) throws MalformedURLException {
         this.gui = gui;
         startDate = null;
         endDate = null;
-        serviceList = new ArrayList<server.entry.Service>();
+        serviceList = new ArrayList<>();
 
         // soap server
         URL url = new URL("http://localhost:9999/booking?wsdl");
         QName qname = new QName("http://server.server/", "ServerSoapService");
         Service service = Service.create(url, qname);
         soapServer = service.getPort(ServerSoapInterface.class);
-
-        // TODO rest server
-
     }
 
     @Override
@@ -60,7 +52,7 @@ public class Client implements ClientGUIInterface{
 
             String availableServices = soapServer.getAvailableService(dateFormat.format(startDate), dateFormat.format(endDate));
 
-            Type listType = new TypeToken<ArrayList<server.entry.Service>>() {
+            Type listType = new TypeToken<ArrayList<Service>>() {
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
@@ -68,7 +60,6 @@ public class Client implements ClientGUIInterface{
 
         } else
             gui.invalidDate("invalid date");
-
     }
 
     @Override
@@ -103,7 +94,7 @@ public class Client implements ClientGUIInterface{
 
     @Override
     public void sendBooking(Map<String, Integer>serviceMap, String email) {
-        ArrayList<Booking> bookingList = new ArrayList<Booking>();
+        ArrayList<Booking> bookingList = new ArrayList<>();
 
         for (server.entry.Service service : serviceList) {
 
