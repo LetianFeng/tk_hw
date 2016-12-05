@@ -4,8 +4,8 @@ import server.entry.Booking;
 import server.entry.BookingResponse;
 import server.entry.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 class FakeServerLogic implements ServerLogic {
 
@@ -29,7 +29,7 @@ class FakeServerLogic implements ServerLogic {
     }
 
     @Override
-    public ArrayList<Service> requestAvailableService(LocalDate startDate, LocalDate endDate) {
+    public ArrayList<Service> requestAvailableService(Date startDate, Date endDate) {
         return fakeList;
     }
 

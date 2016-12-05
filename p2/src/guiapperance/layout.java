@@ -85,7 +85,7 @@ public class layout {
 	}
 
 
-	private void initializeTravelDatePanel(JTabbedPane tabbedPane) {
+	private void initializeTravelDatePanel(final JTabbedPane tabbedPane) {
 		JPanel card1 = new JPanel() {
 			// Make the panel wider than it really needs, so
 			// the window's wide enough for the tabs to stay
@@ -129,7 +129,7 @@ public class layout {
 		tabbedPane.addTab(BUTTONPANEL, card1);
 
 	}
-	private void initializeChooseRoom(JTabbedPane tabbedPane) {
+	private void initializeChooseRoom(final JTabbedPane tabbedPane) {
 		JPanel card2 = new JPanel();
 			// Make the panel wider than it really needs, so
 			// the window's wide enough for the tabs to stay
@@ -169,7 +169,7 @@ public class layout {
 		tabbedPane.addTab(TEXTPANEL, card2);
 	}
 	
-	private void initializeChooseService(JTabbedPane tabbedPane) {
+	private void initializeChooseService(final JTabbedPane tabbedPane) {
 		JPanel card3 = new JPanel();
 		tabbedPane.addTab(extraservice, card3);
 		card3.setLayout(null);

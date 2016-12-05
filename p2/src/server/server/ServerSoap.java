@@ -9,22 +9,22 @@ import server.entry.Service;
 
 import javax.jws.WebService;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 //Service Implementation
 @WebService(endpointInterface = "server.server.ServerSoapInterface")
 public class ServerSoap implements ServerSoapInterface{
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private Server server = new Server();
 
     @Override
     public String getAvailableService(String startDate, String endDate) {
         try {
-            LocalDate start = LocalDate.parse(startDate, formatter);
-            LocalDate end = LocalDate.parse(endDate, formatter);
+            Date start = formatter.parse(startDate);
+            Date end = formatter.parse(endDate);
             ArrayList<Service> serviceList = server.getServerLogic().requestAvailableService(start, end);
             return new Gson().toJson(serviceList);
         } catch (Exception e) {

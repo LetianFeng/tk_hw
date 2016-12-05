@@ -34,6 +34,7 @@ public class ClientSoap implements ClientGUIInterface{
         QName qname = new QName("http://server.server/", "ServerSoapService");
         Service service = Service.create(url, qname);
         soapServer = service.getPort(ServerSoapInterface.class);
+
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ClientSoap implements ClientGUIInterface{
 
             String availableServices = soapServer.getAvailableService(dateFormat.format(startDate), dateFormat.format(endDate));
 
-            Type listType = new TypeToken<ArrayList<Service>>() {
+            Type listType = new TypeToken<ArrayList<server.entry.Service>>() {
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
@@ -60,6 +61,7 @@ public class ClientSoap implements ClientGUIInterface{
 
         } else
             gui.invalidDate("invalid date");
+
     }
 
     @Override
@@ -94,7 +96,7 @@ public class ClientSoap implements ClientGUIInterface{
 
     @Override
     public void sendBooking(Map<String, Integer>serviceMap, String email) {
-        ArrayList<Booking> bookingList = new ArrayList<>();
+        ArrayList<Booking> bookingList = new ArrayList<Booking>();
 
         for (server.entry.Service service : serviceList) {
 
