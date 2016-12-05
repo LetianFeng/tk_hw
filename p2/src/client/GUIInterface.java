@@ -1,5 +1,9 @@
 package client;
 
+import server.entry.Service;
+
+import java.util.ArrayList;
+
 public interface GUIInterface {
 
     void invalidDate(String errorInfo); // remind user date input errors, such as end date should be after start date
@@ -8,7 +12,9 @@ public interface GUIInterface {
 
     void initializeTab(String tabName); // clean tab and draw necessary things, such as hints for input, buttons...
 
-    void drawService(String serviceName, double price, String description, int availableAmount); // draw room or extra service
+    void drawRooms(ArrayList<Service> serviceList); // draw room or extra service
+
+    void drawExtraServices(ArrayList<Service> serviceList);
 
     void drawTotalPrice(double totalPrice);
 

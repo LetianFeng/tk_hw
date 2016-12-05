@@ -11,12 +11,10 @@ import javax.xml.ws.Service;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import java.text.SimpleDateFormat;
-
-import static com.google.gson.internal.bind.util.ISO8601Utils.format;
 
 public class Client implements ClientGUIInterface{
 
@@ -25,10 +23,15 @@ public class Client implements ClientGUIInterface{
 
     GUIInterface gui;
 
+    Date startDate;
+    Date endDate;
+
     ArrayList<server.entry.Service> serviceList;
 
     public  Client(GUIInterface gui) throws MalformedURLException {
         this.gui = gui;
+        startDate = null;
+        endDate = null;
         serviceList = new ArrayList<server.entry.Service>();
 
         // soap server
@@ -43,25 +46,28 @@ public class Client implements ClientGUIInterface{
 
     @Override
     public void searchRooms(Date startDate, Date endDate) throws MalformedURLException {
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+
         // display start & end date from gui
         System.out.println("Search rooms in the following date range: ");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("Start: " + dateFormat.format(startDate));
         System.out.println("End: " + dateFormat.format(endDate));
 
-        // TODO check if date range is valid
+        if (startDate.before(endDate)) {
 
-        String availableServices = soapServer.getAvailableService(dateFormat.format(startDate), dateFormat.format(endDate));
+            String availableServices = soapServer.getAvailableService(dateFormat.format(startDate), dateFormat.format(endDate));
 
-        Type listType = new TypeToken<ArrayList<server.entry.Service>>() {}.getType();
-        serviceList = new Gson().fromJson(availableServices, listType);
-        System.out.println("Following rooms are available: ");
-        for (server.entry.Service service : serviceList)
-            if (service.isRoom)
-                gui.drawService(service.serviceName, service.price, service.description, service.availableAmount);
+            Type listType = new TypeToken<ArrayList<server.entry.Service>>() {
+            }.getType();
+            serviceList = new Gson().fromJson(availableServices, listType);
+            System.out.println("Following rooms are available: ");
+            gui.drawRooms(serviceList);
 
-        // TODO if date invalid
-        //gui.invalidDate("invalid date");
+        } else
+            gui.invalidDate("invalid date");
 
     }
 
@@ -70,9 +76,7 @@ public class Client implements ClientGUIInterface{
         System.out.println();
         System.out.println("Get extra services: ");
         System.out.println("Following extra services are available: ");
-        for (server.entry.Service service : serviceList)
-            if (!service.isRoom)
-                gui.drawService(service.serviceName, service.price, service.description, service.availableAmount);
+        gui.drawExtraServices(serviceList);
     }
 
     @Override
@@ -91,7 +95,10 @@ public class Client implements ClientGUIInterface{
             }
         }
 
-        gui.drawTotalPrice(totalPrice);
+        long diff = endDate.getTime() - startDate.getTime();
+        long days = diff / (1000 * 60 * 60 * 24);
+
+        gui.drawTotalPrice(totalPrice * days);
     }
 
     @Override
@@ -103,13 +110,23 @@ public class Client implements ClientGUIInterface{
             for (String serviceName : serviceMap.keySet()) {
 
                 if (service.serviceName.equals(serviceName) && service.availableAmount>= serviceMap.get(serviceName)) {
-                    // TODO make booking structure
+                    Date bookDate = (Date) startDate.clone();
+                    while (bookDate.before(endDate)) {
+                        for (int i = 0; i < serviceMap.get(serviceName); i++) {
+                            Booking booking = new Booking(service.serviceId, email, bookDate);
+                            bookingList.add(booking);
+                        }
+                        bookDate.setDate(bookDate.getDate()+1);
+                    }
                 }
             }
         }
 
-        // TODO call postBookingEntry(String bookingEntry) on server side
-        // TODO call drawSuccessDetails(String bookingDetails) or drawFailure(String failedService) on gui side
+        String bookingResponce = soapServer.postBookingEntry(new Gson().toJson(bookingList));
+        if (bookingResponce.equals("invalid booking entry"))
+            gui.drawFailure(bookingResponce);
+        else
+            gui.drawSuccessDetails(bookingResponce);
 
     }
 

@@ -1,14 +1,15 @@
 package server.entry;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Booking {
 
     public final int serviceId;
     public final String email;
-    public final LocalDate date;
+    public final Date date;
 
-    public Booking(int serviceId, String email, LocalDate date) {
+    public Booking(int serviceId, String email, Date date) {
         this.serviceId = serviceId;
         this.email = email;
         this.date = date;
