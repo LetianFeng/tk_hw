@@ -2,12 +2,12 @@ package server.entry;
 
 public class Service {
 
-    private final int serviceId;
-    private final String serviceName;
-    private final double price;
-    private final boolean isRoom;
-    private final String description;
-    private final int availableAmount;
+    public final int serviceId;
+    public final String serviceName;
+    public final double price;
+    public final boolean isRoom;
+    public final String description;
+    public final int availableAmount;
 
     public Service(int serviceId, String serviceName, double price, boolean isRoom, String description, int availableAmount) {
         this.serviceId = serviceId;

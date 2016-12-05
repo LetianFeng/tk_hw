@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class Booking {
 
-    private final int serviceId;
-    private final String email;
-    private final LocalDate date;
+    public final int serviceId;
+    public final String email;
+    public final LocalDate date;
 
     public Booking(int serviceId, String email, LocalDate date) {
         this.serviceId = serviceId;
