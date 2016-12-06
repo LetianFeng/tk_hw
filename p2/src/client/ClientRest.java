@@ -17,7 +17,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import hotel.Booking;
+import gui.Gui;
+import gui.GuiClientInterface;
 import hotel.Service;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
@@ -27,13 +28,18 @@ public class ClientRest implements ClientGUIInterface {
     private static final String REST_URI = "http://localhost:9999/booking/";
     private static final String AVAILABLE_PATH = "availableService/";
     private static final String BOOKING_PATH = "bookingEntry/";
-    private GUIInterface gui;
+    private GuiClientInterface gui;
     private Date startDate;
     private Date endDate;
     private ArrayList<Service> serviceList;
 
-    public ClientRest(GUIInterface gui) throws MalformedURLException {
-        this.gui = gui;
+    public static void main(String[] args) throws MalformedURLException {
+        ClientRest clientRest = new ClientRest();
+        clientRest.gui.initializeAll();
+    }
+
+    public ClientRest() throws MalformedURLException {
+        this.gui = new Gui(this);
         startDate = null;
         endDate = null;
         serviceList = new ArrayList<>();
@@ -45,13 +51,15 @@ public class ClientRest implements ClientGUIInterface {
         this.startDate = startDate;
         this.endDate = endDate;
 
+        dateSetNull(startDate);
+        dateSetNull(endDate);
         // display start & end date from gui
         System.out.println("Search rooms in the following date range: ");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("Start: " + dateFormat.format(startDate));
         System.out.println("End: " + dateFormat.format(endDate));
 
-        if (startDate.before(endDate)) {
+        if (dateBefore(startDate, endDate)) {
 
             ClientConfig config = new DefaultClientConfig();
             Client client = Client.create(config);
@@ -62,18 +70,16 @@ public class ClientRest implements ClientGUIInterface {
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
-            gui.drawRooms(serviceList);
+            gui.drawService(serviceList);
 
         } else
             gui.invalidDate("invalid date");
     }
 
-    @Override
-    public void getExtraServices() {
-        System.out.println();
-        System.out.println("Get extra services: ");
-        System.out.println("Following extra services are available: ");
-        gui.drawExtraServices(serviceList);
+    private void dateSetNull(Date date) {
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
     }
 
     @Override
@@ -86,7 +92,7 @@ public class ClientRest implements ClientGUIInterface {
 
                 if (service.getType().equals(serviceName) && service.getAmount()>= serviceMap.get(serviceName)) {
                     Date bookDate = (Date) startDate.clone();
-                    while (bookDate.before(endDate)) {
+                    while (dateBefore(bookDate, endDate)) {
                         for (int i = 0; i < serviceMap.get(serviceName); i++) {
                             BookingReq booking = new BookingReq(service.getId(), email, bookDate);
                             bookingList.add(booking);
@@ -104,14 +110,9 @@ public class ClientRest implements ClientGUIInterface {
         String bookingResponse = postOutputAsJson(service, gson.toJson(bookingList));
         BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
         if (!response.isBookingState())
-            gui.drawFailure(bookingResponse);
+            gui.drawFailure(response.getInfo());
         else
-            gui.drawSuccessDetails(bookingResponse);
-    }
-
-    @Override
-    public void CreateNewBooking() {
-
+            gui.drawSuccessDetails(response.getInfo());
     }
 
     private static String postOutputAsJson(WebResource service, String postJson) {
@@ -120,6 +121,17 @@ public class ClientRest implements ClientGUIInterface {
 
     private static String getOutputAsJson(WebResource service) {
         return service.accept(MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    private boolean dateBefore(Date startDate, Date endDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String start = dateFormat.format(startDate);
+        String end = dateFormat.format(endDate);
+        start = start.replaceAll("-", "");
+        end = end.replaceAll("-", "");
+        int startInt = Integer.parseInt(start);
+        int endInt = Integer.parseInt(end);
+        return startInt < endInt;
     }
 
 }

@@ -2,21 +2,20 @@ package gui;
 
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.HashMap;
 import com.toedter.calendar.JDateChooser;
 import hotel.Service;
@@ -99,21 +98,13 @@ public class Gui implements GuiClientInterface, Runnable {
 	public void initializeAll() {
 		panel.removeAll();
 		JPanel datePanel = getDatePanel();
-		JPanel adPanel = getAdPanel();
 		panel.add(datePanel);
-		panel.add(adPanel);
 		c.gridx = 0;
 		c.gridy = 0;
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.weighty = 0.5;
+		c.fill = GridBagConstraints.BOTH;
 		layout.setConstraints(datePanel, c);
-		c.gridx = 1;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.VERTICAL;
-		c.weighty = 1;
-		layout.setConstraints(adPanel, c);
-
+		bookingFrame.revalidate();
+		bookingFrame.repaint();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				bookingFrame.setVisible(true);
@@ -123,21 +114,21 @@ public class Gui implements GuiClientInterface, Runnable {
 	
 	@Override
 	public void drawSuccessDetails(String bookingDetails) {
-		getNotificationPanel(bookingDetails, "New Booking");
+		getNotificationPanel(bookingDetails, "New Booking", "SUCCESS");
 		bookingFrame.revalidate();
 		bookingFrame.repaint();
 	}
 	
 	@Override
     public void drawFailure(String failedService) {
-		getNotificationPanel(failedService, "New Booking");
+		getNotificationPanel(failedService, "New Booking", "FAILURE");
 		bookingFrame.revalidate();
 		bookingFrame.repaint();
 	}
 
 	@Override
     public void invalidBooking(String errorInfo) {
-		getNotificationPanel(errorInfo, "New Booking");
+		getNotificationPanel(errorInfo, "New Booking", "INVALID");
 		bookingFrame.revalidate();
 		bookingFrame.repaint();
     }
@@ -173,7 +164,6 @@ public class Gui implements GuiClientInterface, Runnable {
 		JLabel label2 = new JLabel("Check-out");
 		JButton btn1 = new JButton("Submit");
 		JLabel welcomeLabel = new JLabel("Welcome to Booking System", JLabel.CENTER);
-		//JLabel notifyLabel = new JLabel("Select Checkin and Checkout Date");
 		JPanel datePanel = new JPanel(new GridBagLayout());
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
@@ -218,15 +208,13 @@ public class Gui implements GuiClientInterface, Runnable {
 				else {
 					dateChooser1.setEnabled(false);
 					dateChooser2.setEnabled(false);
-					System.out.println("date1: \n"+checkinDate.getDate());
-					System.out.println("date1: \n"+checkoutDate.getDate());
-
+					
 					try {
 						client.searchRooms(checkinDate, checkoutDate);
 					} catch (MalformedURLException e) {
 						e.printStackTrace();
 					}
-
+					
 				}
 			}
 		});
@@ -237,83 +225,10 @@ public class Gui implements GuiClientInterface, Runnable {
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		layout.setConstraints(welcomeLabel, c);
 		welcomeLabel.setPreferredSize(new Dimension(200, 100));
-		//welcomeLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 		datePanel.add(welcomeLabel);
-		/*
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridheight = 1;
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		layout.setConstraints(notifyLabel, c);
-		datePanel.add(notifyLabel);
-		*/
 		datePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		datePanel.setBackground(java.awt.Color.YELLOW);
 		return datePanel;
-	}
-
-	private JPanel getAdPanel() {
-		JPanel adPanel = new JPanel(new GridBagLayout());
-		GridBagLayout layout = new GridBagLayout();
-		adPanel.setLayout(layout);
-		GridBagConstraints c = new GridBagConstraints();
-		JLabel label1, label2, label3;
-		try {
-			URL url = getClass().getResource("image1.jpg");
-			BufferedImage myImage = ImageIO.read(new File(url.getPath()));
-			label1 = new JLabel(new ImageIcon(myImage));
-			url = getClass().getResource("image2.jpg");
-			myImage = ImageIO.read(new File(url.getPath()));
-			label2 = new JLabel(new ImageIcon(myImage));
-			url = getClass().getResource("image3.jpg");
-			myImage = ImageIO.read(new File(url.getPath()));
-			label3 = new JLabel(new ImageIcon(myImage));
-		} catch (IOException ex) {
-			System.out.printf("IO Exception\n");
-			return null;
-		}
-		JTextArea textArea1 = new JTextArea();
-		JTextArea textArea2 = new JTextArea();
-		JTextArea textArea3 = new JTextArea();
-		textArea1.setLineWrap(true);
-		textArea1.setWrapStyleWord(true);
-		textArea1.setEditable(false);
-		textArea2.setLineWrap(true);
-		textArea2.setWrapStyleWord(true);
-		textArea2.setEditable(false);
-		textArea3.setLineWrap(true);
-		textArea3.setWrapStyleWord(true);
-		textArea3.setEditable(false);
-		textArea1.setText(Constants.ad1);
-		textArea2.setText(Constants.ad2);
-		textArea3.setText(Constants.ad3);
-		c.gridx = 0;
-		c.gridy = 0;
-		layout.setConstraints(label1, c);
-		adPanel.add(label1);
-		c.gridx = 0;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		layout.setConstraints(textArea1, c);
-		adPanel.add(textArea1);
-		c.gridx = 0;
-		c.gridy = 2;
-		layout.setConstraints(label2, c);
-		adPanel.add(label2);
-		c.gridx = 0;
-		c.gridy = 3;
-		layout.setConstraints(textArea2, c);
-		adPanel.add(textArea2);
-		c.gridx = 0;
-		c.gridy = 4;
-		layout.setConstraints(label3, c);
-		adPanel.add(label3);
-		c.gridx = 0;
-		c.gridy = 5;
-		layout.setConstraints(textArea3, c);
-		adPanel.add(textArea3);
-		adPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		return adPanel;
 	}
 
 	private JPanel getRoomPanel() {
@@ -351,12 +266,8 @@ public class Gui implements GuiClientInterface, Runnable {
 		}
 		combo1.setEnabled(false);
 		combo2.setEnabled(false);
-		//if(rentCarService == null) {
-			check1.setEnabled(false);
-		//}
-		//if(breakfastService == null) {
-			check2.setEnabled(false);
-		//}
+		check1.setEnabled(false);
+		check2.setEnabled(false);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -379,7 +290,6 @@ public class Gui implements GuiClientInterface, Runnable {
 		c.gridy = 0;
 		layout.setConstraints(label5, c);
 		roomPanel.add(label5);
-		//JLabel label1 = new JLabel("RoomType");
 		final ButtonGroup group = new ButtonGroup();
 		final HashMap<String, JComboBox<String>> roomMap = new HashMap<String, JComboBox<String>>();
 		int num = roomList.size();
@@ -429,21 +339,16 @@ public class Gui implements GuiClientInterface, Runnable {
 					if(btn.isSelected()) {
 						String roomName = btn.getText();
 						int amount = Integer.valueOf(roomMap.get(btn.getText()).getSelectedItem().toString());
-						System.out.printf("Selected is: "+roomName+"\n");
-						System.out.printf("Amount is: "+amount+"\n");
 						booking.put(roomName, amount);
 						if(check1.isSelected()) {
 							amount = Integer.valueOf(combo1.getSelectedItem().toString());
-							System.out.printf("rent car number: "+amount+"\n");
 							booking.put(check1.getText(), amount);
 						}
 						if(check2.isSelected()) {
 							amount = Integer.valueOf(combo2.getSelectedItem().toString());
-							System.out.printf("breakfast number: "+amount+"\n");
 							booking.put(check2.getText(), amount);
 						}
 						if(textField.getText().equals("")) {
-							System.out.printf("email empty\n");
 							label7.setForeground(Color.RED);
 							bookingFrame.revalidate();
 							bookingFrame.repaint();
@@ -453,16 +358,9 @@ public class Gui implements GuiClientInterface, Runnable {
 							label7.setForeground(Color.black);
 						}
 						client.sendBooking(booking, textField.getText());
-						Iterator<String> tempIter = booking.keySet().iterator();
-						while(tempIter.hasNext()) {
-							String key = tempIter.next();
-							System.out.println("Service name: "+key+" Service amount: "+booking.get(key)+"\n");
-						}
-						System.out.println("Email Address is: "+textField.getText()+"\n");
 						return;
 					}
 				}
-				System.out.printf("no button selected\n");
 			}
 		});
 		layout.setConstraints(confirmBtn, c);
@@ -519,26 +417,41 @@ public class Gui implements GuiClientInterface, Runnable {
 		return roomPanel;
 	}
 	
-	public void getNotificationPanel(String msg, String btnStr) {
+	public void getNotificationPanel(String msg, String btnStr, String msgType) {
 		panel.removeAll();
 		GridBagConstraints c = new GridBagConstraints();
-		JTextArea textArea = new JTextArea();
+		JTextPane textPane = new JTextPane();
 		JButton btn1 = new JButton(btnStr);
 		JButton btn2 = new JButton("EXIT");
 		JScrollPane textJsp = new JScrollPane();
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setText(msg);
-		textArea.setEditable(false);
-		Font font = new Font("Serif",0,30);
-		textArea.setFont(font);
-		textJsp.setViewportView(textArea);
-		int width = 150;//Math.max(btn1.getWidth(), btn2.getWidth());
-		int height = 20;//Math.max(btn1.getHeight(), btn2.getHeight());
-		//System.out.println("width is: "+width+", height is: "+height+"\n");
+		if(msgType.equals("SUCCESS")) {
+			StyledDocument doc = textPane.getStyledDocument();
+			Style style = textPane.addStyle("price", null);
+			try {
+				doc.insertString(doc.getLength(), "Booking succeeded\n"+"Total Price is: ", style);
+			} 
+			catch (BadLocationException e) {
+			}
+			StyleConstants.setForeground(style, Color.RED);
+			try {
+				doc.insertString(doc.getLength(), msg, style);
+			} 
+			catch (BadLocationException e) {
+			}
+		}
+		else if(msgType.equals("FAILURE"))
+			textPane.setText(msg);
+		else
+			textPane.setText("Invalid Booking");
+		textPane.setEditable(false);
+		Font font = new Font("Serif",0,20);
+		textPane.setFont(font);
+		textJsp.setViewportView(textPane);
+		int width = 150;
+		int height = 20;
 		btn1.setPreferredSize(new Dimension(width,height));
 		btn2.setPreferredSize(new Dimension(width,height));
-		textJsp.setPreferredSize(new Dimension((int)(width/0.3), 300));
+		textJsp.setPreferredSize(new Dimension((int)(width/0.4), 100));
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				initializeAll();
@@ -576,18 +489,15 @@ public class Gui implements GuiClientInterface, Runnable {
 			if(service.isRoom()) {
 				roomList.add(service);
 			}
-			else if(service.getType().equals("Rental Car"))//question
+			else if(service.getType().equals("Rental Car"))
 				rentCarService = service;
 			else if(service.getType().equals("Breakfast"))
 				breakfastService = service;
-			else
-				System.out.println("Wrong service type, service name is: "+service.getType());
 		}
 	}
 	
 	private String[] getComboArray(int max) {
 		if(max <0) {
-			System.out.println("Wrong upper limit\n");
 			return null;
 		}
 		if(max == 0) {
