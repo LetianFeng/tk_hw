@@ -5,15 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import gui.Gui;
 import gui.GuiClientInterface;
+import server.BookingService;
+import server.ServerSoapService;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
-import server.ServerSoapInterface;
 
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +19,7 @@ import java.util.Map;
 
 public class ClientSoap implements ClientGUIInterface{
 
-    private ServerSoapInterface soapServer;
+    private BookingService soapServer;
     private GuiClientInterface gui;
     private Date startDate;
     private Date endDate;
@@ -38,12 +36,8 @@ public class ClientSoap implements ClientGUIInterface{
         endDate = null;
         serviceList = new ArrayList<>();
 
-        // soap server
-        URL url = new URL("http://localhost:9999/booking?wsdl");
-        QName qname = new QName("http://server/", "ServerSoapService");
-        Service service = Service.create(url, qname);
-        soapServer = service.getPort(ServerSoapInterface.class);
-
+        ServerSoapService serverSoapService = new ServerSoapService();
+        soapServer = serverSoapService.getServerSoapPort();
     }
 
     @Override
