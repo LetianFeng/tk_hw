@@ -1,16 +1,8 @@
 package gui;
 
-
-import java.awt.EventQueue;
-import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 public class BookingFrame extends JFrame{
 	
