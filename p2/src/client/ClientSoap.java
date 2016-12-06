@@ -3,8 +3,8 @@ package client;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import server.entry.Booking;
 import server.entry.BookingReq;
+import server.entry.BookingResponse;
 import server.server.ServerSoapInterface;
 
 import javax.xml.namespace.QName;
@@ -95,7 +95,8 @@ public class ClientSoap implements ClientGUIInterface{
         }
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String bookingResponse = soapServer.postBookingEntry(gson.toJson(bookingReqList));
-        if (bookingResponse.equals("invalid booking entry"))
+        BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
+        if (!response.isBookingState())
             gui.drawFailure(bookingResponse);
         else
             gui.drawSuccessDetails(bookingResponse);
