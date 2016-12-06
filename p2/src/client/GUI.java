@@ -1,5 +1,6 @@
 package client;
 
+import gui.Gui;
 import hotel.Service;
 
 import java.net.MalformedURLException;
@@ -11,8 +12,7 @@ import java.util.Map;
 public class GUI implements  GUIInterface{
 
     public static void main(String[] args) throws MalformedURLException {
-        GUI gui = new GUI();
-        ClientSoap client = new ClientSoap(gui);
+        ClientSoap client = new ClientSoap();
 //      ClientRest client = new ClientRest(gui);
         Date startDate = new Date(2016-1900, 12-1, 3);
         Date endDate = new Date(2016-1900, 12-1, 4);

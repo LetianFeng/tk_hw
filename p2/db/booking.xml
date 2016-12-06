@@ -84,4 +84,16 @@
     <date>2016-12-26</date>
     <email>test@example.com</email>
   </booking>
+<booking id="bcd451d6-2d52-4a26-9be4-5a46d6599a96">
+    <bookingid>862099f8-8e10-48ef-a9ae-3aeb3d769a86</bookingid>
+    <serviceid>dad2b45b-1feb-471b-820f-d430ed2a74d1</serviceid>
+    <date>2016-12-03</date>
+    <email>aaa</email>
+  </booking>
+  <booking id="a785d0f4-6b21-488a-b652-880ee0f9ceb9">
+    <bookingid>862099f8-8e10-48ef-a9ae-3aeb3d769a86</bookingid>
+    <serviceid>dad2b45b-1feb-471b-820f-d430ed2a74d1</serviceid>
+    <date>2016-12-03</date>
+    <email>aaa</email>
+  </booking>
 </bookings>

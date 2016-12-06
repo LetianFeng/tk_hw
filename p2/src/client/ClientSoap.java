@@ -3,6 +3,8 @@ package client;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import gui.Gui;
+import gui.GuiClientInterface;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
 import server.server.ServerSoapInterface;
@@ -20,13 +22,18 @@ import java.util.Map;
 public class ClientSoap implements ClientGUIInterface{
 
     private ServerSoapInterface soapServer;
-    private GUIInterface gui;
+    private GuiClientInterface gui;
     private Date startDate;
     private Date endDate;
     private ArrayList<hotel.Service> serviceList;
 
-    public ClientSoap(GUIInterface gui) throws MalformedURLException {
-        this.gui = gui;
+    public static void main(String[] args) throws MalformedURLException {
+        ClientSoap clientSoap = new ClientSoap();
+        clientSoap.gui.initializeAll();
+    }
+
+    public ClientSoap() throws MalformedURLException {
+        this.gui = new Gui(this);
         startDate = null;
         endDate = null;
         serviceList = new ArrayList<>();
@@ -59,7 +66,8 @@ public class ClientSoap implements ClientGUIInterface{
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
-            gui.drawRooms(serviceList);
+            gui.drawService(serviceList);
+
         } else
             gui.invalidDate("invalid date");
 
@@ -70,7 +78,7 @@ public class ClientSoap implements ClientGUIInterface{
         System.out.println();
         System.out.println("Get extra services: ");
         System.out.println("Following extra services are available: ");
-        gui.drawExtraServices(serviceList);
+        //gui.drawExtraServices(serviceList);
     }
 
     @Override
