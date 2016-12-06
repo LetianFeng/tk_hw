@@ -36,7 +36,8 @@ public class ServerRest {
             System.out.print(startDate);
             System.out.print(", ");
             System.out.println(endDate);
-            throw new WebApplicationException(400);
+            //throw new WebApplicationException(400);
+            return new Gson().toJson(new ArrayList<Service>());
         }
     }
 
@@ -53,7 +54,8 @@ public class ServerRest {
             return new Gson().toJson(response);
         } catch (Exception e) {
             System.out.print("convert failed!");
-            throw new WebApplicationException(400);
+            //throw new WebApplicationException(400);
+            return new Gson().toJson(new BookingResponse(false, "An error has occured."));
         }
     }
 
