@@ -42,7 +42,7 @@ public class ServerSoap implements ServerSoapInterface{
     public String postBookingEntry(String bookingEntry) {
         try {
             Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
-            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             ArrayList<BookingReq> bookingList = gson.fromJson(bookingEntry, listType);
             BookingResponse response = server.getServerLogic().postBookingList(bookingList);
             return new Gson().toJson(response);
