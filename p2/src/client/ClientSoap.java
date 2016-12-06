@@ -7,7 +7,7 @@ import gui.Gui;
 import gui.GuiClientInterface;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
-import server.server.ServerSoapInterface;
+import server.ServerSoapInterface;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -40,7 +40,7 @@ public class ClientSoap implements ClientGUIInterface{
 
         // soap server
         URL url = new URL("http://localhost:9999/booking?wsdl");
-        QName qname = new QName("http://server.server/", "ServerSoapService");
+        QName qname = new QName("http://server/", "ServerSoapService");
         Service service = Service.create(url, qname);
         soapServer = service.getPort(ServerSoapInterface.class);
 
@@ -74,14 +74,6 @@ public class ClientSoap implements ClientGUIInterface{
     }
 
     @Override
-    public void getExtraServices() {
-        System.out.println();
-        System.out.println("Get extra services: ");
-        System.out.println("Following extra services are available: ");
-        //gui.drawExtraServices(serviceList);
-    }
-
-    @Override
     public void sendBooking(Map<String, Integer>serviceMap, String email) {
         ArrayList<BookingReq> bookingReqList = new ArrayList<>();
 
@@ -108,11 +100,6 @@ public class ClientSoap implements ClientGUIInterface{
             gui.drawFailure(bookingResponse);
         else
             gui.drawSuccessDetails(bookingResponse);
-
-    }
-
-    @Override
-    public void CreateNewBooking() {
 
     }
 }

@@ -75,14 +75,6 @@ public class ClientRest implements ClientGUIInterface {
     }
 
     @Override
-    public void getExtraServices() {
-        System.out.println();
-        System.out.println("Get extra services: ");
-        System.out.println("Following extra services are available: ");
-//        gui.drawExtraServices(serviceList);
-    }
-
-    @Override
     public void sendBooking(Map<String, Integer> serviceMap, String email) {
         ArrayList<BookingReq> bookingList = new ArrayList<>();
 
@@ -113,11 +105,6 @@ public class ClientRest implements ClientGUIInterface {
             gui.drawFailure(bookingResponse);
         else
             gui.drawSuccessDetails(bookingResponse);
-    }
-
-    @Override
-    public void CreateNewBooking() {
-
     }
 
     private static String postOutputAsJson(WebResource service, String postJson) {
