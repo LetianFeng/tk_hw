@@ -20,6 +20,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import hotel.Booking;
 import hotel.Service;
 import server.entry.BookingReq;
+import server.entry.BookingResponse;
 
 public class ClientRest implements ClientGUIInterface {
 
@@ -101,7 +102,8 @@ public class ClientRest implements ClientGUIInterface {
         WebResource service = client.resource(REST_URI).path(BOOKING_PATH);
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String bookingResponse = postOutputAsJson(service, gson.toJson(bookingList));
-        if (bookingResponse.equals(""))
+        BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
+        if (!response.isBookingState())
             gui.drawFailure(bookingResponse);
         else
             gui.drawSuccessDetails(bookingResponse);

@@ -10,4 +10,11 @@ public class BookingResponse {
         this.info = info;
     }
 
+    public boolean isBookingState() {
+        return bookingState;
+    }
+
+    public String getInfo() {
+        return info;
+    }
 }
