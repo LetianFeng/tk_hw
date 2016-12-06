@@ -111,9 +111,9 @@ public class ClientSoap implements ClientGUIInterface{
         String bookingResponse = soapServer.postBookingEntry(gson.toJson(bookingReqList));
         BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
         if (!response.isBookingState())
-            gui.drawFailure(bookingResponse);
+            gui.drawFailure(response.getInfo());
         else
-            gui.drawSuccessDetails(bookingResponse);
+            gui.drawSuccessDetails(response.getInfo());
 
     }
 

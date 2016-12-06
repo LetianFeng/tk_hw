@@ -110,9 +110,9 @@ public class ClientRest implements ClientGUIInterface {
         String bookingResponse = postOutputAsJson(service, gson.toJson(bookingList));
         BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
         if (!response.isBookingState())
-            gui.drawFailure(bookingResponse);
+            gui.drawFailure(response.getInfo());
         else
-            gui.drawSuccessDetails(bookingResponse);
+            gui.drawSuccessDetails(response.getInfo());
     }
 
     private static String postOutputAsJson(WebResource service, String postJson) {
