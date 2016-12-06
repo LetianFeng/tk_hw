@@ -35,7 +35,7 @@ public class ServerSoap implements ServerSoapInterface{
             System.out.print(", ");
             System.out.println(endDate);
         }
-        return "invalid input: " + startDate + ", " + endDate;
+        return new Gson().toJson(new ArrayList<Service>());
     }
 
     @Override
@@ -50,6 +50,6 @@ public class ServerSoap implements ServerSoapInterface{
             System.out.print("convert failed!");
             e.printStackTrace();
         }
-        return "invalid booking entry";
+        return new Gson().toJson(new BookingResponse(false, "An error has occured."));
     }
 }
