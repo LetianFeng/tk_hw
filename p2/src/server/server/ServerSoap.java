@@ -3,9 +3,10 @@ package server.server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import server.entry.Booking;
+import server.entry.BookingReq;
 import server.entry.BookingResponse;
-import server.entry.Service;
+import server.entry.ServiceMsg;
+import hotel.*;
 
 import javax.jws.WebService;
 import java.lang.reflect.Type;
@@ -39,8 +40,8 @@ public class ServerSoap implements ServerSoapInterface{
     @Override
     public String postBookingEntry(String bookingEntry) {
         try {
-            Type listType = new TypeToken<ArrayList<Booking>>(){}.getType();
-            ArrayList<Booking> bookingList = new Gson().fromJson(bookingEntry, listType);
+            Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
+            ArrayList<BookingReq> bookingList = new Gson().fromJson(bookingEntry, listType);
             BookingResponse response = server.getServerLogic().postBookingList(bookingList);
             return new Gson().toJson(response);
         } catch (Exception e) {

@@ -20,5 +20,5 @@ public class DBConfig {
 	public static String serviceAmountTag = "amount";
 	public static String serviceDescriptionTag = "description";
 	
-	public static String dateFormat = "d-MMM-yyyy";
+	public static String dateFormat = "yyyy-MM-dd";
 }

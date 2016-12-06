@@ -9,9 +9,10 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import server.entry.Booking;
+import server.entry.BookingReq;
 import server.entry.BookingResponse;
-import server.entry.Service;
+//import server.entry.Service;
+import hotel.*;
 
 @Path("/booking")
 public class ServerRest {
@@ -44,8 +45,8 @@ public class ServerRest {
     public String postBookingEntry(String bookingEntry) {
 
         try {
-            Type listType = new TypeToken<ArrayList<Booking>>(){}.getType();
-            ArrayList<Booking> bookingList = new Gson().fromJson(bookingEntry, listType);
+            Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
+            ArrayList<BookingReq> bookingList = new Gson().fromJson(bookingEntry, listType);
             BookingResponse response = server.getServerLogic().postBookingList(bookingList);
             return new Gson().toJson(response);
         } catch (Exception e) {

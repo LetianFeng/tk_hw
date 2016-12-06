@@ -32,6 +32,30 @@ public class BookingManager {
 		return this.bookings;
 	}
 	
+	public ArrayList<Booking> getBookingsByService(UUID serviceId, ArrayList<Booking> bl) {
+		ArrayList<Booking> arr = new ArrayList<Booking>();
+		for (Booking b : bl) {
+			if (b.getServiceId() == serviceId) {
+				arr.add(b);
+			}
+		}
+		return arr;
+	}
+	
+	public ArrayList<Booking> filterBookingsByDates(Date start, Date end, ArrayList<Booking> bl) {
+		ArrayList<Booking> arr = new ArrayList<Booking>();
+		for (Booking b : bl) {
+			if (!(b.getDate().before(start) || b.getDate().after(end))) {
+				arr.add(b);
+			}
+		}
+		return arr;
+	}
+	
+	public Document getDoc() {
+		return this.bookingDoc;
+	}
+	
 	public void createBookings(ArrayList<Booking> bookings) throws TransformerException {
 		
 		Element root = this.bookingDoc.getDocumentElement();

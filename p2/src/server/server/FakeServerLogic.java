@@ -1,21 +1,23 @@
 package server.server;
 
-import server.entry.Booking;
+import server.entry.BookingReq;
 import server.entry.BookingResponse;
-import server.entry.Service;
+//import server.entry.Service;
+import hotel.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 class FakeServerLogic implements ServerLogic {
 
     private ArrayList<Service> fakeList = new ArrayList<>();
 
     FakeServerLogic() {
-        Service singleRoom = new Service(1, "single rooms", 20.99, true, "rooms for one person", 8);
-        Service doubleRoom = new Service(2, "double rooms", 30.99, true, "rooms for two persons", 11);
-        Service rentCar = new Service(3, "rent car", 20.00, false, "rent for a car", 3);
-        Service breakfast = new Service(4, "breakfast", 3.00, false, "reserve the breakfast", Integer.MAX_VALUE);
+        Service singleRoom = new Service(UUID.randomUUID(), "Single Room", true, 2, 50.99, "rooms for one person");
+        Service doubleRoom = new Service(UUID.randomUUID(), "Double Room", true, 1, 50.99, "rooms for two persons");
+        Service rentCar = new Service(UUID.randomUUID(), "Rental Car", false, 20, 50.99, "rent for a car");
+        Service breakfast = new Service(UUID.randomUUID(), "Breakfast", false, Integer.MAX_VALUE, 50.99, "reserve the breakfast");
         fakeList.add(singleRoom);
         fakeList.add(doubleRoom);
         fakeList.add(rentCar);
@@ -23,7 +25,7 @@ class FakeServerLogic implements ServerLogic {
     }
 
     @Override
-    public BookingResponse postBookingList(ArrayList<Booking> bookingList) {
+    public BookingResponse postBookingList(ArrayList<BookingReq> bookingList) {
         return new BookingResponse(true, null);
         //return new BookingResponse(false, "rent car");
     }

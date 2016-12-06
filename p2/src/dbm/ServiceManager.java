@@ -28,6 +28,10 @@ public class ServiceManager {
 		return this.services;
 	}
 	
+	public Document getDoc() {
+		return this.serviceDoc;
+	}
+	
 	public ArrayList<Service> loadServiceList(Document doc) throws ParseException {
 		
 		ArrayList<Service> arr = new ArrayList<Service>();
@@ -38,7 +42,7 @@ public class ServiceManager {
 			String type = XMLUtil.getTagVal(ele, DBConfig.serviceTypeTag);
 			Boolean isRoom = XMLUtil.getTagVal(ele, DBConfig.serviceIsRoomTag).equalsIgnoreCase("true") ? true : false;
 			int amount = Integer.parseInt(XMLUtil.getTagVal(ele, DBConfig.serviceAmountTag));
-			float price = Float.parseFloat(XMLUtil.getTagVal(ele, DBConfig.servicePriceTag));
+			double price = Double.parseDouble(XMLUtil.getTagVal(ele, DBConfig.servicePriceTag));
 			String description = XMLUtil.getTagVal(ele, DBConfig.serviceDescriptionTag);
 			Service service = new Service(id, type, isRoom, amount, price, description);
 			arr.add(service);

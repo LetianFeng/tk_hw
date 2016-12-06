@@ -3,19 +3,19 @@
   <booking id="3ec7d6c8-b7e3-463a-9766-64a8236fed6b">
     <bookingid>1b8d51fe-719b-4646-bb00-fca717f7da17</bookingid>
     <serviceid>6a1742ce-a332-4240-ba42-5760ae05f849</serviceid>
-    <date>25-Dec-2016</date>
+    <date>2016-12-25</date>
     <email>fake@email.com</email>
   </booking>
   <booking id="d00b1880-6b25-4d3b-9e74-d32ce5db3a6b">
     <bookingid>1b8d51fe-719b-4646-bb00-fca717f7da17</bookingid>
     <serviceid>dad2b45b-1feb-471b-820f-d430ed2a74d1</serviceid>
-    <date>25-Dec-2016</date>
+    <date>2016-12-25</date>
     <email>fake@email.com</email>
   </booking>
   <booking id="1fa5ef6f-a2ce-4957-a843-9d28c5d49067">
     <bookingid>33c295f8-cce9-4413-96e5-da9418494d89</bookingid>
     <serviceid>dad2b45b-1feb-471b-820f-d430ed2a74d1</serviceid>
-    <date>25-Dec-2016</date>
+    <date>2016-12-25</date>
     <email>oscar_lee@live.cn</email>
   </booking>
 </bookings>
