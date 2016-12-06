@@ -59,7 +59,7 @@ public class ClientRest implements ClientGUIInterface {
         System.out.println("Start: " + dateFormat.format(startDate));
         System.out.println("End: " + dateFormat.format(endDate));
 
-        if (startDate.before(endDate)) {
+        if (dateBefore(startDate, endDate)) {
 
             ClientConfig config = new DefaultClientConfig();
             Client client = Client.create(config);
@@ -77,7 +77,7 @@ public class ClientRest implements ClientGUIInterface {
     }
 
     private void dateSetNull(Date date) {
-        date.setHours(1);
+        date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
     }
@@ -131,7 +131,6 @@ public class ClientRest implements ClientGUIInterface {
         end = end.replaceAll("-", "");
         int startInt = Integer.parseInt(start);
         int endInt = Integer.parseInt(end);
-        System.out.println(startInt + " " + endInt);
         return startInt < endInt;
     }
 

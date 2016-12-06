@@ -61,7 +61,7 @@ public class ClientSoap implements ClientGUIInterface{
         System.out.println("Start: " + dateFormat.format(startDate));
         System.out.println("End: " + dateFormat.format(endDate));
 
-        if (startDate.before(endDate)) {
+        if (dateBefore(startDate, endDate)) {
 
             String availableServices = soapServer.getAvailableService(dateFormat.format(startDate), dateFormat.format(endDate));
 
@@ -77,7 +77,7 @@ public class ClientSoap implements ClientGUIInterface{
     }
 
     private void dateSetNull(Date date) {
-        date.setHours(1);
+        date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
     }
@@ -94,16 +94,11 @@ public class ClientSoap implements ClientGUIInterface{
             for (String serviceName : serviceMap.keySet()) {
 
                 if (service.getType().equals(serviceName) && service.getAmount()>= serviceMap.get(serviceName)) {
-                    System.out.println("Start date: " + startDate);
-                    System.out.println("End date: " + endDate);
 
                     Date bookDate = (Date) startDate.clone();
                     while (dateBefore(bookDate, endDate)) {
-                        System.out.println("Current date: " + bookDate);
-                        System.out.println("End date: " + endDate);
                         for (int i = 0; i < serviceMap.get(serviceName); i++) {
                             BookingReq bookingReq = new BookingReq(service.getId(), email, (Date) bookDate.clone());
-                            System.out.println("add booking: " + bookingReq);
                             bookingReqList.add(bookingReq);
                         }
                         bookDate.setDate(bookDate.getDate()+1);
@@ -112,11 +107,6 @@ public class ClientSoap implements ClientGUIInterface{
             }
         }
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        String bookingReqJSON = gson.toJson(bookingReqList);
-
-
-        System.out.println(bookingReqJSON);
-
 
         String bookingResponse = soapServer.postBookingEntry(gson.toJson(bookingReqList));
         BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
@@ -135,7 +125,6 @@ public class ClientSoap implements ClientGUIInterface{
         end = end.replaceAll("-", "");
         int startInt = Integer.parseInt(start);
         int endInt = Integer.parseInt(end);
-        System.out.println(startInt + " " + endInt);
         return startInt < endInt;
     }
 }
