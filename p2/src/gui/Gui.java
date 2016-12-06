@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.HashMap;
 import com.toedter.calendar.JDateChooser;
-import server.entry.Service;
+import hotel.Service;
 import client.ClientGUIInterface;
 
 public class Gui implements GuiClientInterface, Runnable {
@@ -115,11 +116,7 @@ public class Gui implements GuiClientInterface, Runnable {
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					bookingFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				bookingFrame.setVisible(true);
 			}
 		});
 	}
@@ -223,9 +220,13 @@ public class Gui implements GuiClientInterface, Runnable {
 					dateChooser2.setEnabled(false);
 					System.out.println("date1: \n"+checkinDate.getDate());
 					System.out.println("date1: \n"+checkoutDate.getDate());
-					/*
-					client.searchRooms(checkinDate, checkoutDate);
-					*/
+
+					try {
+						client.searchRooms(checkinDate, checkoutDate);
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
+
 				}
 			}
 		});
@@ -333,7 +334,7 @@ public class Gui implements GuiClientInterface, Runnable {
 		final JComboBox<String> combo2 = new JComboBox<String>();
 		final JTextField textField = new JTextField();
 		if(rentCarService != null) {
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(rentCarService.availableAmount));
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(rentCarService.getAmount()));
 			combo1.setModel(model);
 		}
 		else {
@@ -341,7 +342,7 @@ public class Gui implements GuiClientInterface, Runnable {
 			combo1.setModel(model);
 		}
 		if(breakfastService != null) {
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(breakfastService.availableAmount));
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(breakfastService.getAmount()));
 			combo2.setModel(model);
 		}
 		else {
@@ -385,7 +386,7 @@ public class Gui implements GuiClientInterface, Runnable {
 		for(int i = 1; i < num + 1; i++) {
 			c.gridx = 0;
 			c.gridy = i;
-			JRadioButton radioBtn = new JRadioButton(roomList.get(i-1).serviceName);
+			JRadioButton radioBtn = new JRadioButton(roomList.get(i-1).getType());
 			group.add(radioBtn);
 			radioBtn.addItemListener(new ItemListener() {
 			    public void itemStateChanged(ItemEvent e) {
@@ -401,17 +402,17 @@ public class Gui implements GuiClientInterface, Runnable {
 			roomPanel.add(radioBtn);
 			c.gridx = 1;
 			c.gridy = i;
-			JLabel labelPrice = new JLabel(Double.toString(roomList.get(i-1).price));
+			JLabel labelPrice = new JLabel(Double.toString(roomList.get(i-1).getPrice()));
 			layout.setConstraints(labelPrice, c);
 			roomPanel.add(labelPrice);
 			c.gridx = 2;
 			c.gridy = i;
-			JLabel labelAmount = new JLabel(Double.toString(roomList.get(i-1).availableAmount));
+			JLabel labelAmount = new JLabel(Double.toString(roomList.get(i-1).getAmount()));
 			layout.setConstraints(labelAmount, c);
 			roomPanel.add(labelAmount);
 			c.gridx = 3;
 			c.gridy = i;
-			JComboBox<String> combo = new JComboBox<String>(getComboArray(roomList.get(i-1).availableAmount));
+			JComboBox<String> combo = new JComboBox<String>(getComboArray(roomList.get(i-1).getAmount()));
 			layout.setConstraints(combo, c);
 			roomPanel.add(combo);
 			roomMap.put(radioBtn.getText(), combo);
@@ -451,7 +452,7 @@ public class Gui implements GuiClientInterface, Runnable {
 						else {
 							label7.setForeground(Color.black);
 						}
-						//client.sendBooking(booking, textField.getText());
+						client.sendBooking(booking, textField.getText());
 						Iterator<String> tempIter = booking.keySet().iterator();
 						while(tempIter.hasNext()) {
 							String key = tempIter.next();
@@ -572,15 +573,15 @@ public class Gui implements GuiClientInterface, Runnable {
 		breakfastService = null;
 		rentCarService = null;
 		for(Service service : serviceList) {
-			if(service.isRoom) {
+			if(service.isRoom()) {
 				roomList.add(service);
 			}
-			else if(service.serviceName == "rentCar")//question
+			else if(service.getType().equals("Rental Car"))//question
 				rentCarService = service;
-			else if(service.serviceName == "breakfast")
+			else if(service.getType().equals("Breakfast"))
 				breakfastService = service;
 			else
-				System.out.println("Wrong service type, service name is: "+service.serviceName);
+				System.out.println("Wrong service type, service name is: "+service.getType());
 		}
 	}
 	
@@ -592,6 +593,12 @@ public class Gui implements GuiClientInterface, Runnable {
 		if(max == 0) {
 			String[] strArray = new String[1];
 			strArray[0] = "0";
+			return strArray;
+		}
+		if(max == Integer.MAX_VALUE) {
+			String[] strArray = new String[2];
+			strArray[0] = "1";
+			strArray[1] = "2";
 			return strArray;
 		}
 			
