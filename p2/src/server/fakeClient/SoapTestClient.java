@@ -14,6 +14,11 @@ public class SoapTestClient {
     private static String testFailBookingEntry = "[{\"serviceId\": \"dad2b45b-1feb-471b-820f-d430ed2a74d1\",\"email\": \"test@example.com\"," +
             "\"date\":\"2016-12-25\"},{\"serviceId\": \"77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec\"," +
             "\"email\": \"test@example.com\",\"date\":\"2016-12-25\"}]";
+    
+    private static String testBookingEntry = "[{\"serviceId\": \"dad2b45b-1feb-471b-820f-d430ed2a74d1\",\"email\": \"test@example.com\"," +
+            "\"date\":\"2017-12-27\"},{\"serviceId\": \"dad2b45b-1feb-471b-820f-d430ed2a74d1\"," +
+            "\"email\": \"test@example.com\",\"date\":\"2017-12-28\"},{\"serviceId\": \"dad2b45b-1feb-471b-820f-d430ed2a74d1\"," +
+            "\"email\": \"test@example.com\",\"date\":\"2017-12-29\"}]";
 
     public static void main(String[] args) throws Exception {
 
@@ -24,7 +29,7 @@ public class SoapTestClient {
         ServerSoapInterface soap = service.getPort(ServerSoapInterface.class);
 
         //System.out.println(soap.getAvailableService("2016-12-25", "2016-12-25"));
-        System.out.println(soap.postBookingEntry(SoapTestClient.testSuccBookingEntry));
+        System.out.println(soap.postBookingEntry(SoapTestClient.testBookingEntry));
     }
 
 }

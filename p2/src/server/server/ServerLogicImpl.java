@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,14 +33,24 @@ public class ServerLogicImpl implements ServerLogic{
     	Date start = null;
     	Date end = null;
     	ArrayList<Booking> bookings = new ArrayList<Booking>();
-    	for (BookingReq b : bookingList) {
+    	
+    	Collections.sort(bookingList, new Comparator<BookingReq>(){
+		     public int compare(BookingReq b1, BookingReq b2){
+		         return b1.date.compareTo(b2.date);
+		     }
+		});
+    	
+    	start = bookingList.get(0).date;
+    	end = bookingList.get(bookingList.size() - 1).date;
+    	
+    	/*for (BookingReq b : bookingList) {
     		if (start == null || b.date.before(start)) {
     			start = b.date;
     		}
     		if (end == null || b.date.after(end)) {
     			end = b.date;
     		}
-    	}
+    	}*/
     	
     	try {
 			bm = new BookingManager();
@@ -45,12 +58,47 @@ public class ServerLogicImpl implements ServerLogic{
 			Double price = 0.00;
 			ArrayList<Service> services = requestAvailableService(start, end);
 			HashMap<UUID, Service> serviceMap = new HashMap<UUID, Service>();
+			HashMap<UUID, Integer> serviceCounter = new HashMap<UUID, Integer>();
 			for (Service s : services) {
 			   serviceMap.put(s.getId(), s);
+			   serviceCounter.put(s.getId(), 0);
 			   System.out.println("Available Service: " + s.toString());
 			}
+			
+			Date currentDate = null;
 			for (BookingReq b : bookingList) {
-				System.out.println(b.toString());
+				
+				if (currentDate == null) {
+					currentDate = b.date;
+				}
+				
+				if (!b.date.equals(currentDate)) {
+					
+					Iterator<Entry<UUID, Integer>> it = serviceCounter.entrySet().iterator();
+					while (it.hasNext()) {
+						Map.Entry<UUID, Integer> e = (Map.Entry<UUID, Integer>)it.next();
+						if (e.getValue() > serviceMap.get(e.getKey()).getAmount()) {
+							return new BookingResponse(false, "Not enough " + serviceMap.get(e.getKey()).getType() + " available.");
+						}
+						e.setValue(0);
+					}
+					currentDate = b.date;
+				}
+							
+				Service s_t = serviceMap.get(b.serviceId);
+				if (s_t != null && s_t.getAmount() > 0) {
+					bookings.add(new Booking(bid, b.serviceId, b.date, b.email));
+					//s_t.setAmount(s_t.getAmount() - 1);
+					serviceCounter.put(s_t.getId(), serviceCounter.get(s_t.getId()) + 1);
+					price += s_t.getPrice();
+				} else {
+					sm = new ServiceManager();
+					Service req_service = sm.getServiceById(b.serviceId);
+					String service_name = req_service == null ? "service" : req_service.getType();
+					return new BookingResponse(false, "Not enough " + service_name + " available.");
+				}
+				
+				/*System.out.println(b.toString());
 				Service s_t = serviceMap.get(b.serviceId);
 				if (s_t != null && s_t.getAmount() > 0) {
 					bookings.add(new Booking(bid, b.serviceId, b.date, b.email));
@@ -61,7 +109,7 @@ public class ServerLogicImpl implements ServerLogic{
 					Service req_service = sm.getServiceById(b.serviceId);
 					String service_name = req_service == null ? "service" : req_service.getType();
 					return new BookingResponse(false, "Not enough " + service_name + " available.");
-				}		
+				}	*/	
 			}
 			bm.createBookings(bookings);
 	        return new BookingResponse(true, price.toString());
@@ -79,6 +127,8 @@ public class ServerLogicImpl implements ServerLogic{
 			e.printStackTrace();
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
     	 	

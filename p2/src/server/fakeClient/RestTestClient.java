@@ -40,7 +40,7 @@ public class RestTestClient {
         System.out.println(availableServices);
         
         service = client.resource(REST_URI).path(BOOKING_PATH);
-        String bookingResponce = postOutputAsJson(service, testSuccBookingEntry);
+        String bookingResponce = postOutputAsJson(service, testFailBookingEntry);
         System.out.print(bookingResponce);
         
     }
