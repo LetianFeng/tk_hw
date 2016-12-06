@@ -7,7 +7,7 @@ import gui.Gui;
 import gui.GuiClientInterface;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
-import server.server.ServerSoapInterface;
+import server.ServerSoapInterface;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -40,7 +40,7 @@ public class ClientSoap implements ClientGUIInterface{
 
         // soap server
         URL url = new URL("http://localhost:9999/booking?wsdl");
-        QName qname = new QName("http://server.server/", "ServerSoapService");
+        QName qname = new QName("http://server/", "ServerSoapService");
         Service service = Service.create(url, qname);
         soapServer = service.getPort(ServerSoapInterface.class);
 
@@ -80,14 +80,6 @@ public class ClientSoap implements ClientGUIInterface{
         date.setHours(1);
         date.setMinutes(0);
         date.setSeconds(0);
-    }
-
-    @Override
-    public void getExtraServices() {
-        System.out.println();
-        System.out.println("Get extra services: ");
-        System.out.println("Following extra services are available: ");
-        //gui.drawExtraServices(serviceList);
     }
 
     @Override
@@ -145,10 +137,5 @@ public class ClientSoap implements ClientGUIInterface{
         int endInt = Integer.parseInt(end);
         System.out.println(startInt + " " + endInt);
         return startInt < endInt;
-    }
-
-    @Override
-    public void CreateNewBooking() {
-
     }
 }

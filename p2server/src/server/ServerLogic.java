@@ -1,8 +1,7 @@
-package server.server;
+package server;
 
-import server.entry.BookingReq;
-import server.entry.BookingResponse;
-//import server.entry.Service;
+import bookingEntry.BookingReq;
+import bookingEntry.BookingResponse;
 
 import hotel.*;
 

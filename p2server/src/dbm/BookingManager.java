@@ -83,10 +83,7 @@ public class BookingManager {
 		}
 		XMLUtil.saveXML(this.bookingDoc, DBConfig.bookingDir);
 	}
-	
-	//public Booking selectBooking() {
-	//	return new Booking();
-	//}
+
 
 	public ArrayList<Booking> loadBookingList(Document doc) throws ParseException {
 		

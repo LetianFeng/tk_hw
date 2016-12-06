@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bookings>
+<booking id="5cc0a600-df91-4c5c-bd17-3eba7b72d2f4">
+    <bookingid>d159b289-b667-439c-807a-f5fb551b5dc0</bookingid>
+    <serviceid>77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec</serviceid>
+    <date>2016-12-05</date>
+    <email>aaa</email>
+  </booking>
+  <booking id="fedd1e62-7471-4766-af8a-910a1a8b1a6e">
+    <bookingid>d159b289-b667-439c-807a-f5fb551b5dc0</bookingid>
+    <serviceid>77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec</serviceid>
+    <date>2016-12-05</date>
+    <email>aaa</email>
+  </booking>
+  <booking id="a2c945b1-36dd-452f-aeda-0e54073571fe">
+    <bookingid>d159b289-b667-439c-807a-f5fb551b5dc0</bookingid>
+    <serviceid>77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec</serviceid>
+    <date>2016-12-05</date>
+    <email>aaa</email>
+  </booking>
+  <booking id="6257a2cb-94ba-4329-b1a3-70c3313ffbc8">
+    <bookingid>d159b289-b667-439c-807a-f5fb551b5dc0</bookingid>
+    <serviceid>77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec</serviceid>
+    <date>2016-12-05</date>
+    <email>aaa</email>
+  </booking>
+</bookings>

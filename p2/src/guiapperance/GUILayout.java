@@ -15,10 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import com.toedter.calendar.JDateChooser;
-import server.entry.Service;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -227,27 +225,6 @@ public class GUILayout {
         chooseRoomTableModel.addColumn("Amount");
         chooseRoomTableModel.addColumn("Price");
 
-        //following for test drawRooms
-        Service service1 = new Service(1, "single room", 20.00, true, "good room for one person.", 30);
-        Service service2 = new Service(2, "double room", 30.00, true, "good room for two persons.", 20);
-        ArrayList<Service> services = new ArrayList<>();
-        services.add(service1);
-        services.add(service2);
-        drawRooms(services);
-        drawRooms(services);
-        drawRooms(services);
-    }
-
-    void drawRooms(ArrayList<Service> serviceList) {
-        chooseRoomTableModel.setRowCount(0);
-        for (int i = 0; i < serviceList.size(); i++) {
-            Service currentService = serviceList.get(i);
-            chooseRoomTableModel.addRow(new Object[0]);
-            chooseRoomTableModel.setValueAt(false, i, 0);
-            chooseRoomTableModel.setValueAt(currentService.serviceName, i, 1);
-            chooseRoomTableModel.setValueAt(String.valueOf(currentService.availableAmount), i, 2);
-            chooseRoomTableModel.setValueAt(String.valueOf(currentService.price), i, 3);
-        }
     }
 
     public void invalidDate(String errorInfo) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<services>
+  <service id="dad2b45b-1feb-471b-820f-d430ed2a74d1">
+    <type>Single Room</type>
+    <isroom>true</isroom>
+    <amount>2</amount>
+    <price>50.99</price>
+    <description>This is a very nice single room.</description>
+  </service>
+  <service id="6a1742ce-a332-4240-ba42-5760ae05f849">
+    <type>Breakfast</type>
+    <isroom>false</isroom>
+    <amount>2147483647</amount>
+    <price>6.99</price>
+    <description>Coffee and tea.</description>
+  </service>
+  <service id="77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec">
+      <type>Double Room</type>
+      <isroom>true</isroom>
+      <amount>7</amount>
+      <price>99.99</price>
+      <description>This room has two beds.</description>
+  </service>
+  <service id="56aff76b-0fd3-4ef3-865b-d5479a25c9f5">
+    <type>Rental Car</type>
+    <isroom>false</isroom>
+    <amount>20</amount>
+    <price>199.99</price>
+    <description>Benz and QQ.</description>
+  </service>
+</services>

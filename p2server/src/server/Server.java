@@ -1,11 +1,10 @@
-package server.server;
+package server;
 
 class Server {
 
     private ServerLogic serverLogic;
 
     Server() {
-        //serverLogic = new FakeServerLogic();
     	serverLogic = new ServerLogicImpl();
     }
 

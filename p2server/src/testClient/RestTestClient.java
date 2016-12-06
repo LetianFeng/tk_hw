@@ -1,14 +1,7 @@
-package server.fakeClient;
-
-import server.server.ServerSoapInterface;
-
-import java.net.URL;
+package testClient;
 
 import javax.ws.rs.core.MediaType;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

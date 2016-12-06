@@ -1,4 +1,4 @@
-package server.server;
+package server;
 
 import java.io.IOException;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
