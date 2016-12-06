@@ -35,7 +35,7 @@ public class BookingManager {
 	public ArrayList<Booking> getBookingsByService(UUID serviceId, ArrayList<Booking> bl) {
 		ArrayList<Booking> arr = new ArrayList<Booking>();
 		for (Booking b : bl) {
-			if (b.getServiceId() == serviceId) {
+			if (b.getServiceId().equals(serviceId)) {
 				arr.add(b);
 			}
 		}
@@ -81,7 +81,7 @@ public class BookingManager {
 			
 			root.appendChild(booking);
 		}
-		XMLUtil.saveXML(this.bookingDoc);
+		XMLUtil.saveXML(this.bookingDoc, DBConfig.bookingDir);
 	}
 	
 	//public Booking selectBooking() {
@@ -96,7 +96,7 @@ public class BookingManager {
 			Element ele = (Element)bookings.item(i); 
 			UUID id = UUID.fromString(XMLUtil.getAttrVal(ele, DBConfig.bookingIdAttr));
 			UUID bookingId = UUID.fromString(XMLUtil.getTagVal(ele, DBConfig.bookingIdTag));
-			UUID serviceId = UUID.fromString(XMLUtil.getTagVal(ele, DBConfig.bookingIdTag));
+			UUID serviceId = UUID.fromString(XMLUtil.getTagVal(ele, DBConfig.bookingServiceIdTag));
 			Date date = XMLUtil.stringToDate(XMLUtil.getTagVal(ele, DBConfig.bookingDateTag));
 			String email = XMLUtil.getTagVal(ele, DBConfig.bookingEmailTag);
 			Booking booking = new Booking(id, bookingId, serviceId, date, email);

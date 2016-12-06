@@ -14,5 +14,10 @@ public class BookingReq {
         this.email = email;
         this.date = date;
     }
+    
+    @Override
+    public String toString() {
+    	return "Id: " + serviceId.toString() + " email: " + email + " date: " + date.toString();
+    }
 
 }

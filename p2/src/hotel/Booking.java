@@ -48,4 +48,11 @@ public class Booking {
 	public String getEmail() {
 		return this.email;
 	}
+	
+	@Override
+	public String toString() {
+		return "serviceId: " + this.serviceId.toString()
+			 + " date: " + this.date.toString()
+			 + " email: " + this.email;
+	}
 }

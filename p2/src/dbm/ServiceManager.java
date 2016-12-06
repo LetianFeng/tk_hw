@@ -32,6 +32,15 @@ public class ServiceManager {
 		return this.serviceDoc;
 	}
 	
+	public Service getServiceById(UUID serviceId) {
+		for (Service s : this.services) {
+			if (s.getId().equals(serviceId)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<Service> loadServiceList(Document doc) throws ParseException {
 		
 		ArrayList<Service> arr = new ArrayList<Service>();

@@ -56,4 +56,9 @@ public class Service {
 	public String getDescription() {
 		return this.description;
 	}
+	
+	@Override
+	public String toString() {
+		return "Id: " + this.id.toString() + " type: " + this.type + " amount: " + this.amount;
+	}
 }

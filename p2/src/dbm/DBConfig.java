@@ -2,8 +2,8 @@ package dbm;
 
 public class DBConfig {
 
-	public static String bookingDir = "../../db/booking.xml";
-	public static String serviceDir = "../../db/service.xml";
+	public static String bookingDir = "./db/booking.xml";
+	public static String serviceDir = "./db/service.xml";
 	
 	public static String bookingTag = "booking";
 	public static String bookingIdAttr = "id";

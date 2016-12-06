@@ -43,7 +43,7 @@ public class XMLUtil {
 			return;
 		}
 		parent.appendChild(ele);
-		saveXML(doc);
+		//saveXML(doc);
 	}
 	
 	public static String getAttrVal(Element ele, String attr) {
@@ -98,13 +98,15 @@ public class XMLUtil {
 		return formatter.format(date);
 	}
 	
-	public static void saveXML(Document doc) 
+	public static void saveXML(Document doc, String docpath) 
 			throws TransformerException {
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File(doc.getDocumentURI()));
+		StreamResult result = new StreamResult(new File(docpath));
 		transformer.transform(source, result);
 	}
 	

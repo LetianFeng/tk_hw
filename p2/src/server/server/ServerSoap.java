@@ -1,6 +1,7 @@
 package server.server;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import server.entry.BookingReq;
@@ -41,11 +42,13 @@ public class ServerSoap implements ServerSoapInterface{
     public String postBookingEntry(String bookingEntry) {
         try {
             Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
-            ArrayList<BookingReq> bookingList = new Gson().fromJson(bookingEntry, listType);
+            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            ArrayList<BookingReq> bookingList = gson.fromJson(bookingEntry, listType);
             BookingResponse response = server.getServerLogic().postBookingList(bookingList);
             return new Gson().toJson(response);
         } catch (Exception e) {
             System.out.print("convert failed!");
+            e.printStackTrace();
         }
         return "invalid booking entry";
     }
