@@ -10,14 +10,16 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import server.entry.Booking;
-import server.entry.Service;
+import hotel.Booking;
+import hotel.Service;
+import server.entry.BookingReq;
 
 public class ClientRest implements ClientGUIInterface {
 
@@ -55,7 +57,7 @@ public class ClientRest implements ClientGUIInterface {
             WebResource service = client.resource(REST_URI).path(AVAILABLE_PATH).path(dateFormat.format(startDate) + "/" + dateFormat.format(endDate));
             String availableServices = getOutputAsJson(service);
 
-            Type listType = new TypeToken<ArrayList<Service>>() {
+            Type listType = new TypeToken<ArrayList<hotel.Service>>() {
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
@@ -74,40 +76,18 @@ public class ClientRest implements ClientGUIInterface {
     }
 
     @Override
-    public void calculateTotalPrice(Map<String, Integer> serviceMap) {
-
-        double totalPrice = 0;
-
-        for (server.entry.Service service: serviceList) {
-
-            for (String serviceName : serviceMap.keySet()) {
-
-                if (service.serviceName.equals(serviceName) && service.availableAmount>= serviceMap.get(serviceName)) {
-                    totalPrice += service.price * serviceMap.get(serviceName);
-                    serviceMap.remove(serviceName);
-                }
-            }
-        }
-
-        long diff = endDate.getTime() - startDate.getTime();
-        long days = diff / (1000 * 60 * 60 * 24);
-
-        gui.drawTotalPrice(totalPrice * days);
-    }
-
-    @Override
     public void sendBooking(Map<String, Integer> serviceMap, String email) {
-        ArrayList<Booking> bookingList = new ArrayList<>();
+        ArrayList<BookingReq> bookingList = new ArrayList<>();
 
-        for (server.entry.Service service : serviceList) {
+        for (hotel.Service service : serviceList) {
 
             for (String serviceName : serviceMap.keySet()) {
 
-                if (service.serviceName.equals(serviceName) && service.availableAmount>= serviceMap.get(serviceName)) {
+                if (service.getType().equals(serviceName) && service.getAmount()>= serviceMap.get(serviceName)) {
                     Date bookDate = (Date) startDate.clone();
                     while (bookDate.before(endDate)) {
                         for (int i = 0; i < serviceMap.get(serviceName); i++) {
-                            Booking booking = new Booking(service.serviceId, email, bookDate);
+                            BookingReq booking = new BookingReq(service.getId(), email, bookDate);
                             bookingList.add(booking);
                         }
                         bookDate.setDate(bookDate.getDate()+1);
@@ -119,12 +99,12 @@ public class ClientRest implements ClientGUIInterface {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(REST_URI).path(BOOKING_PATH);
-
-        String bookingResponce = postOutputAsJson(service, new Gson().toJson(bookingList));
-        if (bookingResponce.equals("invalid booking entry"))
-            gui.drawFailure(bookingResponce);
+        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        String bookingResponse = postOutputAsJson(service, gson.toJson(bookingList));
+        if (bookingResponse.equals(""))
+            gui.drawFailure(bookingResponse);
         else
-            gui.drawSuccessDetails(bookingResponce);
+            gui.drawSuccessDetails(bookingResponse);
     }
 
     @Override

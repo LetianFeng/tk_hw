@@ -13,9 +13,6 @@ public interface ClientGUIInterface {
     // change to next tab and draw services
     void getExtraServices();
 
-    // calculate total price with a button in gui or caused by number changing in gui
-    void calculateTotalPrice(Map<String, Integer> serviceMap);
-
     //  <String serviceName, Integer serviceAmount>
     // call success or failure method in gui depending on feedback from server
     void sendBooking(Map<String, Integer>serviceMap, String email);

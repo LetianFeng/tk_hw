@@ -1,6 +1,6 @@
 package client;
 
-import server.entry.Service;
+import hotel.Service;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -12,15 +12,14 @@ public class GUI implements  GUIInterface{
 
     public static void main(String[] args) throws MalformedURLException {
         GUI gui = new GUI();
-//      ClientSoap client = new ClientSoap(gui);
-        ClientRest client = new ClientRest(gui);
-        Date startDate = new Date(2016-1900, 12-1, 9);
-        Date endDate = new Date(2016-1900, 12-1, 11);
+        ClientSoap client = new ClientSoap(gui);
+//      ClientRest client = new ClientRest(gui);
+        Date startDate = new Date(2016-1900, 12-1, 3);
+        Date endDate = new Date(2016-1900, 12-1, 4);
         client.searchRooms(startDate, endDate);
         client.getExtraServices();
         Map<String, Integer> serviceMap= new HashMap<String, Integer>();
-        serviceMap.put("single rooms", 7);
-        client.calculateTotalPrice(serviceMap);
+        serviceMap.put("Double Room", 1);
         client.sendBooking(serviceMap, "abc@my.email.com");
     }
 
@@ -40,19 +39,19 @@ public class GUI implements  GUIInterface{
     }
 
     @Override
-    public void drawRooms(ArrayList<Service> serviceList) {
-        for (Service room : serviceList)
-            if (room.isRoom)
-                System.out.println("Name: " + room.serviceName + "; Price: " + room.price + "; Amount: " +
-                        room.availableAmount + "; Description: " + room.description);
+    public void drawRooms(ArrayList<hotel.Service> serviceList) {
+        for (hotel.Service room : serviceList)
+            if (room.isRoom())
+                System.out.println("Name: " + room.getType() + "; Price: " + room.getPrice() + "; Amount: " +
+                        room.getAmount() + "; Description: " + room.getDescription());
     }
 
     @Override
     public void drawExtraServices(ArrayList<Service> serviceList) {
         for (Service service : serviceList)
-            if (!service.isRoom)
-                System.out.println("Name: " + service.serviceName + "; Price: " + service.price + "; Amount: " +
-                        service.availableAmount + "; Description: " + service.description);
+            if (!service.isRoom())
+                System.out.println("Name: " + service.getType() + "; Price: " + service.getPrice()+ "; Amount: " +
+                        service.getAmount()+ "; Description: " + service.getDescription());
     }
 
     @Override

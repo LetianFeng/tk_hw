@@ -1,7 +1,5 @@
 package client;
 
-import server.entry.Service;
-
 import java.util.ArrayList;
 
 public interface GUIInterface {
@@ -12,9 +10,9 @@ public interface GUIInterface {
 
     void initializeTab(String tabName); // clean tab and draw necessary things, such as hints for input, buttons...
 
-    void drawRooms(ArrayList<Service> serviceList); // draw room or extra service
+    void drawRooms(ArrayList<hotel.Service> serviceList); // draw room or extra service
 
-    void drawExtraServices(ArrayList<Service> serviceList);
+    void drawExtraServices(ArrayList<hotel.Service> serviceList);
 
     void drawTotalPrice(double totalPrice);
 
