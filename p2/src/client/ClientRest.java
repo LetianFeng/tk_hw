@@ -17,7 +17,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import hotel.Booking;
+import gui.Gui;
+import gui.GuiClientInterface;
 import hotel.Service;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
@@ -27,13 +28,18 @@ public class ClientRest implements ClientGUIInterface {
     private static final String REST_URI = "http://localhost:9999/booking/";
     private static final String AVAILABLE_PATH = "availableService/";
     private static final String BOOKING_PATH = "bookingEntry/";
-    private GUIInterface gui;
+    private GuiClientInterface gui;
     private Date startDate;
     private Date endDate;
     private ArrayList<Service> serviceList;
 
-    public ClientRest(GUIInterface gui) throws MalformedURLException {
-        this.gui = gui;
+    public static void main(String[] args) throws MalformedURLException {
+        ClientRest clientRest = new ClientRest();
+        clientRest.gui.initializeAll();
+    }
+
+    public ClientRest() throws MalformedURLException {
+        this.gui = new Gui(this);
         startDate = null;
         endDate = null;
         serviceList = new ArrayList<>();
@@ -62,7 +68,7 @@ public class ClientRest implements ClientGUIInterface {
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
-            gui.drawRooms(serviceList);
+            gui.drawService(serviceList);
 
         } else
             gui.invalidDate("invalid date");
@@ -73,7 +79,7 @@ public class ClientRest implements ClientGUIInterface {
         System.out.println();
         System.out.println("Get extra services: ");
         System.out.println("Following extra services are available: ");
-        gui.drawExtraServices(serviceList);
+//        gui.drawExtraServices(serviceList);
     }
 
     @Override
