@@ -25,7 +25,7 @@ public class Test {
 		serviceList.add(service4);
 		serviceList.add(service5);
 		serviceList.add(service6);
-		gui.drawService(serviceList);
+		//gui.drawService(serviceList);
 		Thread.sleep(20000);
 		gui.lockGUIUntilServerFeedBack();
 		Thread.sleep(5000);

@@ -1,8 +1,12 @@
 package client;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import server.entry.Booking;
+import gui.Gui;
+import gui.GuiClientInterface;
+import hotel.Booking;
+import server.entry.BookingReq;
 import server.server.ServerSoapInterface;
 
 import javax.xml.namespace.QName;
@@ -18,13 +22,18 @@ import java.util.Map;
 public class ClientSoap implements ClientGUIInterface{
 
     private ServerSoapInterface soapServer;
-    private GUIInterface gui;
+    private GuiClientInterface gui;
     private Date startDate;
     private Date endDate;
-    private ArrayList<server.entry.Service> serviceList;
+    private ArrayList<hotel.Service> serviceList;
 
-    public ClientSoap(GUIInterface gui) throws MalformedURLException {
-        this.gui = gui;
+    public static void main(String[] args) throws MalformedURLException {
+        ClientSoap clientSoap = new ClientSoap();
+        clientSoap.gui.initializeAll();
+    }
+
+    public ClientSoap() throws MalformedURLException {
+        this.gui = new Gui(this);
         startDate = null;
         endDate = null;
         serviceList = new ArrayList<>();
@@ -53,11 +62,11 @@ public class ClientSoap implements ClientGUIInterface{
 
             String availableServices = soapServer.getAvailableService(dateFormat.format(startDate), dateFormat.format(endDate));
 
-            Type listType = new TypeToken<ArrayList<server.entry.Service>>() {
+            Type listType = new TypeToken<ArrayList<hotel.Service>>() {
             }.getType();
             serviceList = new Gson().fromJson(availableServices, listType);
             System.out.println("Following rooms are available: ");
-            gui.drawRooms(serviceList);
+            gui.drawService(serviceList);
 
         } else
             gui.invalidDate("invalid date");
@@ -69,7 +78,7 @@ public class ClientSoap implements ClientGUIInterface{
         System.out.println();
         System.out.println("Get extra services: ");
         System.out.println("Following extra services are available: ");
-        gui.drawExtraServices(serviceList);
+        //gui.drawExtraServices(serviceList);
     }
 
     @Override
@@ -77,12 +86,12 @@ public class ClientSoap implements ClientGUIInterface{
 
         double totalPrice = 0;
 
-        for (server.entry.Service service: serviceList) {
+        for (hotel.Service service: serviceList) {
 
             for (String serviceName : serviceMap.keySet()) {
 
-                if (service.serviceName.equals(serviceName) && service.availableAmount>= serviceMap.get(serviceName)) {
-                    totalPrice += service.price * serviceMap.get(serviceName);
+                if (service.getType().equals(serviceName) && service.getAmount()>= serviceMap.get(serviceName)) {
+                    totalPrice += service.getPrice() * serviceMap.get(serviceName);
                     serviceMap.remove(serviceName);
                 }
             }
@@ -91,22 +100,22 @@ public class ClientSoap implements ClientGUIInterface{
         long diff = endDate.getTime() - startDate.getTime();
         long days = diff / (1000 * 60 * 60 * 24);
 
-        gui.drawTotalPrice(totalPrice * days);
+        //gui.drawTotalPrice(totalPrice * days);
     }
 
     @Override
     public void sendBooking(Map<String, Integer>serviceMap, String email) {
-        ArrayList<Booking> bookingList = new ArrayList<Booking>();
+        ArrayList<BookingReq> bookingList = new ArrayList<BookingReq>();
 
-        for (server.entry.Service service : serviceList) {
+        for (hotel.Service service : serviceList) {
 
             for (String serviceName : serviceMap.keySet()) {
 
-                if (service.serviceName.equals(serviceName) && service.availableAmount>= serviceMap.get(serviceName)) {
+                if (service.getType().equals(serviceName) && service.getAmount()>= serviceMap.get(serviceName)) {
                     Date bookDate = (Date) startDate.clone();
                     while (bookDate.before(endDate)) {
                         for (int i = 0; i < serviceMap.get(serviceName); i++) {
-                            Booking booking = new Booking(service.serviceId, email, bookDate);
+                            BookingReq booking = new BookingReq(service.getId(), email, bookDate);
                             bookingList.add(booking);
                         }
                         bookDate.setDate(bookDate.getDate()+1);
@@ -115,7 +124,8 @@ public class ClientSoap implements ClientGUIInterface{
             }
         }
 
-        String bookingResponce = soapServer.postBookingEntry(new Gson().toJson(bookingList));
+        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        String bookingResponce = soapServer.postBookingEntry(gson.toJson(bookingList));
         if (bookingResponce.equals("invalid booking entry"))
             gui.drawFailure(bookingResponce);
         else

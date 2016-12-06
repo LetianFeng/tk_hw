@@ -1,7 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
-import server.entry.Service;
+import hotel.Service;
 
 public interface GuiClientInterface {
 
