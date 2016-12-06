@@ -91,6 +91,7 @@ public class Gui implements GuiClientInterface, Runnable {
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.weighty = 1;
 		layout.setConstraints(roomPanel, c);
+		c.anchor = GridBagConstraints.CENTER;
 		bookingFrame.revalidate();
 		bookingFrame.repaint();
 	}
@@ -101,7 +102,8 @@ public class Gui implements GuiClientInterface, Runnable {
 		panel.add(datePanel);
 		c.gridx = 0;
 		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.NONE;
 		layout.setConstraints(datePanel, c);
 		bookingFrame.revalidate();
 		bookingFrame.repaint();
