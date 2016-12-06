@@ -95,7 +95,6 @@ public class ClientSoap implements ClientGUIInterface{
         }
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String bookingResponse = soapServer.postBookingEntry(gson.toJson(bookingReqList));
-        System.out.print(bookingResponse);
         if (bookingResponse.equals("invalid booking entry"))
             gui.drawFailure(bookingResponse);
         else
