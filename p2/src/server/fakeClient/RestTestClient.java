@@ -6,7 +6,7 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-public class TestClient {
+public class RestTestClient {
 
     private static String testSuccBookingEntry = "[{\"serviceId\": \"77bf51e6-b658-40b4-8fb0-f38eb5a6a5ec\",\"email\": \"test@example.com\"," +
             "\"date\":\"2016-12-25\"},{\"serviceId\": \"56aff76b-0fd3-4ef3-865b-d5479a25c9f5\"," +
@@ -24,7 +24,7 @@ public class TestClient {
         ServerSoapInterface soap = service.getPort(ServerSoapInterface.class);
 
         //System.out.println(soap.getAvailableService("2016-12-25", "2016-12-25"));
-        System.out.println(soap.postBookingEntry(TestClient.testFailBookingEntry));
+        System.out.println(soap.postBookingEntry(RestTestClient.testFailBookingEntry));
     }
 
 }

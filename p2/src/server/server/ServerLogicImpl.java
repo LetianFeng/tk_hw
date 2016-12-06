@@ -42,6 +42,7 @@ public class ServerLogicImpl implements ServerLogic{
     	try {
 			bm = new BookingManager();
 			UUID bid = UUID.randomUUID();
+			Double price = 0.00;
 			ArrayList<Service> services = requestAvailableService(start, end);
 			HashMap<UUID, Service> serviceMap = new HashMap<UUID, Service>();
 			for (Service s : services) {
@@ -54,6 +55,7 @@ public class ServerLogicImpl implements ServerLogic{
 				if (s_t != null && s_t.getAmount() > 0) {
 					bookings.add(new Booking(bid, b.serviceId, b.date, b.email));
 					s_t.setAmount(s_t.getAmount() - 1);
+					price += s_t.getPrice();
 				} else {
 					sm = new ServiceManager();
 					Service req_service = sm.getServiceById(b.serviceId);
@@ -62,7 +64,7 @@ public class ServerLogicImpl implements ServerLogic{
 				}		
 			}
 			bm.createBookings(bookings);
-			
+	        return new BookingResponse(true, price.toString());
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,8 +82,8 @@ public class ServerLogicImpl implements ServerLogic{
 			e.printStackTrace();
 		}
     	 	
-        return new BookingResponse(true, null);
-        //return new BookingResponse(false, "rent car");
+        //return new BookingResponse(true, null);
+        return new BookingResponse(false, "An error has occured.");
     }
 
     @Override

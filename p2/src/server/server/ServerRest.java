@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import server.entry.BookingReq;
 import server.entry.BookingResponse;
@@ -46,7 +47,8 @@ public class ServerRest {
 
         try {
             Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
-            ArrayList<BookingReq> bookingList = new Gson().fromJson(bookingEntry, listType);
+            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            ArrayList<BookingReq> bookingList = gson.fromJson(bookingEntry, listType);
             BookingResponse response = server.getServerLogic().postBookingList(bookingList);
             return new Gson().toJson(response);
         } catch (Exception e) {
