@@ -31,6 +31,8 @@
     </target>
     <target name="clean">
         <delete dir="bin"/>
+    	<delete dir="src/server/BookingService.java" />
+    	<delete dir="src/server/ServerSoapService.java" />
     </target>
     <target depends="clean" name="cleanall"/>
 	<target name="wsimport">
