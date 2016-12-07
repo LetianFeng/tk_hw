@@ -29,6 +29,7 @@ public class ServerRest {
             Date start = formatter.parse(startDate);
             Date end = formatter.parse(endDate);
             ArrayList<Service> serviceList = server.getServerLogic().requestAvailableService(start, end);
+            System.out.println("REST: request served, result: " + (new Gson().toJson(serviceList)));
             return new Gson().toJson(serviceList);
         } catch (Exception e) {
             System.out.print("invalid input: ");
@@ -46,6 +47,7 @@ public class ServerRest {
     public String postBookingEntry(String bookingEntry) {
 
         try {
+        	System.out.println("REST: request received: " + bookingEntry);
             Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
             Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             ArrayList<BookingReq> bookingList = gson.fromJson(bookingEntry, listType);

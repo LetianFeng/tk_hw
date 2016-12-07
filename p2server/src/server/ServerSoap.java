@@ -27,6 +27,7 @@ public class ServerSoap implements ServerSoapInterface{
             Date start = formatter.parse(startDate);
             Date end = formatter.parse(endDate);
             ArrayList<Service> serviceList = server.getServerLogic().requestAvailableService(start, end);
+            System.out.println("SOAP: request served, result: " + (new Gson().toJson(serviceList)));
             return new Gson().toJson(serviceList);
         } catch (Exception e) {
             System.out.print("invalid input: ");
@@ -40,6 +41,7 @@ public class ServerSoap implements ServerSoapInterface{
     @Override
     public String postBookingEntry(String bookingEntry) {
         try {
+        	System.out.println("SOAP: request received: " + bookingEntry);
             Type listType = new TypeToken<ArrayList<BookingReq>>(){}.getType();
             Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             ArrayList<BookingReq> bookingList = gson.fromJson(bookingEntry, listType);
