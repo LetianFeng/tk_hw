@@ -210,13 +210,13 @@ public class Gui implements GuiClientInterface, Runnable {
 				else {
 					dateChooser1.setEnabled(false);
 					dateChooser2.setEnabled(false);
-					/*
+					
 					try {
 						client.searchRooms(checkinDate, checkoutDate);
 					} catch (MalformedURLException e) {
 						e.printStackTrace();
 					}
-					*/
+					
 				}
 			}
 		});
@@ -339,10 +339,10 @@ public class Gui implements GuiClientInterface, Runnable {
 						}
 						if(check2.isSelected()) {
 							if(roomName.equals("Single Room")) {
-								amount = 2*roomAmount;
+								amount = roomAmount;
 							}
 							else {
-								amount = roomAmount;
+								amount = 2*roomAmount;
 							}
 							booking.put(check2.getText(), amount);
 						}
@@ -355,7 +355,7 @@ public class Gui implements GuiClientInterface, Runnable {
 						else {
 							label7.setForeground(Color.black);
 						}
-						//client.sendBooking(booking, textField.getText());
+						client.sendBooking(booking, textField.getText());
 						return;
 					}
 				}
