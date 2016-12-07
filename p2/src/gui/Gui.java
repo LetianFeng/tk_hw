@@ -51,6 +51,8 @@ public class Gui implements GuiClientInterface, Runnable {
 		c.fill = GridBagConstraints.NONE;
 		panel.setLayout(layout);
 		jsp.setViewportView(panel);
+		dateChooser1.setPreferredSize(new Dimension(120, 20));
+		dateChooser2.setPreferredSize(new Dimension(120, 20));
 		bookingFrame.getContentPane().add(jsp);
 	}
 	
@@ -68,6 +70,8 @@ public class Gui implements GuiClientInterface, Runnable {
 		panel.setLayout(layout);
 		jsp = new JScrollPane();
 		jsp.setViewportView(panel);
+		dateChooser1.setPreferredSize(new Dimension(120, 20));
+		dateChooser2.setPreferredSize(new Dimension(120, 20));
 		bookingFrame.getContentPane().add(jsp);
 	}
 
