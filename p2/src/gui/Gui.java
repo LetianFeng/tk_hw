@@ -210,13 +210,13 @@ public class Gui implements GuiClientInterface, Runnable {
 				else {
 					dateChooser1.setEnabled(false);
 					dateChooser2.setEnabled(false);
-					
+					/*
 					try {
 						client.searchRooms(checkinDate, checkoutDate);
 					} catch (MalformedURLException e) {
 						e.printStackTrace();
 					}
-					
+					*/
 				}
 			}
 		});
@@ -248,7 +248,6 @@ public class Gui implements GuiClientInterface, Runnable {
 		final JCheckBox check1  = new JCheckBox("Rental Car");
 		final JCheckBox check2  = new JCheckBox("Breakfast");
 		final JComboBox<String> combo1 = new JComboBox<String>();
-		final JComboBox<String> combo2 = new JComboBox<String>();
 		final JTextField textField = new JTextField();
 		if(rentCarService != null) {
 			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(rentCarService.getAmount()));
@@ -258,16 +257,7 @@ public class Gui implements GuiClientInterface, Runnable {
 			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(0));
 			combo1.setModel(model);
 		}
-		if(breakfastService != null) {
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(breakfastService.getAmount()));
-			combo2.setModel(model);
-		}
-		else {
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(getComboArray(0));
-			combo2.setModel(model);
-		}
 		combo1.setEnabled(false);
-		combo2.setEnabled(false);
 		check1.setEnabled(false);
 		check2.setEnabled(false);
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -298,14 +288,14 @@ public class Gui implements GuiClientInterface, Runnable {
 		for(int i = 1; i < num + 1; i++) {
 			c.gridx = 0;
 			c.gridy = i;
-			JRadioButton radioBtn = new JRadioButton(roomList.get(i-1).getType());
+			final JRadioButton radioBtn = new JRadioButton(roomList.get(i-1).getType());
 			group.add(radioBtn);
 			radioBtn.addItemListener(new ItemListener() {
 			    public void itemStateChanged(ItemEvent e) {
 			    	if(rentCarService != null) {
 						check1.setEnabled(true);
 					}
-					if(breakfastService != null) {
+			    	if(rentCarService != null) {
 						check2.setEnabled(true);
 					}
 			    }
@@ -341,13 +331,19 @@ public class Gui implements GuiClientInterface, Runnable {
 					if(btn.isSelected()) {
 						String roomName = btn.getText();
 						int amount = Integer.valueOf(roomMap.get(btn.getText()).getSelectedItem().toString());
+						int roomAmount = amount;
 						booking.put(roomName, amount);
 						if(check1.isSelected()) {
 							amount = Integer.valueOf(combo1.getSelectedItem().toString());
 							booking.put(check1.getText(), amount);
 						}
 						if(check2.isSelected()) {
-							amount = Integer.valueOf(combo2.getSelectedItem().toString());
+							if(roomName.equals("Single Room")) {
+								amount = 2*roomAmount;
+							}
+							else {
+								amount = roomAmount;
+							}
 							booking.put(check2.getText(), amount);
 						}
 						if(textField.getText().equals("")) {
@@ -359,7 +355,7 @@ public class Gui implements GuiClientInterface, Runnable {
 						else {
 							label7.setForeground(Color.black);
 						}
-						client.sendBooking(booking, textField.getText());
+						//client.sendBooking(booking, textField.getText());
 						return;
 					}
 				}
@@ -385,25 +381,12 @@ public class Gui implements GuiClientInterface, Runnable {
 		c.gridy = num+2;
 		layout.setConstraints(check2, c);
 		roomPanel.add(check2);
-		c.gridx = 3;
-		c.gridy = num+2;
-		layout.setConstraints(combo2, c);
-		roomPanel.add(combo2);
 		check1.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent e) {
 		        if(e.getStateChange() == ItemEvent.SELECTED) {
 		            combo1.setEnabled(true);
 		        } else {
 		            combo1.setEnabled(false);
-		        };
-		    }
-		});
-		check2.addItemListener(new ItemListener() {
-		    public void itemStateChanged(ItemEvent e) {
-		        if(e.getStateChange() == ItemEvent.SELECTED) {
-		            combo2.setEnabled(true);
-		        } else {
-		            combo2.setEnabled(false);
 		        };
 		    }
 		});
