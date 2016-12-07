@@ -245,7 +245,7 @@ public class Gui implements GuiClientInterface, Runnable {
 		JLabel label5 = new JLabel("Confirm");
 		JLabel label6 = new JLabel("ExtraService");
 		final JLabel label7 = new JLabel("Please Enter Your Email Address:");
-		final JCheckBox check1  = new JCheckBox("Rent Car");
+		final JCheckBox check1  = new JCheckBox("Rental Car");
 		final JCheckBox check2  = new JCheckBox("Breakfast");
 		final JComboBox<String> combo1 = new JComboBox<String>();
 		final JComboBox<String> combo2 = new JComboBox<String>();
