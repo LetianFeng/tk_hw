@@ -1,4 +1,4 @@
-package server.server;
+package server;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -17,9 +17,8 @@ import javax.xml.transform.TransformerException;
 
 import org.xml.sax.SAXException;
 
-import server.entry.BookingReq;
-import server.entry.BookingResponse;
-import server.entry.ServiceMsg;
+import bookingEntry.BookingReq;
+import bookingEntry.BookingResponse;
 import dbm.*;
 import hotel.*;
 
@@ -112,7 +111,7 @@ public class ServerLogicImpl implements ServerLogic{
 				}	*/	
 			}
 			bm.createBookings(bookings);
-	        return new BookingResponse(true, price.toString());
+	        return new BookingResponse(true, String.format("%.2f", price));
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
