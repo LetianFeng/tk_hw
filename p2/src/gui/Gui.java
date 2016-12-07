@@ -339,10 +339,10 @@ public class Gui implements GuiClientInterface, Runnable {
 						}
 						if(check2.isSelected()) {
 							if(roomName.equals("Single Room")) {
-								amount = 2*roomAmount;
+								amount = roomAmount;
 							}
 							else {
-								amount = roomAmount;
+								amount = 2*roomAmount;
 							}
 							booking.put(check2.getText(), amount);
 						}
