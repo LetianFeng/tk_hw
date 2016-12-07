@@ -38,7 +38,7 @@ public class Gui implements GuiClientInterface, Runnable {
 
 	public Gui(ClientGUIInterface client) {
 		this.client = client;
-		bookingFrame = new BookingFrame();
+		bookingFrame = new BookingFrame(client.getClass().getSimpleName());
 		panel = new JPanel(new GridBagLayout());
 		roomList = new ArrayList<Service>();
 		c = new GridBagConstraints();
@@ -57,7 +57,7 @@ public class Gui implements GuiClientInterface, Runnable {
 	}
 	
 	public Gui() {
-		bookingFrame = new BookingFrame();
+		bookingFrame = new BookingFrame("");
 		panel = new JPanel(new GridBagLayout());
 		roomList = new ArrayList<Service>();
 		c = new GridBagConstraints();
