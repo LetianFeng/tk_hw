@@ -299,7 +299,7 @@ public class Gui implements GuiClientInterface, Runnable {
 			    	if(rentCarService != null) {
 						check1.setEnabled(true);
 					}
-			    	if(rentCarService != null) {
+			    	if(breakfastService != null) {
 						check2.setEnabled(true);
 					}
 			    }
