@@ -25,15 +25,22 @@ import bookingEntry.BookingResponse;
 
 public class ClientRest implements ClientGUIInterface {
 
-    private static final String REST_URI = "http://localhost:8080/booking/";
     private static final String AVAILABLE_PATH = "availableService/";
     private static final String BOOKING_PATH = "bookingEntry/";
+    private static String restUrl;
     private GuiClientInterface gui;
     private Date startDate;
     private Date endDate;
     private ArrayList<Service> serviceList;
 
     public static void main(String[] args) throws MalformedURLException {
+        String ipAddress;
+        if(args.length!=0)
+            ipAddress = args[0];
+        else
+            ipAddress = "localhost";
+        restUrl = "http://" + ipAddress + ":8080/booking/";
+        System.out.print("Connect to the Server: " + restUrl);
         ClientRest clientRest = new ClientRest();
         clientRest.gui.initializeAll();
     }
@@ -63,7 +70,7 @@ public class ClientRest implements ClientGUIInterface {
 
             ClientConfig config = new DefaultClientConfig();
             Client client = Client.create(config);
-            WebResource service = client.resource(REST_URI).path(AVAILABLE_PATH).path(dateFormat.format(startDate) + "/" + dateFormat.format(endDate));
+            WebResource service = client.resource(restUrl).path(AVAILABLE_PATH).path(dateFormat.format(startDate) + "/" + dateFormat.format(endDate));
             String availableServices = getOutputAsJson(service);
 
             Type listType = new TypeToken<ArrayList<hotel.Service>>() {
@@ -105,7 +112,7 @@ public class ClientRest implements ClientGUIInterface {
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
-        WebResource service = client.resource(REST_URI).path(BOOKING_PATH);
+        WebResource service = client.resource(restUrl).path(BOOKING_PATH);
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String bookingResponse = postOutputAsJson(service, gson.toJson(bookingList));
         BookingResponse response = gson.fromJson(bookingResponse, BookingResponse.class);
