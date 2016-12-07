@@ -10,7 +10,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class RestTestClient {
 	
-    private static final String REST_URI = "http://localhost:9999/booking/";
+    private static final String REST_URI = "http://localhost:8080/booking/";
     private static final String AVAILABLE_PATH = "availableService/";
     private static final String BOOKING_PATH = "bookingEntry/";
 
@@ -33,8 +33,8 @@ public class RestTestClient {
         System.out.println(availableServices);
         
         service = client.resource(REST_URI).path(BOOKING_PATH);
-        String bookingResponce = postOutputAsJson(service, testSuccBookingEntry);
-        System.out.print(bookingResponce);
+        String bookingResponse = postOutputAsJson(service, testSuccBookingEntry);
+        System.out.print(bookingResponse);
         
     }
     

@@ -17,7 +17,7 @@ public class SoapTestClient {
 
     public static void main(String[] args) throws Exception {
 
-        URL url = new URL("http://localhost:9999/booking?wsdl");
+        URL url = new URL("http://localhost:8090/booking?wsdl");
         QName qname = new QName("http://server/", "ServerSoapService");
 
         Service service = Service.create(url, qname);
