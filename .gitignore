@@ -5,7 +5,6 @@
 *.DS_Store
 *.classpath
 *.idea
-booking.xml
 service.xml
 bin/
 out/
