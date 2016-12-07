@@ -210,13 +210,13 @@ public class Gui implements GuiClientInterface, Runnable {
 				else {
 					dateChooser1.setEnabled(false);
 					dateChooser2.setEnabled(false);
-					/*
+					
 					try {
 						client.searchRooms(checkinDate, checkoutDate);
 					} catch (MalformedURLException e) {
 						e.printStackTrace();
 					}
-					*/
+					
 				}
 			}
 		});
@@ -355,7 +355,7 @@ public class Gui implements GuiClientInterface, Runnable {
 						else {
 							label7.setForeground(Color.black);
 						}
-						//client.sendBooking(booking, textField.getText());
+						client.sendBooking(booking, textField.getText());
 						return;
 					}
 				}
