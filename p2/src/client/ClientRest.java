@@ -20,8 +20,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import gui.Gui;
 import gui.GuiClientInterface;
 import hotel.Service;
-import server.entry.BookingReq;
-import server.entry.BookingResponse;
+import bookingEntry.BookingReq;
+import bookingEntry.BookingResponse;
 
 public class ClientRest implements ClientGUIInterface {
 
