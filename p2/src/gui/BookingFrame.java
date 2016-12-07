@@ -5,13 +5,16 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class BookingFrame extends JFrame{
-	
-	public BookingFrame() {
+
+	private String title;
+
+	public BookingFrame(String clientName) {
+		this.title = "Booking Room " + clientName;
 		initialize();
 	}
 	
 	private void initialize() {
-		this.setTitle("Booking Room");
+		this.setTitle(title);
 		this.setBounds(Constants.frameX, Constants.frameY, Constants.frameWidth, Constants.frameHeight);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {

@@ -25,7 +25,7 @@ import server.entry.BookingResponse;
 
 public class ClientRest implements ClientGUIInterface {
 
-    private static final String REST_URI = "http://localhost:9999/booking/";
+    private static final String REST_URI = "http://localhost:8080/booking/";
     private static final String AVAILABLE_PATH = "availableService/";
     private static final String BOOKING_PATH = "bookingEntry/";
     private GuiClientInterface gui;
