@@ -31,6 +31,7 @@
     </target>
     <target name="clean">
         <delete dir="bin"/>
+        <delete dir="dist" />
     	<delete dir="src/server/BookingService.java" />
     	<delete dir="src/server/ServerSoapService.java" />
     </target>
