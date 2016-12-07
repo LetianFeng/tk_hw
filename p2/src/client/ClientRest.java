@@ -101,7 +101,7 @@ public class ClientRest implements ClientGUIInterface {
                     Date bookDate = (Date) startDate.clone();
                     while (dateBefore(bookDate, endDate)) {
                         for (int i = 0; i < serviceMap.get(serviceName); i++) {
-                            BookingReq booking = new BookingReq(service.getId(), email, bookDate);
+                            BookingReq booking = new BookingReq(service.getId(), email, (Date) bookDate.clone());
                             bookingList.add(booking);
                         }
                         bookDate.setDate(bookDate.getDate()+1);
