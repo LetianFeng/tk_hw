@@ -17,8 +17,8 @@ public class ServerStartUp extends Server {
                 ipAddress = "localhost";
             String restUrl = "http://" + ipAddress + ":8080/";
             String soapUrl = "http://" + ipAddress + ":8090/booking";
-            System.out.print(restUrl);
-            System.out.print(soapUrl);
+            System.out.println(restUrl);
+            System.out.println(soapUrl);
             Endpoint.publish(soapUrl, new ServerSoap());
             HttpServer restServer = HttpServerFactory.create(restUrl);
             restServer.start();
