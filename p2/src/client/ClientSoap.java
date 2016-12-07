@@ -7,8 +7,8 @@ import gui.Gui;
 import gui.GuiClientInterface;
 import server.BookingService;
 import server.ServerSoapService;
-import server.entry.BookingReq;
-import server.entry.BookingResponse;
+import bookingEntry.BookingReq;
+import bookingEntry.BookingResponse;
 
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;

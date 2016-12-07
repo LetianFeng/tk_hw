@@ -1,4 +1,4 @@
-package server.entry;
+package bookingEntry;
 
 import java.util.Date;
 import java.util.UUID;

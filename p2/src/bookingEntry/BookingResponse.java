@@ -1,4 +1,4 @@
-package server.entry;
+package bookingEntry;
 
 public class BookingResponse {
 
