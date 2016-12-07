@@ -20,7 +20,7 @@
         <pathelement location="lib/jcalendar-1.4.jar"/>
         <pathelement location="lib/jersey-bundle-1.19.1.jar"/>
     </path>
-    <target name="init">
+    <target name="init" depends="wsimport">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
@@ -35,7 +35,7 @@
     	<delete dir="src/server/ServerSoapService.java" />
     </target>
     <target depends="clean" name="cleanall"/>
-	<target name="wsimport">
+	<target name="wsimport" depends="cleanall">
 		<exec executable="wsimport">
 			<arg value="-d" />
 		    <arg value="src/" />
@@ -44,7 +44,7 @@
 			<arg value="-Xnocompile"/>
 		</exec>
 	</target>
-    <target depends="build-subprojects,build-project,wsimport" name="build"/>
+    <target depends="build-subprojects,build-project" name="build"/>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
