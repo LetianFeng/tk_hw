@@ -9,6 +9,11 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
+	<condition property="host" value="localhost">
+	    <not>  
+	        <isset property="host"/>
+	    </not>
+	</condition>
     <path id="wsserver.classpath">
         <pathelement location="bin"/>
         <pathelement location="lib/gson-2.8.0.jar"/>
@@ -55,6 +60,7 @@
 	  <exec executable="java">
 	  	<arg value="-jar" />
 	    <arg value="dist/server.jar" />
+	  	<arg value="${host}" />
 	  </exec>
 	</target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
