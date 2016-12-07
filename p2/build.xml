@@ -85,6 +85,7 @@
 		  		<exec executable="java">
 		  			<arg value="-jar" />
 		    		<arg value="dist/restclient.jar" />
+		  			<arg value="${host}"/>
 		  		</exec>
 			</parallel>
 		</target>
