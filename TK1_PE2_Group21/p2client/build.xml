@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="exec" name="webservice">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+	<condition property="host" value="localhost">
+	    <not>  
+	        <isset property="host"/>
+	    </not>
+	</condition>
+    <path id="webservice.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/gson-2.8.0.jar"/>
+        <pathelement location="lib/jcalendar-1.4.jar"/>
+        <pathelement location="lib/jersey-bundle-1.19.1.jar"/>
+    </path>
+    <target name="init" depends="wsimport">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="dist" />
+    	<delete dir="src/server/BookingService.java" />
+    	<delete dir="src/server/ServerSoapService.java" />
+    </target>
+    <target depends="clean" name="cleanall"/>
+	<target name="wsimport" depends="cleanall">
+		<exec executable="wsimport">
+			<arg value="-d" />
+		    <arg value="src/" />
+			<arg value="-keep"/>
+			<arg value="http://${host}:8090/booking?wsdl" />
+			<arg value="-Xnocompile"/>
+		</exec>
+	</target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>	
+            <classpath refid="webservice.classpath"/>
+        </javac>
+    </target>
+	<target name="dist" depends="build" description="package, output to JAR">
+			<!-- Create the distribution directory -->
+			<mkdir dir="dist" />
+			<!-- Put everything in ${build} into the {$projectName}-${DSTAMP}.jar file -->
+			<jar jarfile="dist/soapclient.jar" basedir="bin" >	        
+				<zipgroupfileset dir="lib" includes="jersey-bundle-1.19.1.jar" />
+				<zipgroupfileset dir="lib" includes="gson-2.8.0.jar" />
+				<zipgroupfileset dir="lib" includes="jcalendar-1.4.jar" />
+			    <manifest>
+				<!-- create an executable Jar -->
+				<attribute name="Main-Class" value="client.ClientSoap" />
+			    </manifest>
+			</jar>
+			<jar jarfile="dist/restclient.jar" basedir="bin" >	        
+				<zipgroupfileset dir="lib" includes="jersey-bundle-1.19.1.jar" />
+				<zipgroupfileset dir="lib" includes="gson-2.8.0.jar" />
+				<zipgroupfileset dir="lib" includes="jcalendar-1.4.jar" />
+			    <manifest>
+				<!-- create an executable Jar -->
+				<attribute name="Main-Class" value="client.ClientRest" />
+			    </manifest>
+			</jar>
+	  	</target>
+		<target name="exec" depends="dist" description="execute jar">
+			<parallel>
+		  		<exec executable="java">
+		  			<arg value="-jar" />
+		    		<arg value="dist/soapclient.jar" />
+		  		</exec>
+		  		<exec executable="java">
+		  			<arg value="-jar" />
+		    		<arg value="dist/restclient.jar" />
+		  			<arg value="${host}"/>
+		  		</exec>
+			</parallel>
+		</target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="ServerSoapPublisher">
+        <java classname="server.server.ServerSoapPublisher" failonerror="true" fork="yes">
+            <classpath refid="webservice.classpath"/>
+        </java>
+    </target>
+    <target name="SoapTestClient">
+        <java classname="server.fakeClient.SoapTestClient" failonerror="true" fork="yes">
+            <classpath refid="webservice.classpath"/>
+        </java>
+    </target>
+    <target name="RestTestClient">
+        <java classname="server.fakeClient.RestTestClient" failonerror="true" fork="yes">
+            <classpath refid="webservice.classpath"/>
+        </java>
+    </target>
+    <target name="ServerRestStartUp">
+        <java classname="server.server.ServerRestStartUp" failonerror="true" fork="yes">
+            <classpath refid="webservice.classpath"/>
+        </java>
+    </target>
+    <target name="ClientSoap">
+        <java classname="client.ClientSoap" failonerror="true" fork="yes">
+            <classpath refid="webservice.classpath"/>
+        </java>
+    </target>
+</project>
