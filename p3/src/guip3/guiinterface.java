@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public interface guiinterface {
 	
-	void drawSubTable(ArrayList<fakeclient> subList);
+//	void drawSubTable(ArrayList<fakeclient> subList);
 	boolean login(String username);
 	
 }
