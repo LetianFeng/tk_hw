@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 public class WeiboFrame  extends JFrame{
@@ -23,6 +24,8 @@ public class WeiboFrame  extends JFrame{
 	private int avatarId;
 	private JFrame mainFrame;
 	private String userName;
+	private String textWord;
+    private static int count;
     
 	public WeiboFrame(int avatarId, String userName) {
 		this.avatarId = avatarId;
@@ -50,12 +53,31 @@ public class WeiboFrame  extends JFrame{
 		textContent.setLineWrap(true);
 		textContent.setBounds(20, 500, 300, 150);
 		textContent.setColumns(10);
+	
 		this.getContentPane().add(textContent);
+	
+		
 		
 		btnSend = new JButton("Send");
 		btnSend.setBounds(350, 550, 100, 50);
+		btnSend.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			textWord = textContent.getText();
+			count = textWord.length();
+			
+			if(count > 5){
+				System.out.println("Maximum 30 Words!");
+				JOptionPane.showMessageDialog(null, "Maximum 30 Words!");
+			}
+			else if(count == 0){
+				System.out.println("Can't send empty message!");
+				JOptionPane.showMessageDialog(null, "Can't send empty message!");
+			}
+
+		}
+	});
 		this.getContentPane().add(btnSend);
-		
+
 		btnSetting = new JButton();
 		btnSetting.setBounds(430, 10, 30, 30);
 		Image settingImg = new ImageIcon(this.getClass().getResource("Settings-icon.png")).getImage();
