@@ -43,4 +43,6 @@ public class Constant {
 	final static int notificationLabelWidth = 250;
 	final static int notificationLabelHeight = 15;
 	final static int maxNotificationNumber = 20;
+	
+	
 }
