@@ -1,12 +1,7 @@
 package guip3;
 
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,20 +12,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-
-import guip3.Constant;
-import guip3.LoginFrame;
+import javax.swing.JTextArea;
 
 public class WeiboFrame  extends JFrame{
 	private String title = "Welcome to fantastic Weibo!";
     private JButton btnSetting;
-    private JTextField textContent;
+    private JTextArea textContent;
     private JButton btnSend;
     private JLabel Avatar;
+	private int avatarId;
+	private JFrame mainFrame;
+	private String userName;
     
-	public WeiboFrame() {
+	public WeiboFrame(int avatarId, String userName) {
+		this.avatarId = avatarId;
+		this.userName = userName;
 		initialize();
+		mainFrame = this;
 	}
 
 	
@@ -48,7 +46,8 @@ public class WeiboFrame  extends JFrame{
 		});
 		this.getContentPane().setLayout(null);
 		
-		textContent = new JTextField();
+		textContent = new JTextArea();
+		textContent.setLineWrap(true);
 		textContent.setBounds(20, 500, 300, 150);
 		textContent.setColumns(10);
 		this.getContentPane().add(textContent);
@@ -64,22 +63,28 @@ public class WeiboFrame  extends JFrame{
         
         Avatar = new JLabel();
 		Avatar.setBounds(10,5,50, 50);
-//		if (Avatarnummber = 1){
-//		Image AvatarImg = new ImageIcon(this.getClass().getResource("Settings-icon.png")).getImage();
-//		}
-		Image AvatarImg = new ImageIcon(this.getClass().getResource("Avatar1-icon.png")).getImage();
+
+		String avatarPath = "Avatar" + String.valueOf(avatarId) + "-icon.png";
+		Image AvatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
 		Avatar.setIcon(new ImageIcon(AvatarImg));
 		this.getContentPane().add(Avatar);
 		
 		btnSetting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			   SettingFrame settingframe = new SettingFrame();
-			   settingframe.setVisible(true);
-			   
-				
+				mainFrame.setEnabled(false);
+				SettingFrame settingframe = new SettingFrame(mainFrame);
+				settingframe.setVisible(true);
 			}
-		});	
+		});
+
+		JLabel userNameLabel = new JLabel(userName);
+		userNameLabel.setBounds(70, 5, 50, 50);
+
+		this.getContentPane().add(userNameLabel);
 
 		this.getContentPane().add(btnSetting);
+
+		this.setResizable(false);
+
 	}
 }

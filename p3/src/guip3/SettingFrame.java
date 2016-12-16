@@ -1,5 +1,7 @@
 package guip3;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -31,9 +33,13 @@ public class SettingFrame  extends JFrame{
     private JTable SubTable;
     private DefaultTableModel SubTableModel;
     private JScrollPane scrollPane;
+	private JFrame settingFrame;
+	private JFrame mainFrame;
     
-	public SettingFrame() {
+	public SettingFrame(JFrame mainFrame) {
 		initialize();
+		settingFrame = this;
+		this.mainFrame = mainFrame;
 	}
 
 	
@@ -46,7 +52,7 @@ public class SettingFrame  extends JFrame{
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				mainFrame.setEnabled(true);
 			}
 		});
 		this.getContentPane().setLayout(null);
@@ -67,10 +73,8 @@ public class SettingFrame  extends JFrame{
 		btnSavechange.setBounds(250, 550, 200, 25);
 		btnSavechange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			   WeiboFrame weiboframe = new WeiboFrame();
-			   weiboframe.setVisible(true);
-			   
-				
+				// send new subscription list to control unit
+				settingFrame.dispatchEvent(new WindowEvent(settingFrame, WindowEvent.WINDOW_CLOSING));
 			}
 		});	
 		this.getContentPane().add(btnSavechange);
@@ -82,6 +86,9 @@ public class SettingFrame  extends JFrame{
 	        //chooseRoomPanel.add(chooseRoomTable,BorderLayout.CENTER);
 	        JTableHeader tableHeader = SubTable.getTableHeader();
 
+		this.setResizable(false);
+
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 	}
 	 private void generateSubTable() {

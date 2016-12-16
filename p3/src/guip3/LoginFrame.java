@@ -1,27 +1,18 @@
 package guip3;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-import guip3.fakeclient;
-import guip3.guiinterface;
-import guip3.LoginFrame;
-import guip3.Constant;
+//import guip3.fakeclient;
 
 
 public class LoginFrame  extends JFrame{
@@ -34,8 +25,11 @@ public class LoginFrame  extends JFrame{
     private JButton btnAvatar3;
     private JButton btnAvatar4;
     private JLabel Avatar;
-    public static int Avatarnummer = 0;
-   
+	private JFrame loginFrame;
+    public static int avatarId = 1;
+
+	final static private Color grey = Color.LIGHT_GRAY;
+
     public String Avatarimage1 ="Avatar1-icon.png";
     public String Avatarimage2 ="Avatar2-icon.png";
     public String Avatarimage3 ="Avatar3-icon.png";
@@ -57,6 +51,7 @@ public class LoginFrame  extends JFrame{
 	public LoginFrame() {
 
 		initialize();
+		loginFrame = this;
 	}
 
 	
@@ -94,8 +89,8 @@ public class LoginFrame  extends JFrame{
 
 		btnAvatar1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			 Avatarnummer = 1;		
-			 btnAvatar1.setBackground(Color.LIGHT_GRAY);
+				avatarId = 1;
+				updateAvatorBackgroud();
 			}
 		});	
         this.getContentPane().add(btnAvatar1);
@@ -107,8 +102,8 @@ public class LoginFrame  extends JFrame{
         
 		btnAvatar2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			 Avatarnummer = 2;		
-			 btnAvatar2.setBackground(Color.LIGHT_GRAY);
+				avatarId = 2;
+				updateAvatorBackgroud();
 			}
 		});	
         
@@ -121,8 +116,8 @@ public class LoginFrame  extends JFrame{
         
 		btnAvatar3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			 Avatarnummer = 3;			
-			 btnAvatar3.setBackground(Color.LIGHT_GRAY);
+				avatarId = 3;
+				updateAvatorBackgroud();
 			}
 		});	
 		
@@ -135,8 +130,8 @@ public class LoginFrame  extends JFrame{
         
 		btnAvatar4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			 Avatarnummer = 4;		
-			 btnAvatar4.setBackground(Color.LIGHT_GRAY);
+			 	avatarId = 4;
+				updateAvatorBackgroud();
 			}
 		});	
         this.getContentPane().add(btnAvatar4);
@@ -150,24 +145,29 @@ public class LoginFrame  extends JFrame{
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			   WeiboFrame weiboframe = new WeiboFrame();
-			   weiboframe.setVisible(true);			   
-				
-			}
-		});	
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
 				String username = textUsername.getText();
-	//			if(client.login(userName)) {
-	//				String msg = "Error connecting to the server.";
-	//				MessageFrame msgFrame = new MessageFrame(msg);
-	//				System.out.println(msg);
-	//			}
+				if(username.equals("")) {
+					System.out.println("invalid user name!");
+					JOptionPane.showMessageDialog(null, "invalid user name!");
+				}
+				else {
+					WeiboFrame weiboframe = new WeiboFrame(avatarId, username);
+					weiboframe.setVisible(true);
+					loginFrame.dispose();
+				}
 			}
 		});
 
 		this.getContentPane().add(btnLogin);
-	
+
+		this.setResizable(false);
+	}
+
+	void updateAvatorBackgroud() {
+		btnAvatar1.setBackground(avatarId==1?grey: null);
+		btnAvatar2.setBackground(avatarId==2?grey: null);
+		btnAvatar3.setBackground(avatarId==3?grey: null);
+		btnAvatar4.setBackground(avatarId==4?grey: null);
 	}
 }
 
