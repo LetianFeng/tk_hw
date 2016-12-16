@@ -11,7 +11,7 @@ public class Constant {
 	//login frame properties
 	final static int loginFrameX = (int)(windowWidth * 0.35);
 	final static int loginFrameY = (int)(windowHeight * 0.2);
-	final static int loginFrameWidth = 400;
+	final static int loginFrameWidth = 500;
 	final static int loginFrameHeight = 300;
 	
 	//weibo frame properties

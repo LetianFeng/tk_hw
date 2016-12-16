@@ -65,6 +65,14 @@ public class SettingFrame  extends JFrame{
 		
 		btnSavechange = new JButton("Save Changes and Submit");
 		btnSavechange.setBounds(250, 550, 200, 25);
+		btnSavechange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			   WeiboFrame weiboframe = new WeiboFrame();
+			   weiboframe.setVisible(true);
+			   
+				
+			}
+		});	
 		this.getContentPane().add(btnSavechange);
 		
 		 this.generateSubTable();

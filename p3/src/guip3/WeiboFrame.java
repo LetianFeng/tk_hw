@@ -55,8 +55,8 @@ public class WeiboFrame  extends JFrame{
 		btnSend.setBounds(350, 550, 100, 50);
 		this.getContentPane().add(btnSend);
 		
-		btnSetting = new JButton("Settings");
-		btnSetting.setBounds(400, 10, 50, 50);
+		btnSetting = new JButton();
+		btnSetting.setBounds(430, 10, 30, 30);
 		Image settingImg = new ImageIcon(this.getClass().getResource("Settings-icon.png")).getImage();
         btnSetting.setIcon(new ImageIcon(settingImg));
 		
