@@ -3,18 +3,20 @@ package client;
 import java.util.Date;
 import java.util.List;
 
+import javax.jms.JMSException;
+
 public interface ClientAPI {
 	
-	void logIn(String userName, int avatarNumber);
+	boolean login(String userName, int avatarNumber) throws JMSException;
 	
 	void subscribeTopic(String topicName);
 	
 	void unSubscribeTopic(String topicName);
 	
-	void sendBlog(String blogContent, Date sendDate);
+	void sendBlog(String blogContent);
 	
-	List<Object> getSubscriberList();
+	List<String> getSubscriberList();
 	
-	List<Object> getTopicList();
+	List<String> getTopicList();
 	
 }

@@ -2,11 +2,12 @@ package guip3;
 
 import java.util.Date;
 import java.util.List;
+import client.BlogMessage;
 
 public interface GuiAPI {
 	void showNotification(String notification);
 	
-	void showBlog(String blogContent, Date sendDate, String senderName, int avatarNumber);
+	void showBlog(List<BlogMessage> blogMessage);
 	
-	void showException(Exception e);
+	//void showException(Exception e);
 }
