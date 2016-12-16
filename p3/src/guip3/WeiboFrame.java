@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 import guip3.Constant;
 
@@ -23,7 +24,9 @@ import guip3.Constant;
 public class WeiboFrame  extends JFrame{
 	private String title = "Welcome to fantastic Weibo!";
     private JButton btnSetting;
-	
+    private JTextField textContent;
+    private JButton btnSend;
+    
 	public WeiboFrame() {
 		initialize();
 	}
@@ -43,8 +46,17 @@ public class WeiboFrame  extends JFrame{
 		});
 		this.getContentPane().setLayout(null);
 		
+		textContent = new JTextField();
+		textContent.setBounds(20, 500, 300, 150);
+		textContent.setColumns(10);
+		this.getContentPane().add(textContent);
+		
+		btnSend = new JButton("Send");
+		btnSend.setBounds(350, 550, 100, 50);
+		this.getContentPane().add(btnSend);
+		
 		btnSetting = new JButton("Settings");
-		btnSetting.setBounds(400, 10, 200, 200);
+		btnSetting.setBounds(400, 10, 50, 50);
 		Image settingImg = new ImageIcon(this.getClass().getResource("Settings-icon.png")).getImage();
         btnSetting.setIcon(new ImageIcon(settingImg));
 		
