@@ -6,6 +6,11 @@ import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextAttribute;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,40 +25,45 @@ public class BlogBox extends JPanel {
     final private String messageContent;
     final private int width, height;
 
-    public BlogBox (BlogMessage blogMessage, int x, int y, int width, int height) {
+    public BlogBox (BlogMessage blogMessage, int x, int y, int width) {
         this.width = width;
-        this.height = height;
         this.blogMessage = blogMessage;
         this.messageContent = blogMessage.getContent();
 
-        initialize();
+        JTextArea messageArea = new JTextArea(messageContent);
+        messageArea.setBounds(0, 30, width, 1000);
 
+        int lineCounter = countLines(messageArea);
+        messageArea.setSize(width, lineCounter * 18);
+        height = lineCounter * 18 + 40;
+
+        this.setLayout(null);
         this.setBounds(x, y, width, height);
+        initialize(messageArea);
         this.setVisible(true);
     }
 
-    private void initialize() {
+    private void initialize(JTextArea messageArea) {
         drawAvatar();
         drawUserName();
         drawDate();
-        drawMessageArea();
+        drawMessageArea(messageArea);
     }
 
     private void drawAvatar() {
         JLabel avatarLabel = new JLabel();
-        avatarLabel.setBounds(10,5,20, 20);
+        avatarLabel.setBounds(0, 0, 20, 20);
 
         String avatarPath = Constant.smallAvatar.get(blogMessage.getAvatar());
         Image AvatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
         avatarLabel.setIcon(new ImageIcon(AvatarImg));
         avatarLabel.setVisible(true);
         this.add(avatarLabel);
+
     }
 
-    private void drawMessageArea() {
+    private void drawMessageArea(JTextArea messageArea) {
 
-        JTextArea messageArea = new JTextArea(messageContent);
-        messageArea.setBounds(0, 0, width - 100, height - 10);
         messageArea.setLineWrap(true);
         messageArea.setEditable(false);
         messageArea.getCaret().deinstall(messageArea);
@@ -73,7 +83,7 @@ public class BlogBox extends JPanel {
 
     public void drawUserName() {
         JLabel userNameLabel = new JLabel(blogMessage.getSender());
-        userNameLabel.setBounds(10, 10, 100, 20);
+        userNameLabel.setBounds(30, 0, 200, 20);
         userNameLabel.setVisible(true);
         this.add(userNameLabel);
     }
@@ -81,7 +91,7 @@ public class BlogBox extends JPanel {
     public void drawDate() {
         String dateString = dateFormatter.format(blogMessage.getDate());
         JLabel timeLabel = new JLabel(dateString);
-        timeLabel.setBounds(300, 10, 300, 20);
+        timeLabel.setBounds(300, 0, width - 300, 20);
         timeLabel.setVisible(true);
         this.add(timeLabel);
     }
@@ -94,6 +104,26 @@ public class BlogBox extends JPanel {
             listMatches.add(matcher.group(0));
         }
         return listMatches;
+    }
+
+    private static int countLines(JTextArea textArea)
+    {
+        AttributedString text = new AttributedString(textArea.getText());
+        text.addAttribute(TextAttribute.FONT, textArea.getFont());
+        FontRenderContext frc = textArea.getFontMetrics(textArea.getFont()).getFontRenderContext();
+        AttributedCharacterIterator charIt = text.getIterator();
+        LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(charIt, frc);
+        Insets textAreaInsets = textArea.getInsets();
+        float formatWidth = textArea.getWidth() - textAreaInsets.left - textAreaInsets.right;
+        lineMeasurer.setPosition(charIt.getBeginIndex());
+
+        int noLines = 0;
+        while (lineMeasurer.getPosition() < charIt.getEndIndex())
+        {
+            lineMeasurer.nextLayout(formatWidth);
+            noLines++;
+        }
+        return noLines;
     }
 
 }

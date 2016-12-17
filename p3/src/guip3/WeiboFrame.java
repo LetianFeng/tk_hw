@@ -108,7 +108,7 @@ public class WeiboFrame  extends JFrame{
 		});
 
 		JLabel userNameLabel = new JLabel(userName);
-		userNameLabel.setBounds(70, 5, 50, 50);
+		userNameLabel.setBounds(70, 5, 200, 50);
 
 		this.getContentPane().add(userNameLabel);
 
@@ -116,12 +116,27 @@ public class WeiboFrame  extends JFrame{
 
 		this.setResizable(false);
 
-		String textSample = "this is a message! \"this is a message!\" this is a message! important" +
+		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
 				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
 				" this is a message! \"this is a message!\" #new tag# important, #second tag#";
-		BlogMessage blogMessage = new BlogMessage(textSample, new Date(), "player", 1);
-		BlogBox blogBox = new BlogBox(blogMessage, 10, 70, Constant.weiboFrameWidth - 30, 200);
-		this.getContentPane().add(blogBox);
+		String textSample2 = "this is a message! \"this is a message!\" this is a message! important" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
+		String textSample3 = "this is a message! \"this is a message!\" this is a message! important" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
+		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
+		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
+		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
+		BlogBox blogBox1 = new BlogBox(blogMessage1, 30, 70, Constant.weiboFrameWidth - 60);
+		this.getContentPane().add(blogBox1);
+		BlogBox blogBox2 = new BlogBox(blogMessage2, 30, 70+blogBox1.getHeight(), Constant.weiboFrameWidth - 60);
+		this.getContentPane().add(blogBox2);
+		BlogBox blogBox3 = new BlogBox(blogMessage3, 30, 70+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60);
+		this.getContentPane().add(blogBox3);
+
 
 	}
 }
