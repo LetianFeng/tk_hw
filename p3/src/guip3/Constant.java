@@ -1,6 +1,8 @@
 package guip3;
 
 import java.awt.Toolkit;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Constant {
 	
@@ -43,6 +45,22 @@ public class Constant {
 	final static int notificationLabelWidth = 250;
 	final static int notificationLabelHeight = 15;
 	final static int maxNotificationNumber = 20;
-	
-	
+
+	final static Map<Integer, String> bigAvatar = new HashMap<Integer, String>() {
+		{
+			put(1, "Avatar1-icon.png");
+			put(2, "Avatar2-icon.png");
+			put(3, "Avatar3-icon.png");
+			put(4, "Avatar4-icon.png");
+		}
+	};
+
+	final static Map<Integer, String> smallAvatar = new HashMap<Integer, String>() {
+		{
+			put(1, "Avatar1-icon_small.png");
+			put(2, "Avatar2-icon_small.png");
+			put(3, "Avatar3-icon_small.png");
+			put(4, "Avatar4-icon_small.png");
+		}
+	};
 }

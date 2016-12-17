@@ -5,6 +5,7 @@ import client.BlogMessage;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,21 @@ public class BlogBox extends JPanel {
     }
 
     private void initialize() {
-        drawMessageArea();
+        drawAvatar();
         drawUserName();
         drawDate();
+        drawMessageArea();
+    }
+
+    private void drawAvatar() {
+        JLabel avatarLabel = new JLabel();
+        avatarLabel.setBounds(10,5,20, 20);
+
+        String avatarPath = Constant.smallAvatar.get(blogMessage.getAvatar());
+        Image AvatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
+        avatarLabel.setIcon(new ImageIcon(AvatarImg));
+        avatarLabel.setVisible(true);
+        this.add(avatarLabel);
     }
 
     private void drawMessageArea() {
