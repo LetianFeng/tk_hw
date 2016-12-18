@@ -3,6 +3,8 @@ package guip3;
 
 import client.BlogMessage;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -16,6 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class WeiboFrame  extends JFrame{
@@ -29,6 +33,7 @@ public class WeiboFrame  extends JFrame{
 	private String userName;
 	private String textWord;
     private static int count;
+    private JPanel blogBoxGroupPanel;
 
 	public static void main(String[] args) {
 		WeiboFrame weiboFrame = new WeiboFrame(3, "my name");
@@ -115,7 +120,23 @@ public class WeiboFrame  extends JFrame{
 		this.getContentPane().add(btnSetting);
 
 		this.setResizable(false);
+		
+		blogBoxGroupPanel = new JPanel();
+		blogBoxGroupPanel.setLayout(new GridLayout(100,1));
+		for (int i = 0; i < 10; i++) {
+			blogBoxGroupPanel.add(new JButton("Hello-" + i));
+        }
+		JScrollPane scrollPane = new JScrollPane( blogBoxGroupPanel);
+	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    scrollPane.setBounds(20, 70, 450, 410);
+	    JPanel contentPane = new JPanel(null);
+	    contentPane.setSize(new Dimension(500, 700));
 
+	    contentPane.add(scrollPane);
+	    this.getContentPane().add(contentPane);
+
+/*
 		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
 				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
 				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
@@ -131,12 +152,11 @@ public class WeiboFrame  extends JFrame{
 		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
 		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
 		BlogBox blogBox1 = new BlogBox(blogMessage1, 30, 70, Constant.weiboFrameWidth - 60);
-		this.getContentPane().add(blogBox1);
+		blogBoxGroupPanel .add(blogBox1);
 		BlogBox blogBox2 = new BlogBox(blogMessage2, 30, 70+blogBox1.getHeight(), Constant.weiboFrameWidth - 60);
-		this.getContentPane().add(blogBox2);
+		blogBoxGroupPanel .add(blogBox2);
 		BlogBox blogBox3 = new BlogBox(blogMessage3, 30, 70+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60);
-		this.getContentPane().add(blogBox3);
-
-
+		blogBoxGroupPanel .add(blogBox3);
+**/
 	}
 }
