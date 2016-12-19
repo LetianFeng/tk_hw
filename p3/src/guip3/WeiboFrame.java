@@ -33,7 +33,12 @@ public class WeiboFrame  extends JFrame{
 	private String userName;
 	private String textWord;
     private static int count;
-    private JPanel blogBoxGroupPanel;
+	private JPanel blogBoxGroupPanel;
+	private SubscriptionButton subButton;
+
+	public SubscriptionButton getSubButton() {
+		return subButton;
+	}
 
 	public static void main(String[] args) {
 		WeiboFrame weiboFrame = new WeiboFrame(3, "my name");
@@ -45,14 +50,15 @@ public class WeiboFrame  extends JFrame{
 		this.userName = userName;
 		initialize();
 		mainFrame = this;
+		subButton = new SubscriptionButton();
+		subButton.setVisible(true);
+		this.add(subButton);
 	}
 
-	
 	protected void initialize() {
 		this.setTitle(title);
 		this.setBounds(Constant.weiboFrameX, Constant.weiboFrameY, Constant.weiboFrameWidth, Constant.weiboFrameHeight);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 
 		addWindowListener(new WindowAdapter() {
@@ -120,7 +126,29 @@ public class WeiboFrame  extends JFrame{
 		this.getContentPane().add(btnSetting);
 
 		this.setResizable(false);
-		
+
+//		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
+//				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+//				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
+//				" this is a message! \"this is a message!\" #new tag# important, #second tag#";
+//		String textSample2 = "this is a message! \"this is a message!\" this is a message! important" +
+//				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
+//		String textSample3 = "this is a message! \"this is a message!\" this is a message! important" +
+//				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+//				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
+//				" this is a message! \"this is a message!\" #new tag# important, #second tag#" +
+//				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+//				" is it right? not at all";
+//		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
+//		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
+//		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
+//		BlogBox blogBox1 = new BlogBox(blogMessage1, 30, 70, Constant.weiboFrameWidth - 60, this);
+//		this.getContentPane().add(blogBox1);
+//		BlogBox blogBox2 = new BlogBox(blogMessage2, 30, 70+blogBox1.getHeight(), Constant.weiboFrameWidth - 60, this);
+//		this.getContentPane().add(blogBox2);
+//		BlogBox blogBox3 = new BlogBox(blogMessage3, 30, 70+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60, this);
+//		this.getContentPane().add(blogBox3);
+
 		blogBoxGroupPanel = new JPanel();
 		blogBoxGroupPanel.setLayout(new GridLayout(100,1));
 		for (int i = 0; i < 10; i++) {
@@ -136,27 +164,5 @@ public class WeiboFrame  extends JFrame{
 	    contentPane.add(scrollPane);
 	    this.getContentPane().add(contentPane);
 
-/*
-		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
-				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
-				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
-				" this is a message! \"this is a message!\" #new tag# important, #second tag#";
-		String textSample2 = "this is a message! \"this is a message!\" this is a message! important" +
-				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
-		String textSample3 = "this is a message! \"this is a message!\" this is a message! important" +
-				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
-				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
-				" this is a message! \"this is a message!\" #new tag# important, #second tag#" +
-				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
-		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
-		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
-		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
-		BlogBox blogBox1 = new BlogBox(blogMessage1, 30, 70, Constant.weiboFrameWidth - 60);
-		blogBoxGroupPanel .add(blogBox1);
-		BlogBox blogBox2 = new BlogBox(blogMessage2, 30, 70+blogBox1.getHeight(), Constant.weiboFrameWidth - 60);
-		blogBoxGroupPanel .add(blogBox2);
-		BlogBox blogBox3 = new BlogBox(blogMessage3, 30, 70+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60);
-		blogBoxGroupPanel .add(blogBox3);
-**/
 	}
 }

@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -19,23 +21,27 @@ import java.util.regex.Pattern;
 
 public class BlogBox extends JPanel {
 
+    final static int pixelPerLine = 17;
     final static String dateFormat = "yyyy-MM-dd HH:mm:ss";
     final SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
     final private BlogMessage blogMessage;
     final private String messageContent;
     final private int width, height;
+    final private WeiboFrame mainFrame;
+    private Point activeTopicPoint = new Point(0, 0);
 
-    public BlogBox (BlogMessage blogMessage, int x, int y, int width) {
+    public BlogBox (BlogMessage blogMessage, int x, int y, int width, WeiboFrame mainFrame) {
         this.width = width;
         this.blogMessage = blogMessage;
         this.messageContent = blogMessage.getContent();
+        this.mainFrame = mainFrame;
 
         JTextArea messageArea = new JTextArea(messageContent);
         messageArea.setBounds(0, 30, width, 1000);
 
         int lineCounter = countLines(messageArea);
-        messageArea.setSize(width, lineCounter * 18);
-        height = lineCounter * 18 + 40;
+        messageArea.setSize(width, lineCounter * pixelPerLine);
+        height = lineCounter * pixelPerLine + 40;
 
         this.setLayout(null);
         this.setBounds(x, y, width, height);
@@ -48,6 +54,7 @@ public class BlogBox extends JPanel {
         drawUserName();
         drawDate();
         drawMessageArea(messageArea);
+        drawUserSubscriptionButton(blogMessage.getSender());
     }
 
     private void drawAvatar() {
@@ -55,11 +62,10 @@ public class BlogBox extends JPanel {
         avatarLabel.setBounds(0, 0, 20, 20);
 
         String avatarPath = Constant.smallAvatar.get(blogMessage.getAvatar());
-        Image AvatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
-        avatarLabel.setIcon(new ImageIcon(AvatarImg));
+        Image avatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
+        avatarLabel.setIcon(new ImageIcon(avatarImg));
         avatarLabel.setVisible(true);
         this.add(avatarLabel);
-
     }
 
     private void drawMessageArea(JTextArea messageArea) {
@@ -74,21 +80,38 @@ public class BlogBox extends JPanel {
             int endIndex = startIndex + topic.length();
             try {
                 messageArea.getHighlighter().addHighlight(startIndex, endIndex, DefaultHighlighter.DefaultPainter);
+                Point startPosition = messageArea.modelToView(startIndex).getLocation();
+                Point endPosition = messageArea.modelToView(endIndex).getLocation();
+                drawTopicSubscriptionButton(startPosition, endPosition, topic);
             } catch (BadLocationException ble) {
                 System.out.print("Bad Location for Message Highlight!");
+            }
+            while (startIndex >= 0) {
+                startIndex = messageContent.indexOf(topic, startIndex + 1);
+                if (startIndex >= 0) {
+                    endIndex = startIndex + topic.length();
+                    try {
+                        messageArea.getHighlighter().addHighlight(startIndex, endIndex, DefaultHighlighter.DefaultPainter);
+                        Point startPosition = messageArea.modelToView(startIndex).getLocation();
+                        Point endPosition = messageArea.modelToView(endIndex).getLocation();
+                        drawTopicSubscriptionButton(startPosition, endPosition, topic);
+                    } catch (BadLocationException ble) {
+                        System.out.print("Bad Location for Message Highlight!");
+                    }
+                }
             }
         }
         this.add(messageArea);
     }
 
-    public void drawUserName() {
+    private void drawUserName() {
         JLabel userNameLabel = new JLabel(blogMessage.getSender());
         userNameLabel.setBounds(30, 0, 200, 20);
         userNameLabel.setVisible(true);
         this.add(userNameLabel);
     }
 
-    public void drawDate() {
+    private void drawDate() {
         String dateString = dateFormatter.format(blogMessage.getDate());
         JLabel timeLabel = new JLabel(dateString);
         timeLabel.setBounds(300, 0, width - 300, 20);
@@ -126,4 +149,77 @@ public class BlogBox extends JPanel {
         return noLines;
     }
 
+    private void drawTopicSubscriptionButton(Point startPosition, Point endPosition, final String topic) {
+        if(endPosition.x - startPosition.x >= 0) {
+            final JButton buttonPanel = new JButton();
+            buttonPanel.setBounds(startPosition.x, startPosition.y + 30, endPosition.x - startPosition.x, pixelPerLine);
+            buttonPanel.setVisible(true);
+            buttonPanel.setOpaque(false);
+            buttonPanel.setContentAreaFilled(false);
+            buttonPanel.setBorderPainted(false);
+            buttonPanel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.print(topic);
+                    activeTopicPoint = buttonPanel.getLocation();
+                    System.out.print(activeTopicPoint.toString());
+                    mainFrame.getSubButton().updateButton(activeTopicPoint);
+                }
+            });
+            this.add(buttonPanel);
+        }
+        else {
+            final JButton buttonPanel1 = new JButton();
+            buttonPanel1.setBounds(startPosition.x, startPosition.y + 30, width - startPosition.x, pixelPerLine);
+            buttonPanel1.setVisible(true);
+            buttonPanel1.setOpaque(false);
+            buttonPanel1.setContentAreaFilled(false);
+            buttonPanel1.setBorderPainted(false);
+            buttonPanel1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.print(topic);
+                    activeTopicPoint = buttonPanel1.getLocation();
+                    System.out.print(activeTopicPoint.toString());
+                    mainFrame.getSubButton().updateButton(activeTopicPoint);
+                }
+            });
+            this.add(buttonPanel1);
+            final JButton buttonPanel2 = new JButton();
+            buttonPanel2.setBounds(0, endPosition.y + 30, endPosition.x, pixelPerLine);
+            buttonPanel2.setVisible(true);
+            this.add(buttonPanel2);
+            buttonPanel2.setOpaque(false);
+            buttonPanel2.setContentAreaFilled(false);
+            buttonPanel2.setBorderPainted(false);
+            buttonPanel2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.print(topic);
+                    activeTopicPoint = buttonPanel2.getLocation();
+                    System.out.print(activeTopicPoint.toString());
+                    mainFrame.getSubButton().updateButton(activeTopicPoint);
+                }
+            });
+        }
+    }
+
+    private void drawUserSubscriptionButton(final String userName) {
+        final JButton buttonPanel = new JButton();
+        buttonPanel.setBounds(0, 0, 220, 20);
+        buttonPanel.setVisible(true);
+        buttonPanel.setOpaque(false);
+        buttonPanel.setContentAreaFilled(false);
+        buttonPanel.setBorderPainted(false);
+        buttonPanel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print(userName);
+                activeTopicPoint = buttonPanel.getLocation();
+                System.out.print(activeTopicPoint.toString());
+                mainFrame.getSubButton().updateButton(activeTopicPoint);
+            }
+        });
+        this.add(buttonPanel);
+    }
 }
