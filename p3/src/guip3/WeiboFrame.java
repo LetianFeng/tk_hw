@@ -4,7 +4,6 @@ package guip3;
 import client.BlogMessage;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -188,7 +187,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		showBlog(blogMessage3);
 
 		subButton = new SubscriptionButton();
-		subButton.setVisible(true);
+		subButton.setVisible(false);
 		blogBoxGroupPanel.add(subButton, new Integer(2));
 	}
 	
