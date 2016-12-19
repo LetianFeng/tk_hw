@@ -26,11 +26,13 @@ public class BlogBox extends JPanel {
     final SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
     final private BlogMessage blogMessage;
     final private String messageContent;
+    final private int startY;
     final private int width, height;
     final private WeiboFrame mainFrame;
     private Point activeTopicPoint = new Point(0, 0);
 
     public BlogBox (BlogMessage blogMessage, int x, int y, int width, WeiboFrame mainFrame) {
+        this.startY = y;
         this.width = width;
         this.blogMessage = blogMessage;
         this.messageContent = blogMessage.getContent();
@@ -82,7 +84,7 @@ public class BlogBox extends JPanel {
                 messageArea.getHighlighter().addHighlight(startIndex, endIndex, DefaultHighlighter.DefaultPainter);
                 Point startPosition = messageArea.modelToView(startIndex).getLocation();
                 Point endPosition = messageArea.modelToView(endIndex).getLocation();
-                drawTopicSubscriptionButton(startPosition, endPosition, topic);
+                drawTopicSubscriptionButton(startPosition, endPosition, topic.substring(1,topic.length()-1));
             } catch (BadLocationException ble) {
                 System.out.print("Bad Location for Message Highlight!");
             }
@@ -94,7 +96,7 @@ public class BlogBox extends JPanel {
                         messageArea.getHighlighter().addHighlight(startIndex, endIndex, DefaultHighlighter.DefaultPainter);
                         Point startPosition = messageArea.modelToView(startIndex).getLocation();
                         Point endPosition = messageArea.modelToView(endIndex).getLocation();
-                        drawTopicSubscriptionButton(startPosition, endPosition, topic);
+                        drawTopicSubscriptionButton(startPosition, endPosition, topic.substring(1,topic.length()-1));
                     } catch (BadLocationException ble) {
                         System.out.print("Bad Location for Message Highlight!");
                     }
@@ -160,12 +162,10 @@ public class BlogBox extends JPanel {
             buttonPanel.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.print(topic);
                     activeTopicPoint = buttonPanel.getLocation();
-                    System.out.print(activeTopicPoint.toString());
+                    activeTopicPoint.y += startY;
+                    mainFrame.getSubButton().setCurrentTopic("t."+topic);
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
-//                    mainFrame.getSubButton().repaint();
-                    mainFrame.repaint();
                 }
             });
             this.add(buttonPanel);
@@ -180,11 +180,11 @@ public class BlogBox extends JPanel {
             buttonPanel1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.print(topic);
                     activeTopicPoint = buttonPanel1.getLocation();
-                    System.out.print(activeTopicPoint.toString());
+                    activeTopicPoint.y += startY;
+                    activeTopicPoint.x = width - 80;
+                    mainFrame.getSubButton().setCurrentTopic("t."+topic);
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
-//                    mainFrame.getSubButton().repaint();
                 }
             });
             this.add(buttonPanel1);
@@ -198,11 +198,10 @@ public class BlogBox extends JPanel {
             buttonPanel2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.print(topic);
                     activeTopicPoint = buttonPanel2.getLocation();
-                    System.out.print(activeTopicPoint.toString());
+                    activeTopicPoint.y += startY;
+                    mainFrame.getSubButton().setCurrentTopic("t."+topic);
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
-//                    mainFrame.getSubButton().repaint();
                 }
             });
         }
@@ -210,7 +209,7 @@ public class BlogBox extends JPanel {
 
     private void drawUserSubscriptionButton(final String userName) {
         final JButton buttonPanel = new JButton();
-        buttonPanel.setBounds(0, 0, 220, 20);
+        buttonPanel.setBounds(0, 0, 80, 20);
         buttonPanel.setVisible(true);
         buttonPanel.setOpaque(false);
         buttonPanel.setContentAreaFilled(false);
@@ -218,11 +217,12 @@ public class BlogBox extends JPanel {
         buttonPanel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.print(userName);
                 activeTopicPoint = buttonPanel.getLocation();
-                System.out.print(activeTopicPoint.toString());
+                activeTopicPoint.y += startY;
+                if(activeTopicPoint.y < 20)
+                    activeTopicPoint.y += 40;
+                mainFrame.getSubButton().setCurrentTopic("u."+userName);
                 mainFrame.getSubButton().updateButton(activeTopicPoint);
-//                mainFrame.getSubButton().repaint();
             }
         });
         this.add(buttonPanel);
