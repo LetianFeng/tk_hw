@@ -42,7 +42,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 	public void showBlog(BlogMessage blogMessage) {
 		BlogBox blogBox = new BlogBox(blogMessage, 10, blogMessageCurrentHeight + 5,
 										Constant.weiboFrameWidth - 60, this);
-		blogBoxGroupPanel.add(blogBox, 1);
+		blogBoxGroupPanel.add(blogBox, new Integer(1));
 		blogMessageCurrentHeight += blogBox.getHeight();
 		blogBoxGroupPanel.setPreferredSize(new Dimension(485, blogMessageCurrentHeight + 10));
 		blogGroupPanelScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -181,7 +181,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 
 		subButton = new SubscriptionButton();
 		subButton.setVisible(true);
-		blogBoxGroupPanel.add(subButton, 2);
+		blogBoxGroupPanel.add(subButton, new Integer(2));
 	}
 	
 
