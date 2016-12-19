@@ -3,8 +3,9 @@ package guip3;
 
 import client.BlogMessage;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
     private JButton btnSetting;
     private JTextArea textContent;
     private JButton btnSend;
+    private JButton btnRefresh;
     private JLabel Avatar;
 	private int avatarId;
 	private JFrame mainFrame;
@@ -86,9 +88,11 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		});
 		this.getContentPane().setLayout(null);
 
-		notificationLabel = new JLabel();
+		notificationLabel = new JLabel("You have new Message");
 		notificationLabel.setBounds(200, 20, 200, 20);
-		notificationLabel.setVisible(false);
+		notificationLabel.setForeground(Color.red);
+		notificationLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+		//notificationLabel.setVisible(false);
 		this.getContentPane().add(notificationLabel);
 
 		textContent = new JTextArea();
@@ -125,9 +129,31 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		this.getContentPane().add(btnSend);
 
 		btnSetting = new JButton();
-		btnSetting.setBounds(430, 10, 30, 30);
+		btnSetting.setBounds(440, 10, 30, 30);
 		Image settingImg = new ImageIcon(this.getClass().getResource("Settings-icon.png")).getImage();
         btnSetting.setIcon(new ImageIcon(settingImg));
+        
+    	btnSetting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				lockMainFrame();
+				SettingFrame settingframe = new SettingFrame(mainFrame);
+				settingframe.setVisible(true);
+			}
+		});
+
+        
+    	btnRefresh = new JButton();
+		btnRefresh.setBounds(400, 10, 30, 30);
+		Image refreshImg = new ImageIcon(this.getClass().getResource("Apps-Dialog-Refresh-icon.png")).getImage();
+        btnRefresh.setIcon(new ImageIcon(refreshImg));
+        this.getContentPane().add(btnRefresh);
+        
+        btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+                  //to be done
+			}
+		});
+
         
         Avatar = new JLabel();
 		Avatar.setBounds(10,5,50, 50);
@@ -137,14 +163,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		Avatar.setIcon(new ImageIcon(AvatarImg));
 		this.getContentPane().add(Avatar);
 		
-		btnSetting.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				lockMainFrame();
-				SettingFrame settingframe = new SettingFrame(mainFrame);
-				settingframe.setVisible(true);
-			}
-		});
-
+	
 		JLabel userNameLabel = new JLabel(userName);
 		userNameLabel.setBounds(70, 5, 200, 50);
 
@@ -188,7 +207,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		showBlog(blogMessage3);
 
 		subButton = new SubscriptionButton();
-		subButton.setVisible(true);
+		subButton.setVisible(false);
 		blogBoxGroupPanel.add(subButton, new Integer(2));
 	}
 	
