@@ -164,6 +164,8 @@ public class BlogBox extends JPanel {
                     activeTopicPoint = buttonPanel.getLocation();
                     System.out.print(activeTopicPoint.toString());
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
+//                    mainFrame.getSubButton().repaint();
+                    mainFrame.repaint();
                 }
             });
             this.add(buttonPanel);
@@ -182,6 +184,7 @@ public class BlogBox extends JPanel {
                     activeTopicPoint = buttonPanel1.getLocation();
                     System.out.print(activeTopicPoint.toString());
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
+//                    mainFrame.getSubButton().repaint();
                 }
             });
             this.add(buttonPanel1);
@@ -199,6 +202,7 @@ public class BlogBox extends JPanel {
                     activeTopicPoint = buttonPanel2.getLocation();
                     System.out.print(activeTopicPoint.toString());
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
+//                    mainFrame.getSubButton().repaint();
                 }
             });
         }
@@ -218,6 +222,7 @@ public class BlogBox extends JPanel {
                 activeTopicPoint = buttonPanel.getLocation();
                 System.out.print(activeTopicPoint.toString());
                 mainFrame.getSubButton().updateButton(activeTopicPoint);
+//                mainFrame.getSubButton().repaint();
             }
         });
         this.add(buttonPanel);

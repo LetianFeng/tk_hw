@@ -13,14 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 public class WeiboFrame  extends JFrame implements GuiAPI {
 	private String title = "Welcome to fantastic Weibo!";
@@ -33,7 +26,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 	private String userName;
 	private String textWord;
     private static int count;
-	private JPanel blogBoxGroupPanel;
+	private JLayeredPane blogBoxGroupPanel;
 	private SubscriptionButton subButton;
 	private JLabel notificationLabel;
 	JScrollPane blogGroupPanelScrollPane;
@@ -49,7 +42,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 	public void showBlog(BlogMessage blogMessage) {
 		BlogBox blogBox = new BlogBox(blogMessage, 10, blogMessageCurrentHeight + 5,
 										Constant.weiboFrameWidth - 60, this);
-		blogBoxGroupPanel.add(blogBox);
+		blogBoxGroupPanel.add(blogBox, 1);
 		blogMessageCurrentHeight += blogBox.getHeight();
 		blogBoxGroupPanel.setPreferredSize(new Dimension(485, blogMessageCurrentHeight + 10));
 		blogGroupPanelScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -70,12 +63,6 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		this.userName = userName;
 		initialize();
 		mainFrame = this;
-		subButton = new SubscriptionButton();
-		subButton.setVisible(true);
-		this.add(subButton);
-
-		showNotification("notification");
-		showNotification("another notification");
 	}
 
 	protected void initialize() {
@@ -102,9 +89,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		textContent.setColumns(10);
 	
 		this.getContentPane().add(textContent);
-	
-		
-		
+
 		btnSend = new JButton("Send");
 		btnSend.setBounds(350, 550, 100, 50);
 		btnSend.addActionListener(new ActionListener() {
@@ -115,10 +100,12 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 			if(count > 200){
 				System.out.println("Maximum 200 characters!");
 				JOptionPane.showMessageDialog(null, "Maximum 200 characters!");
+				return;
 			}
 			else if(count == 0){
 				System.out.println("Can't send empty message!");
 				JOptionPane.showMessageDialog(null, "Can't send empty message!");
+				return;
 			}
 
 			BlogMessage blogMessage = new BlogMessage(textWord, new Date(), userName, avatarId);
@@ -157,7 +144,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		this.getContentPane().add(btnSetting);
         this.setResizable(false);
         
-		blogBoxGroupPanel = new JPanel();
+		blogBoxGroupPanel = new JLayeredPane();
 		blogBoxGroupPanel.setLayout(null);
 
 		blogBoxGroupPanel.setPreferredSize(new Dimension(485,100));
@@ -171,9 +158,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 
 	    contentPane.add(blogGroupPanelScrollPane);
 	    this.getContentPane().add(contentPane);	
-	   
-		
-		
+
 		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
 				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
 				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
@@ -189,17 +174,14 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
 		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
 		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
-//		BlogBox blogBox1 = new BlogBox(blogMessage1, 10, 10, Constant.weiboFrameWidth - 60, this);
-//		blogBoxGroupPanel.add(blogBox1);
-//		BlogBox blogBox2 = new BlogBox(blogMessage2, 10, 10+blogBox1.getHeight(), Constant.weiboFrameWidth - 60, this);
-//		blogBoxGroupPanel.add(blogBox2);
-//		BlogBox blogBox3 = new BlogBox(blogMessage3, 10, 10+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60, this);
-//		blogBoxGroupPanel.add(blogBox3);
 
 		showBlog(blogMessage1);
 		showBlog(blogMessage2);
 		showBlog(blogMessage3);
 
+		subButton = new SubscriptionButton();
+		subButton.setVisible(true);
+		blogBoxGroupPanel.add(subButton, 2);
 	}
 	
 
