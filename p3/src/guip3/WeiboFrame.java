@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class WeiboFrame  extends JFrame{
+public class WeiboFrame  extends JFrame implements GuiAPI {
 	private String title = "Welcome to fantastic Weibo!";
     private JButton btnSetting;
     private JTextArea textContent;
@@ -35,6 +35,26 @@ public class WeiboFrame  extends JFrame{
     private static int count;
 	private JPanel blogBoxGroupPanel;
 	private SubscriptionButton subButton;
+	private JLabel notificationLabel;
+	JScrollPane blogGroupPanelScrollPane;
+	private int blogMessageCurrentHeight = 0;
+
+	@Override
+	public void showNotification(String notification) {
+		notificationLabel.setText(notification);
+		notificationLabel.setVisible(true);
+	}
+
+	@Override
+	public void showBlog(BlogMessage blogMessage) {
+		BlogBox blogBox = new BlogBox(blogMessage, 10, blogMessageCurrentHeight + 5,
+										Constant.weiboFrameWidth - 60, this);
+		blogBoxGroupPanel.add(blogBox);
+		blogMessageCurrentHeight += blogBox.getHeight();
+		blogBoxGroupPanel.setPreferredSize(new Dimension(485, blogMessageCurrentHeight + 10));
+		blogGroupPanelScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.repaint();
+	}
 
 	public SubscriptionButton getSubButton() {
 		return subButton;
@@ -53,6 +73,9 @@ public class WeiboFrame  extends JFrame{
 		subButton = new SubscriptionButton();
 		subButton.setVisible(true);
 		this.add(subButton);
+
+		showNotification("notification");
+		showNotification("another notification");
 	}
 
 	protected void initialize() {
@@ -67,10 +90,15 @@ public class WeiboFrame  extends JFrame{
 			}
 		});
 		this.getContentPane().setLayout(null);
-		
+
+		notificationLabel = new JLabel();
+		notificationLabel.setBounds(200, 20, 200, 20);
+		notificationLabel.setVisible(false);
+		this.getContentPane().add(notificationLabel);
+
 		textContent = new JTextArea();
 		textContent.setLineWrap(true);
-		textContent.setBounds(20, 500, 300, 150);
+		textContent.setBounds(20, 550, 300, 100);
 		textContent.setColumns(10);
 	
 		this.getContentPane().add(textContent);
@@ -82,8 +110,8 @@ public class WeiboFrame  extends JFrame{
 		btnSend.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 		
-			count = textWord.length();
 			textWord = textContent.getText();
+			count = textWord.length();
 			if(count > 200){
 				System.out.println("Maximum 200 characters!");
 				JOptionPane.showMessageDialog(null, "Maximum 200 characters!");
@@ -92,6 +120,10 @@ public class WeiboFrame  extends JFrame{
 				System.out.println("Can't send empty message!");
 				JOptionPane.showMessageDialog(null, "Can't send empty message!");
 			}
+
+			BlogMessage blogMessage = new BlogMessage(textWord, new Date(), userName, avatarId);
+			showBlog(blogMessage);
+			textContent.setText("");
 
 		}
 	});
@@ -128,16 +160,16 @@ public class WeiboFrame  extends JFrame{
 		blogBoxGroupPanel = new JPanel();
 		blogBoxGroupPanel.setLayout(null);
 
-		blogBoxGroupPanel.setPreferredSize(new Dimension(485,1000));
-		JScrollPane scrollPane = new JScrollPane( blogBoxGroupPanel);
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-	    scrollPane.setBounds(0, 55, 485, 440);
+		blogBoxGroupPanel.setPreferredSize(new Dimension(485,100));
+		blogGroupPanelScrollPane = new JScrollPane(blogBoxGroupPanel);
+	    blogGroupPanelScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	    blogGroupPanelScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    blogGroupPanelScrollPane.setBounds(0, 55, 485, 480);
 	    JPanel contentPane = new JPanel(null);
 	    contentPane.setLayout(null);
-	    contentPane.setBounds(5, 5, 485, 480);
+	    contentPane.setBounds(5, 5, 485, 550);
 
-	    contentPane.add(scrollPane);
+	    contentPane.add(blogGroupPanelScrollPane);
 	    this.getContentPane().add(contentPane);	
 	   
 		
@@ -157,14 +189,16 @@ public class WeiboFrame  extends JFrame{
 		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
 		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
 		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
-		BlogBox blogBox1 = new BlogBox(blogMessage1, 10, 10, Constant.weiboFrameWidth - 60, this);
-		blogBoxGroupPanel.add(blogBox1);
-		BlogBox blogBox2 = new BlogBox(blogMessage2, 10, 10+blogBox1.getHeight(), Constant.weiboFrameWidth - 60, this);
-		blogBoxGroupPanel.add(blogBox2);
-		BlogBox blogBox3 = new BlogBox(blogMessage3, 10, 10+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60, this);
-		blogBoxGroupPanel.add(blogBox3);
+//		BlogBox blogBox1 = new BlogBox(blogMessage1, 10, 10, Constant.weiboFrameWidth - 60, this);
+//		blogBoxGroupPanel.add(blogBox1);
+//		BlogBox blogBox2 = new BlogBox(blogMessage2, 10, 10+blogBox1.getHeight(), Constant.weiboFrameWidth - 60, this);
+//		blogBoxGroupPanel.add(blogBox2);
+//		BlogBox blogBox3 = new BlogBox(blogMessage3, 10, 10+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60, this);
+//		blogBoxGroupPanel.add(blogBox3);
 
-
+		showBlog(blogMessage1);
+		showBlog(blogMessage2);
+		showBlog(blogMessage3);
 
 	}
 	
@@ -177,14 +211,6 @@ public class WeiboFrame  extends JFrame{
 	public void unlockMainFrame() {
 		this.mainFrame.setEnabled(true);
 	}
- 
-	public void drawMicroBlog(String userName,String textWord,int currentHeight ) {
-		
-		for(int i = 0; i<100;i++){		
-		BlogMessage blogMessage = new BlogMessage(textWord, new Date(), userName, 1);
-		BlogBox blogBox = new BlogBox(blogMessage, 10, 5, Constant.weiboFrameWidth - 60, this);
-		currentHeight = blogBox.getHeight(); 
-		}
-	}
+
 	
 }  
