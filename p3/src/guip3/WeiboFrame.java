@@ -81,12 +81,12 @@ public class WeiboFrame  extends JFrame{
 		btnSend.setBounds(350, 550, 100, 50);
 		btnSend.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			textWord = textContent.getText();
+		
 			count = textWord.length();
-			
-			if(count > 5){
-				System.out.println("Maximum 30 Words!");
-				JOptionPane.showMessageDialog(null, "Maximum 30 Words!");
+			textWord = textContent.getText();
+			if(count > 200){
+				System.out.println("Maximum 200 characters!");
+				JOptionPane.showMessageDialog(null, "Maximum 200 characters!");
 			}
 			else if(count == 0){
 				System.out.println("Can't send empty message!");
@@ -112,7 +112,7 @@ public class WeiboFrame  extends JFrame{
 		
 		btnSetting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mainFrame.setEnabled(false);
+				lockMainFrame();
 				SettingFrame settingframe = new SettingFrame(mainFrame);
 				settingframe.setVisible(true);
 			}
@@ -122,40 +122,16 @@ public class WeiboFrame  extends JFrame{
 		userNameLabel.setBounds(70, 5, 200, 50);
 
 		this.getContentPane().add(userNameLabel);
-
 		this.getContentPane().add(btnSetting);
-
-		this.setResizable(false);
-
-//		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
-//				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
-//				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
-//				" this is a message! \"this is a message!\" #new tag# important, #second tag#";
-//		String textSample2 = "this is a message! \"this is a message!\" this is a message! important" +
-//				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
-//		String textSample3 = "this is a message! \"this is a message!\" this is a message! important" +
-//				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
-//				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
-//				" this is a message! \"this is a message!\" #new tag# important, #second tag#" +
-//				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
-//				" is it right? not at all";
-//		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
-//		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
-//		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
-//		BlogBox blogBox1 = new BlogBox(blogMessage1, 30, 70, Constant.weiboFrameWidth - 60, this);
-//		this.getContentPane().add(blogBox1);
-//		BlogBox blogBox2 = new BlogBox(blogMessage2, 30, 70+blogBox1.getHeight(), Constant.weiboFrameWidth - 60, this);
-//		this.getContentPane().add(blogBox2);
-//		BlogBox blogBox3 = new BlogBox(blogMessage3, 30, 70+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60, this);
-//		this.getContentPane().add(blogBox3);
-
+        this.setResizable(false);
+        
 		blogBoxGroupPanel = new JPanel();
 		blogBoxGroupPanel.setLayout(null);
 
-		blogBoxGroupPanel.setPreferredSize(new Dimension(485,10000));
+		blogBoxGroupPanel.setPreferredSize(new Dimension(485,1000));
 		JScrollPane scrollPane = new JScrollPane( blogBoxGroupPanel);
 	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    scrollPane.setBounds(0, 55, 485, 440);
 	    JPanel contentPane = new JPanel(null);
 	    contentPane.setLayout(null);
@@ -163,7 +139,52 @@ public class WeiboFrame  extends JFrame{
 
 	    contentPane.add(scrollPane);
 	    this.getContentPane().add(contentPane);	
-	    
+	   
+		
+		
+		String textSample1 = "this is a message! \"this is a message!\" this is a message! important" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#";
+		String textSample2 = "this is a message! \"this is a message!\" this is a message! important" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# ";
+		String textSample3 = "this is a message! \"this is a message!\" this is a message! important" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#"+
+				" this is a message! \"this is a message!\" #new tag# important, #second tag#" +
+				" this is a message! \"this is a message!\" this is a message! important, #sample# " +
+				" is it right? not at all";
+		BlogMessage blogMessage1 = new BlogMessage(textSample1, new Date(), "player 1", 1);
+		BlogMessage blogMessage2 = new BlogMessage(textSample2, new Date(), "player 2", 2);
+		BlogMessage blogMessage3 = new BlogMessage(textSample3, new Date(), "player 3", 3);
+		BlogBox blogBox1 = new BlogBox(blogMessage1, 10, 10, Constant.weiboFrameWidth - 60, this);
+		blogBoxGroupPanel.add(blogBox1);
+		BlogBox blogBox2 = new BlogBox(blogMessage2, 10, 10+blogBox1.getHeight(), Constant.weiboFrameWidth - 60, this);
+		blogBoxGroupPanel.add(blogBox2);
+		BlogBox blogBox3 = new BlogBox(blogMessage3, 10, 10+blogBox1.getHeight()+blogBox2.getHeight(), Constant.weiboFrameWidth - 60, this);
+		blogBoxGroupPanel.add(blogBox3);
+
+
 
 	}
-}
+	
+
+	public void lockMainFrame() {
+		this.mainFrame.setEnabled(false);
+	}
+	
+	//@Override
+	public void unlockMainFrame() {
+		this.mainFrame.setEnabled(true);
+	}
+ 
+	public void drawMicroBlog(String userName,String textWord,int currentHeight ) {
+		
+		for(int i = 0; i<100;i++){		
+		BlogMessage blogMessage = new BlogMessage(textWord, new Date(), userName, 1);
+		BlogBox blogBox = new BlogBox(blogMessage, 10, 5, Constant.weiboFrameWidth - 60, this);
+		currentHeight = blogBox.getHeight(); 
+		}
+	}
+	
+}  

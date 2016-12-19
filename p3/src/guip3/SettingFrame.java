@@ -53,6 +53,7 @@ public class SettingFrame  extends JFrame{
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				mainFrame.setEnabled(true);
+		
 			}
 		});
 		this.getContentPane().setLayout(null);
