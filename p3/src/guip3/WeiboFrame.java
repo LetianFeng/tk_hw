@@ -150,19 +150,20 @@ public class WeiboFrame  extends JFrame{
 //		this.getContentPane().add(blogBox3);
 
 		blogBoxGroupPanel = new JPanel();
-		blogBoxGroupPanel.setLayout(new GridLayout(100,1));
-		for (int i = 0; i < 10; i++) {
-			blogBoxGroupPanel.add(new JButton("Hello-" + i));
-        }
+		blogBoxGroupPanel.setLayout(null);
+
+		blogBoxGroupPanel.setPreferredSize(new Dimension(485,10000));
 		JScrollPane scrollPane = new JScrollPane( blogBoxGroupPanel);
 	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    scrollPane.setBounds(20, 70, 450, 410);
+	    scrollPane.setBounds(0, 55, 485, 440);
 	    JPanel contentPane = new JPanel(null);
-	    contentPane.setSize(new Dimension(500, 700));
+	    contentPane.setLayout(null);
+	    contentPane.setBounds(5, 5, 485, 480);
 
 	    contentPane.add(scrollPane);
-	    this.getContentPane().add(contentPane);
+	    this.getContentPane().add(contentPane);	
+	    
 
 	}
 }
