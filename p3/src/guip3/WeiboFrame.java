@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 import javax.swing.*;
 
@@ -46,6 +48,12 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		blogMessageCurrentHeight += blogBox.getHeight();
 		blogBoxGroupPanel.setPreferredSize(new Dimension(485, blogMessageCurrentHeight + 10));
 		blogGroupPanelScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		blogGroupPanelScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
+	        public void adjustmentValueChanged(AdjustmentEvent e) {  
+            e.getAdjustable().setValue(e.getAdjustable().getMaximum()); 
+            blogGroupPanelScrollPane.getVerticalScrollBar().removeAdjustmentListener(this);
+	        }
+	    });
 		this.repaint();
 	}
 
