@@ -170,8 +170,9 @@ public class Client implements ClientAPI{
 			gui.showBlog(blog);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during publishing blog.");
+			je.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("An error has occured.");
+			System.out.println("An error has occured when show blog.");
 			e.printStackTrace();
 		}
 		
@@ -183,6 +184,10 @@ public class Client implements ClientAPI{
 			return this.subscriber.getSubscribedTopics();
 		} catch (JMSException je) {
 			System.out.println("An error has occured during gettting subscriptions.");
+			je.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
+			e.printStackTrace();
 		}
 		return new ArrayList<String>();
 	}

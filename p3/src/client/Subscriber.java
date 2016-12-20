@@ -17,13 +17,8 @@ import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Subscriber {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(Subscriber.class);
 
     private Client client;
     private String clientId;
@@ -59,7 +54,7 @@ public class Subscriber {
     	if (this.consumers.containsKey(t)) {
     		MessageConsumer mc = this.consumers.get(t);
     		mc.close();
-    		this.consumers.remove(mc);
+    		this.consumers.remove(t);
     	}
     }
 
@@ -71,9 +66,16 @@ public class Subscriber {
     	ArrayList<String> list = new ArrayList<String>();
     	Iterator<Entry<String, MessageConsumer>> it = this.consumers.entrySet().iterator();
     	while (it.hasNext()) {
-    		MessageConsumer mc = (MessageConsumer)it.next().getValue();
-    		SubscriberMessageListener sml = (SubscriberMessageListener)mc.getMessageListener();
-    		list.add(sml.getTopic());
+    		Entry<String, MessageConsumer> item = it.next();
+    		MessageConsumer mc = (MessageConsumer)item.getValue();
+    		String name = (String)item.getKey();
+    		try {
+	    		SubscriberMessageListener sml = (SubscriberMessageListener)mc.getMessageListener();
+	    		list.add(sml.getTopic());
+    		} catch (Exception ex) {
+    			System.out.println("An error occured during getting message listener for " + name);
+    			ex.printStackTrace();
+    		}
     	}
     	return list;
     }
