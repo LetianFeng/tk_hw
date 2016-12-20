@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.jms.JMSException;
 
@@ -61,6 +60,7 @@ public class Client implements ClientAPI{
 	public void subscribeTopic(String topicName) {
 		
 		try {
+			topicName = topicName.toUpperCase();
 			this.subscriber.subscribe(topicName, true);
 			if(!topicList.contains(topicName)) {
 				topicList.add(topicName);
@@ -77,6 +77,7 @@ public class Client implements ClientAPI{
 	public void followPerson(String userName) {
 		
 		try {
+			userName = userName.toUpperCase();
 			this.subscriber.subscribe(userName, false);
 			if(!topicList.contains(userName)) {
 				topicList.add(userName);
@@ -93,6 +94,7 @@ public class Client implements ClientAPI{
 	public void unSubscribeTopic(String topicName) {
 		
 		try {
+			topicName = topicName.toUpperCase();
 			subscriber.unSubscribe(topicName, true);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during topic unsubscription.");
@@ -106,6 +108,7 @@ public class Client implements ClientAPI{
 	public void unFollowPerson(String userName) {
 		
 		try {
+			userName = userName.toUpperCase();
 			subscriber.unSubscribe(userName, false);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during topic unsubscription.");
@@ -151,9 +154,9 @@ public class Client implements ClientAPI{
 			String blogMsg = MessageUtil.blogToJson(blog);
 			ArrayList<String> topics = MessageUtil.parseTopics(blogContent);
 			for (String topic : topics) {
-				publisher.publishMessage(blogMsg, ClientConfig.TOPIC_PREFIX + topic);
+				publisher.publishMessage(blogMsg, ClientConfig.TOPIC_PREFIX + topic.toUpperCase());
 			}
-			publisher.publishMessage(blogMsg, ClientConfig.USER_PREFEX + userName);
+			publisher.publishMessage(blogMsg, ClientConfig.USER_PREFEX + userName.toUpperCase());
 			gui.showBlog(blog);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during publishing blog.");
@@ -211,6 +214,7 @@ public class Client implements ClientAPI{
 	
 	public void addTopic(String topic) {
 		
+		topic = topic.toUpperCase();
 		if (!topicList.contains(topic))
 		this.topicList.add(topic);
 	}

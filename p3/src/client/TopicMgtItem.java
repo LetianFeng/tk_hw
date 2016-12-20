@@ -5,7 +5,7 @@ public class TopicMgtItem {
 	private String topic;
 	private boolean subscribed;
 	
-	TopicMgtItem(String topic, boolean subscribed) {
+	public TopicMgtItem(String topic, boolean subscribed) {
 		this.topic = topic;
 		this.subscribed = subscribed;
 	}
@@ -21,7 +21,7 @@ public class TopicMgtItem {
 	@Override
 	public boolean equals(Object item) {
 		if (item instanceof TopicMgtItem) {
-			return this.topic.equals(((TopicMgtItem) item).getTopic());
+			return this.topic.equalsIgnoreCase(((TopicMgtItem) item).getTopic());
 		}
 		
 		return false;

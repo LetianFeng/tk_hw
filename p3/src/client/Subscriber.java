@@ -30,7 +30,7 @@ public class Subscriber {
 		String host = (url == null || url.isEmpty()) ? ClientConfig.DEFAULT_BROKER_URL : url;
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
     	this.connection = connectionFactory.createConnection();
-    	this.connection.setClientID(user + "subscribe"); 	
+    	this.connection.setClientID(user.toUpperCase() + "subscribe"); 	
     	this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
     	this.connection.start();
     	subscribe(ClientConfig.DEFAULT_PUBLIC_CHANNEL, true);
@@ -39,7 +39,7 @@ public class Subscriber {
 
     public void subscribe(String topic, Boolean isTopic) throws JMSException {
     	
-    	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic;
+    	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic.toUpperCase();
         Topic t = this.session.createTopic(topic);
         MessageConsumer mc = this.session.createConsumer(t);
         mc.setMessageListener(new SubscriberMessageListener(topic, this.client));
@@ -48,7 +48,7 @@ public class Subscriber {
     
     public void unSubscribe(String topic, boolean isTopic) throws JMSException {
     	
-    	String t = isTopic ? ClientConfig.TOPIC_PREFIX + topic : ClientConfig.USER_PREFEX + topic;
+    	String t = isTopic ? ClientConfig.TOPIC_PREFIX + topic : ClientConfig.USER_PREFEX + topic.toUpperCase();
     	if (this.consumers.containsKey(t)) {
     		MessageConsumer mc = this.consumers.get(t);
     		mc.close();
@@ -67,7 +67,7 @@ public class Subscriber {
     	while (it.hasNext()) {
     		Entry<String, MessageConsumer> item = it.next();
     		MessageConsumer mc = (MessageConsumer)item.getValue();
-    		String name = (String)item.getKey();
+    		String name = (String)item.getKey().toUpperCase();
     		try {
 	    		SubscriberMessageListener sml = (SubscriberMessageListener)mc.getMessageListener();
 	    		list.add(sml.getTopic());

@@ -28,9 +28,9 @@ public class SubscriberMessageListener implements MessageListener{
             
             ArrayList<String> topics = MessageUtil.parseTopics(text);
             for (String topic : topics) {
-            	client.addTopic(ClientConfig.TOPIC_PREFIX + topic);
+            	client.addTopic(ClientConfig.TOPIC_PREFIX + topic.toUpperCase());
             }
-            client.addTopic(ClientConfig.USER_PREFEX + bm.getSender());
+            client.addTopic(ClientConfig.USER_PREFEX + bm.getSender().toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
         }
