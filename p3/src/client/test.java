@@ -40,6 +40,12 @@ public class test {
 		client2.sendBlog(blogMsg2);
 		
 		Thread.sleep(2000);
+		for (TopicMgtItem item : client2.getTopicManagementList(ClientConfig.USER_PREFEX)) {
+			System.out.println("Topic Mgt Item (user): " + item.toString());
+		}
+		for (TopicMgtItem item : client2.getTopicManagementList(ClientConfig.TOPIC_PREFIX)) {
+			System.out.println("Topic Mgt Item (topic): " + item.toString());
+		}
 		
 		for (BlogMessage msg : client.getBlogList()) {
 			System.out.println("[Client] " + MessageUtil.blogToJson(msg));

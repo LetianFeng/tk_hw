@@ -25,8 +25,8 @@ public class SubscriberMessageListener implements MessageListener{
         try {
             String text = textMessage.getText();
             BlogMessage bm = MessageUtil.jsonToBlog(text);
-            String sender = msg.getJMSDestination().toString();
-            sender = sender.substring(sender.lastIndexOf('.') + 1);
+            //String sender = msg.getJMSDestination().toString();
+            //sender = sender.substring(sender.lastIndexOf('.') + 1);
             if (bm.getSender().equals(client.getUser())) {
             	System.out.println("Own message: " + bm.getContent() + " has been received for user: " + client.getUser());
             	// send gui message directly
@@ -42,8 +42,9 @@ public class SubscriberMessageListener implements MessageListener{
             
             ArrayList<String> topics = MessageUtil.parseTopics(text);
             for (String topic : topics) {
-            	client.addTopic(topic);
+            	client.addTopic(ClientConfig.TOPIC_PREFIX + topic);
             }
+            client.addTopic(ClientConfig.USER_PREFEX + bm.getSender());
         } catch (Exception e) {
             e.printStackTrace();
         }
