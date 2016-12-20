@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 import javax.jms.JMSException;
 
+import org.apache.log4j.BasicConfigurator;
+
 import guip3.GuiAPI;
 
 public class Client implements ClientAPI{
@@ -27,6 +29,7 @@ public class Client implements ClientAPI{
 	private GuiAPI gui;
 	
 	public Client() {
+		BasicConfigurator.configure(); // eliminate warning for log4j
 		this.topicList = new ArrayList<String>();
 		this.messageQueue = new ArrayList<BlogMessage>();
 	}
