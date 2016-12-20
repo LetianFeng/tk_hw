@@ -40,6 +40,7 @@ public class BlogBox extends JPanel {
 
         JTextArea messageArea = new JTextArea(messageContent);
         messageArea.setBounds(0, 30, width, 1000);
+        messageArea.setFont(new Font("Dialog", Font.PLAIN, 12));
 
         int lineCounter = countLines(messageArea);
         messageArea.setSize(width, lineCounter * pixelPerLine);
