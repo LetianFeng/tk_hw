@@ -31,4 +31,9 @@ public class TopicMgtItem {
 	public int hashCode() {
 		return topic.hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return topic + ": " + (subscribed ? "true" : "false");
+	}
 }

@@ -132,6 +132,29 @@ public class Client implements ClientAPI{
 		}
 	}
 	
+	public List<BlogMessage> getBlogList() {
+		// remove duplicates
+		// order by date
+		
+		ArrayList<BlogMessage> list = new ArrayList<BlogMessage>();
+		Set<BlogMessage> hs = new HashSet<>();
+		hs.addAll(this.messageQueue);
+		list.addAll(hs);
+		Collections.sort(list, new Comparator<BlogMessage>() {
+			public int compare(BlogMessage bm1, BlogMessage bm2) {
+				Date date1 = bm1.getDate();
+			    Date date2 = bm2.getDate();
+			    return date1.compareTo(date2);
+			}
+		});
+		this.messageQueue.clear();
+		/*for (BlogMessage bm : list) {
+			this.gui.showBlog(bm);
+		}*/
+		
+		return list;
+	}
+	
 	@Override
 	public void sendBlog(String blogContent) {
 		try {
@@ -170,15 +193,21 @@ public class Client implements ClientAPI{
 	}
 	
 	@Override
-	public ArrayList<TopicMgtItem> getTopicManagementList() {
+	public ArrayList<TopicMgtItem> getTopicManagementList(String prefix) {
 		ArrayList<TopicMgtItem> list = new ArrayList<TopicMgtItem>();
 		ArrayList<String> subscriptions = getSubscriberList();
 		Set<TopicMgtItem> itemset = new HashSet<TopicMgtItem>();
 		for (String sub : subscriptions) {
+			if (sub.indexOf(prefix) < 0)
+				continue;
+			sub = sub.substring(sub.indexOf('.') + 1);
 			TopicMgtItem topic = new TopicMgtItem(sub, true);
 			itemset.add(topic);
 		}
 		for (String sub : this.topicList) {
+			if (sub.indexOf(prefix) < 0)
+				continue;
+			sub = sub.substring(sub.indexOf('.') + 1);
 			TopicMgtItem topic = new TopicMgtItem(sub, false);
 			itemset.add(topic);
 		}
