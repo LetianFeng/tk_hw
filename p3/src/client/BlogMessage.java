@@ -31,4 +31,17 @@ public class BlogMessage {
 	public int getAvatar() {
 		return this.avatar;
 	}
+	
+	@Override
+	public boolean equals(Object bm) {
+		if (bm instanceof BlogMessage) {
+			return (this.date.equals(((BlogMessage) bm).getDate()) && this.content.equals(((BlogMessage) bm).getContent()));
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return (this.date.toString() + this.content).hashCode();
+	}
 }

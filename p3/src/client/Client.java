@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +78,23 @@ public class Client implements ClientAPI{
 	
 	@Override
 	public ArrayList<BlogMessage> getBlogList() {
-		return this.messageQueue;
+		// remove duplicates
+		// order by date
+		
+		ArrayList<BlogMessage> list = new ArrayList<BlogMessage>();
+		Set<BlogMessage> hs = new HashSet<>();
+		hs.addAll(this.messageQueue);
+		list.addAll(hs);
+		Collections.sort(list, new Comparator<BlogMessage>() {
+			public int compare(BlogMessage bm1, BlogMessage bm2) {
+				Date date1 = bm1.getDate();
+			    Date date2 = bm2.getDate();
+			    return date1.compareTo(date2);
+			}
+		});
+		this.messageQueue.clear();
+		
+		return list;
 	}
 	
 	@Override
