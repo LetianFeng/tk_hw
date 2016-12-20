@@ -1,6 +1,8 @@
 package guip3;
 
 import client.BlogMessage;
+import client.ClientConfig;
+import client.TopicMgtItem;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -164,6 +166,14 @@ public class BlogBox extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     activeTopicPoint = buttonPanel.getLocation();
                     activeTopicPoint.y += startY;
+                    List<TopicMgtItem> topicList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
+                    boolean subscriberStatus = false;
+                    for(TopicMgtItem currentTopic : topicList) {
+                        if(currentTopic.getTopic().equals(topic))
+                            if(currentTopic.isSubscribed())
+                                subscriberStatus = true;
+                    }
+                    mainFrame.getSubButton().setSubscribe(subscriberStatus);
                     mainFrame.getSubButton().setCurrentTopic("t."+topic);
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
                 }
@@ -183,6 +193,14 @@ public class BlogBox extends JPanel {
                     activeTopicPoint = buttonPanel1.getLocation();
                     activeTopicPoint.y += startY;
                     activeTopicPoint.x = width - 80;
+                    List<TopicMgtItem> topicList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
+                    boolean subscriberStatus = false;
+                    for(TopicMgtItem currentTopic : topicList) {
+                        if(currentTopic.getTopic().equals(topic))
+                            if(currentTopic.isSubscribed())
+                                subscriberStatus = true;
+                    }
+                    mainFrame.getSubButton().setSubscribe(subscriberStatus);
                     mainFrame.getSubButton().setCurrentTopic("t."+topic);
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
                 }
@@ -200,6 +218,14 @@ public class BlogBox extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     activeTopicPoint = buttonPanel2.getLocation();
                     activeTopicPoint.y += startY;
+                    List<TopicMgtItem> topicList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
+                    boolean subscriberStatus = false;
+                    for(TopicMgtItem currentTopic : topicList) {
+                        if(currentTopic.getTopic().equals(topic))
+                            if(currentTopic.isSubscribed())
+                                subscriberStatus = true;
+                    }
+                    mainFrame.getSubButton().setSubscribe(subscriberStatus);
                     mainFrame.getSubButton().setCurrentTopic("t."+topic);
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
                 }
@@ -221,12 +247,12 @@ public class BlogBox extends JPanel {
                 activeTopicPoint.y += startY;
                 if(activeTopicPoint.y < 20)
                     activeTopicPoint.y += 40;
-                List<String> subscriberList = mainFrame.getClientAPI().getSubscriberList();
+                List<TopicMgtItem> subscriberList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX);
                 boolean subscriberStatus = false;
-                for(String subscriber : subscriberList) {
-                    System.out.println(subscriber);
-                    if(subscriber.equals(userName))
-                        subscriberStatus = true;
+                for(TopicMgtItem subscriber : subscriberList) {
+                    if(subscriber.getTopic().equals(userName))
+                        if(subscriber.isSubscribed())
+                            subscriberStatus = true;
                 }
                 mainFrame.getSubButton().setSubscribe(subscriberStatus);
                 mainFrame.getSubButton().setCurrentTopic("u."+userName);
