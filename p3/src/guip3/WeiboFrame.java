@@ -15,6 +15,9 @@ import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
@@ -92,7 +95,7 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		notificationLabel.setBounds(200, 20, 200, 20);
 		notificationLabel.setForeground(Color.red);
 		notificationLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
-		//notificationLabel.setVisible(false);
+		notificationLabel.setVisible(false);
 		this.getContentPane().add(notificationLabel);
 
 		textContent = new JTextArea();
@@ -101,9 +104,19 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		textContent.setColumns(10);
 	
 		this.getContentPane().add(textContent);
+		
 
 		btnSend = new JButton("Send");
 		btnSend.setBounds(350, 550, 100, 50);
+	//	btnSend.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "DoClick");
+	//	this.getRootPane().setDefaultButton(btnSend);
+		btnSend.addKeyListener(new KeyAdapter() {
+			  public void keyPressed(KeyEvent e) {
+			    if (e.getKeyCode()==KeyEvent.VK_ENTER){
+			    	btnSend.doClick();
+			    }
+			  }
+			});
 		btnSend.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 		
@@ -111,12 +124,12 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 			count = textWord.length();
 			if(count > 200){
 				System.out.println("Maximum 200 characters!");
-				JOptionPane.showMessageDialog(null, "Maximum 200 characters!");
+				JOptionPane.showMessageDialog(null, "Sorry, you can write maximum 200 characters!");
 				return;
 			}
 			else if(count == 0){
 				System.out.println("Can't send empty message!");
-				JOptionPane.showMessageDialog(null, "Can't send empty message!");
+				JOptionPane.showMessageDialog(null, "Say something? Your friends are waiting for you!");
 				return;
 			}
 

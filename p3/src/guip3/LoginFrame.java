@@ -12,6 +12,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+import client.ClientAPI;
+
+
 //import guip3.fakeclient;
 
 
@@ -34,6 +37,8 @@ public class LoginFrame  extends JFrame{
     public String Avatarimage2 ="Avatar2-icon.png";
     public String Avatarimage3 ="Avatar3-icon.png";
     public String Avatarimage4 ="Avatar4-icon.png";
+    
+    private ClientAPI client;
 	//main function for test
 	 public static void main(String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
@@ -51,7 +56,9 @@ public class LoginFrame  extends JFrame{
 	public LoginFrame() {
 
 		initialize();
+		this.client = client;
 		loginFrame = this;
+		
 	}
 
 	
@@ -145,16 +152,28 @@ public class LoginFrame  extends JFrame{
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String username = textUsername.getText();
-				if(username.equals("")) {
+				String userName = textUsername.getText();
+				
+				
+				  if(userName.equals("")) {
 					System.out.println("invalid user name!");
 					JOptionPane.showMessageDialog(null, "invalid user name!");
-				}
-				else {
-					WeiboFrame weiboframe = new WeiboFrame(avatarId, username);
-					weiboframe.setVisible(true);
-					loginFrame.dispose();
-				}
+				  }
+				  else {
+					  if(client.login(userName,avatarId)){
+						WeiboFrame weiboframe = new WeiboFrame(avatarId, userName);
+					    weiboframe.setVisible(true);
+					    loginFrame.dispose();
+					  }
+					  else {
+						  //  throw new JMSException;
+							String msg = "Error connecting to the server.";
+							JOptionPane.showMessageDialog(null, msg);
+							System.out.println(msg);
+						}
+				  }
+				  
+				
 			}
 		});
 
