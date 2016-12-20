@@ -47,6 +47,18 @@ public class test {
 		for (BlogMessage msg : client2.getBlogList()) {
 			System.out.println("[Client2] " + MessageUtil.blogToJson(msg));
 		}
+		System.out.println("subscriptions b4" + client2.getSubscriberList());
+		
+		//client2.unFollowPerson("kecen");
+		client2.unSubscribeTopic("test2");
+		client.sendBlog("client random post");
+		
+		System.out.println("subscriptions after" + client2.getSubscriberList());
+		
+		Thread.sleep(2000);
+		for (BlogMessage msg : client2.getBlogList()) {
+			System.out.println("[Client2] " + MessageUtil.blogToJson(msg));
+		}
 		
 		client.shutDown();
 		client2.shutDown();

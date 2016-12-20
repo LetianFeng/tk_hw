@@ -82,7 +82,18 @@ public class Client implements ClientAPI{
 	@Override
 	public void unSubscribeTopic(String topicName) {
 		try {
-			subscriber.unSubscribe(topicName);
+			subscriber.unSubscribe(topicName, true);
+		} catch (JMSException je) {
+			System.out.println("An error has occured during topic unsubscription.");
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void unFollowPerson(String userName) {
+		try {
+			subscriber.unSubscribe(userName, false);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during topic unsubscription.");
 		} catch (Exception e) {

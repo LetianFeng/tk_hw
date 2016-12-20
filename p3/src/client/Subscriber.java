@@ -54,9 +54,10 @@ public class Subscriber {
         this.consumers.put(topic, mc);
     }
     
-    public void unSubscribe(String topic) throws JMSException {
-    	if (this.consumers.containsKey(topic)) {
-    		MessageConsumer mc = this.consumers.get(topic);
+    public void unSubscribe(String topic, boolean isTopic) throws JMSException {
+    	String t = isTopic ? ClientConfig.TOPIC_PREFIX + topic : ClientConfig.USER_PREFEX + topic;
+    	if (this.consumers.containsKey(t)) {
+    		MessageConsumer mc = this.consumers.get(t);
     		mc.close();
     		this.consumers.remove(mc);
     	}
