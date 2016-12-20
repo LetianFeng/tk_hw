@@ -25,6 +25,10 @@ public interface ClientAPI {
 	
 	List<String> getTopicList();
 	
+	/**
+	 * @param prefix ClientConfig.USER_PREFIX or ClientConfig.TOPIC_PREFIX
+	 * @return list containing topics with that prefix
+	 */
 	List<TopicMgtItem> getTopicManagementList(String prefix);
 	
 }

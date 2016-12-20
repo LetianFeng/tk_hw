@@ -55,11 +55,11 @@ public class test {
 		}
 		System.out.println("subscriptions b4" + client2.getSubscriberList());
 		
-		//client2.unFollowPerson("kecen");
+		client2.unFollowPerson("kecen");
 		client2.unSubscribeTopic("test2");
 		client.sendBlog("client random post");
 		
-		System.out.println("subscriptions after" + client2.getSubscriberList());
+		//System.out.println("subscriptions after" + client2.getSubscriberList());
 		
 		Thread.sleep(2000);
 		for (BlogMessage msg : client2.getBlogList()) {
