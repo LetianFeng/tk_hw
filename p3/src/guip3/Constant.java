@@ -27,24 +27,6 @@ public class Constant {
 	final static int settingFrameY = (int)(windowHeight * 0.02);
 	final static int settingFrameWidth = 500;
 	final static int settingFrameHeight = 700;
-	
-	//icon properties
-	final static int minionLabelWidth = 60;
-	final static int minionLabelHeight = 60;
-	final static String minionIconName = "Minion-Dancing-icon-small.png";
-	
-	//message label properties
-	final static int messageLabeWidth = 300;
-	final static int messageLabelHeight = 15;
-	final static int messageLabelX = 50;
-	final static int messageLabelY = 20;
-	
-	//notification label properties
-	final static int notificationStartX = 650;
-	final static int notificationStartY = 20;
-	final static int notificationLabelWidth = 250;
-	final static int notificationLabelHeight = 15;
-	final static int maxNotificationNumber = 20;
 
 	final static Map<Integer, String> bigAvatar = new HashMap<Integer, String>() {
 		{

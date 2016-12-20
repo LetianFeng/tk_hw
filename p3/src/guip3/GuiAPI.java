@@ -8,5 +8,4 @@ public interface GuiAPI {
 	
 	void showBlog(BlogMessage blogMessage);
 	
-	//void showException(Exception e);
 }

@@ -65,6 +65,10 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		this.repaint();
 	}
 
+	public ClientAPI getClientAPI() {
+		return clientAPI;
+	}
+
 	public SubscriptionButton getSubButton() {
 		return subButton;
 	}
