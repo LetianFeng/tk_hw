@@ -3,6 +3,9 @@ package client;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jms.JMSException;
 
@@ -20,7 +23,7 @@ public class Client implements ClientAPI{
 	public Client() {
 		this.topicList = new ArrayList<String>();
 		this.messageQueue = new ArrayList<BlogMessage>();
-		//gui = new GUI();
+		//gui = new GuiAPI();
 	}
 	
 	@Override 
@@ -29,12 +32,13 @@ public class Client implements ClientAPI{
 			this.userName = userName;
 			this.avatarNumber = avatarNumber;
 			this.publisher = new Publisher(userName, null);
-			this.subscriber = new Subscriber(userName, null);
+			this.subscriber = new Subscriber(userName, null, this);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during login.");
 			return false;
 		} catch (Exception e) {
 			System.out.println("An error has occured.");
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -51,17 +55,19 @@ public class Client implements ClientAPI{
 			System.out.println("An error has occured during topic subscription.");
 		} catch (Exception e) {
 			System.out.println("An error has occured.");
+			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	public void unSubscribeTopic(String topicName) {
 		try {
-			this.subscriber.unSubscribe(topicName);
+			subscriber.unSubscribe(topicName);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during topic unsubscription.");
 		} catch (Exception e) {
 			System.out.println("An error has occured.");
+			e.printStackTrace();
 		}
 	}
 	
@@ -74,12 +80,23 @@ public class Client implements ClientAPI{
 	
 	@Override
 	public void sendBlog(String blogContent) {
-		Calendar calendar = Calendar.getInstance();
-		Date sendDate = calendar.getTime();
-		BlogMessage blog = new BlogMessage(blogContent, sendDate, this.userName, this.avatarNumber);
-		ArrayList<String> topics = parseTopics(blogContent);
-		//this.publisher.sendBlog(blog, topics);//parse tag as topic
-		gui.showBlog(blog);//gui is not implemented, null pointer exception
+		try {
+			Calendar calendar = Calendar.getInstance();
+			Date sendDate = calendar.getTime();
+			BlogMessage blog = new BlogMessage(blogContent, sendDate, userName, avatarNumber);
+			String blogMsg = MessageUtil.blogToJson(blog);
+			ArrayList<String> topics = MessageUtil.parseTopics(blogContent);
+			for (String topic : topics) {
+				publisher.publishMessage(blogMsg, ClientConfig.TOPIC_PREFIX + topic);
+			}
+			publisher.publishMessage(blogMsg, ClientConfig.USER_PREFEX + userName);
+			gui.showBlog(blog);
+		} catch (JMSException je) {
+			System.out.println("An error has occured during publishing blog.");
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -98,11 +115,41 @@ public class Client implements ClientAPI{
 		return topicList;
 	}
 	
-	private ArrayList<String> parseTopics(String blogContent) {
-		//needs modification of whole function body
-		ArrayList<String> topics = new ArrayList<String>();
-		topics.add("News");
-		return topics;
+	public void addTopic(String topic) {
+		this.topicList.add(topic);
 	}
 	
+	public void queueMessage(BlogMessage bm) {
+		if (bm != null) {
+			this.messageQueue.add(bm);
+		}
+	}
+	
+	public void notifyGui() {
+		int count = this.messageQueue.size();
+		String msg = "You have " + count + " unread messages.";
+		this.gui.showNotification(msg);
+	}
+	
+	public Subscriber getSub() {
+		return this.subscriber;
+	}
+	
+	public Publisher getPub() {
+		return this.publisher;
+	}
+	
+	public String getUser() {
+		return this.userName;
+	}
+	
+	public void shutDown() {
+		try {
+			this.subscriber.closeConnection();
+			this.publisher.closeConnection();
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

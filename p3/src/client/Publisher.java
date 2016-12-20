@@ -2,6 +2,8 @@ package client;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -33,7 +35,7 @@ public class Publisher {
 		String host = (url == null || url.isEmpty()) ? ClientConfig.DEFAULT_BROKER_URL : url;
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
     	this.connection = connectionFactory.createConnection();
-    	this.connection.setClientID(user+"_1"); 	
+    	this.connection.setClientID(user+"_"+System.currentTimeMillis()); 	
     	this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
     	
     	System.out.println("fine before adding producer");
@@ -41,12 +43,16 @@ public class Publisher {
     	addProducer(ClientConfig.DEFAULT_PUBLIC_CHANNEL, true);
     }
 
-    public void addProducer(String topic, boolean isTopic) throws JMSException {
-    	
-    	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic;
+    public MessageProducer addProducer(String topic, boolean isTopic) throws JMSException {
+        Pattern pattern = Pattern.compile("[T,F]\\..+");
+        Matcher matcher = pattern.matcher(topic);
+    	if (!matcher.matches()) {
+        	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic;
+    	}
         Topic t = this.session.createTopic(topic);
         MessageProducer mp = this.session.createProducer(t);
         this.producers.put(topic, mp);
+        return mp;
     }
 
     public void closeConnection() throws JMSException {
@@ -60,7 +66,8 @@ public class Publisher {
         if (mp != null) {
         	mp.send(textMessage);
         } else {
-        	System.out.println("no such producer: " + topic);
+        	MessageProducer mp_t = addProducer(topic, true);
+        	mp_t.send(textMessage);
         }
     }
     

@@ -2,6 +2,8 @@ package client;
 
 import guip3.GuiAPI;
 
+import java.util.ArrayList;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -10,11 +12,11 @@ import javax.jms.TextMessage;
 public class SubscriberMessageListener implements MessageListener{
 	
 	private String topic;
-	private String user;
+	private Client client;
 	
-	public SubscriberMessageListener(String clientId, String topic) {
+	public SubscriberMessageListener(String topic, Client client) {
 		this.topic = topic;
-		this.user = clientId;
+		this.client = client;
 	}
 
 	public void onMessage(Message msg) {
@@ -23,14 +25,24 @@ public class SubscriberMessageListener implements MessageListener{
         try {
             String text = textMessage.getText();
             BlogMessage bm = MessageUtil.jsonToBlog(text);
-            if (bm.getSender().equals(this.user)) {
-            	System.out.println("Own message has been received for user: " + this.user);
+            String sender = msg.getJMSDestination().toString();
+            sender = sender.substring(sender.lastIndexOf('.') + 1);
+            if (bm.getSender().equals(client.getUser())) {
+            	System.out.println("Own message: " + bm.getContent() + " has been received for user: " + client.getUser());
             	// send gui message directly
+            	// this has been handled when gui calls client.sendBlog
             } else {
-            	System.out.println("New message has been received from " + bm.getSender());
-            	System.out.println("this user is " + this.user);
-        		// send gui notification for new message
+            	System.out.println("New message: " + bm.getContent() + " has been received from " + bm.getSender());
+            	System.out.println("this user is " + client.getUser());
             	// store current message in stack
+        		// send gui notification for new message
+            	this.client.queueMessage(bm);
+            	this.client.notifyGui();
+            }
+            
+            ArrayList<String> topics = MessageUtil.parseTopics(text);
+            for (String topic : topics) {
+            	client.addTopic(topic);
             }
         } catch (Exception e) {
             e.printStackTrace();
