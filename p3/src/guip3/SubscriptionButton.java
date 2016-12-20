@@ -1,6 +1,5 @@
 package guip3;
 
-import client.Client;
 import client.ClientAPI;
 
 import javax.swing.*;
@@ -15,6 +14,10 @@ public class SubscriptionButton extends JButton {
     private SubscriptionButton subButton;
     private String currentTopic = "";
     private ClientAPI clientAPI;
+
+    public void setSubscribe(boolean subscribe) {
+        this.subscribe = subscribe;
+    }
 
     public void setCurrentTopic(String currentTopic) {
         this.currentTopic = currentTopic;

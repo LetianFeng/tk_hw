@@ -1,7 +1,6 @@
 package guip3;
 
 import client.BlogMessage;
-import client.ClientAPI;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -23,12 +22,11 @@ import java.util.regex.Pattern;
 public class BlogBox extends JPanel {
 
     final static int pixelPerLine = 17;
-    final static String dateFormat = "yyyy-MM-dd HH:mm:ss";
-    final SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+    final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     final private BlogMessage blogMessage;
     final private String messageContent;
     final private int startY;
-    final private int width, height;
+    final private int width;
     final private WeiboFrame mainFrame;
     private Point activeTopicPoint = new Point(0, 0);
 
@@ -45,7 +43,7 @@ public class BlogBox extends JPanel {
 
         int lineCounter = countLines(messageArea);
         messageArea.setSize(width, lineCounter * pixelPerLine);
-        height = lineCounter * pixelPerLine + 40;
+        int height = lineCounter * pixelPerLine + 40;
 
         this.setLayout(null);
         this.setBounds(x, y, width, height);
@@ -223,6 +221,14 @@ public class BlogBox extends JPanel {
                 activeTopicPoint.y += startY;
                 if(activeTopicPoint.y < 20)
                     activeTopicPoint.y += 40;
+                List<String> subscriberList = mainFrame.getClientAPI().getSubscriberList();
+                boolean subscriberStatus = false;
+                for(String subscriber : subscriberList) {
+                    System.out.println(subscriber);
+                    if(subscriber.equals(userName))
+                        subscriberStatus = true;
+                }
+                mainFrame.getSubButton().setSubscribe(subscriberStatus);
                 mainFrame.getSubButton().setCurrentTopic("u."+userName);
                 mainFrame.getSubButton().updateButton(activeTopicPoint);
             }
