@@ -111,7 +111,7 @@ public class Client implements ClientAPI{
 	}
 	
 	@Override
-	public ArrayList<BlogMessage> getBlogList() {
+	public void showBlogList() {
 		// remove duplicates
 		// order by date
 		
@@ -127,8 +127,9 @@ public class Client implements ClientAPI{
 			}
 		});
 		this.messageQueue.clear();
-		
-		return list;
+		for (BlogMessage bm : list) {
+			this.gui.showBlog(bm);
+		}
 	}
 	
 	@Override

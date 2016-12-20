@@ -19,10 +19,12 @@ public interface ClientAPI {
 	
 	void sendBlog(String blogContent);
 	
-	List<BlogMessage> getBlogList();
+	void showBlogList();
 	
 	List<String> getSubscriberList();
 	
 	List<String> getTopicList();
+	
+	//List<> getTopicManagementList();
 	
 }
