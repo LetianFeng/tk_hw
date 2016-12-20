@@ -20,6 +20,8 @@ public class SubscriberTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         subscriberPublishSubscribe = new Subscriber("kecen", null);
+        subscriberPublishSubscribe.subscribe("kecen", false);
+        subscriberPublishSubscribe.subscribe("kecen", false);
         publisherPublishSubscribe = new Publisher("kecen", null);
 
 

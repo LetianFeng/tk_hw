@@ -3,6 +3,7 @@ package client;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.jms.JMSException;
 
 import guip3.GuiAPI;
@@ -12,50 +13,63 @@ public class Client implements ClientAPI{
 	private int avatarNumber;
 	private Publisher publisher;
 	private Subscriber subscriber;
-	private ArrayList<String> subscriberList;
 	private ArrayList<String> topicList;
+	private ArrayList<BlogMessage> messageQueue;
 	private GuiAPI gui;
 	
 	public Client() {
-		this.subscriberList = new ArrayList<String>();//needs initialize value (public topics).
 		this.topicList = new ArrayList<String>();
+		this.messageQueue = new ArrayList<BlogMessage>();
 		//gui = new GUI();
 	}
 	
 	@Override 
-	public boolean login(String userName, int avatarNumber) throws JMSException {
-		this.userName = userName;
-		this.avatarNumber = avatarNumber;
-		this.publisher = new Publisher();
-		this.subscriber = new Subscriber(userName, "Sports", null);
-		if(publisher != null && subscriber != null)
-			return true;
-		else
+	public boolean login(String userName, int avatarNumber) {
+		try {
+			this.userName = userName;
+			this.avatarNumber = avatarNumber;
+			this.publisher = new Publisher(userName, null);
+			this.subscriber = new Subscriber(userName, null);
+		} catch (JMSException je) {
+			System.out.println("An error has occured during login.");
 			return false;
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
+			return false;
+		}
+		return true;
 	}
 	
 	@Override
-	public void subscribeTopic(String topicName) throws JMSException {
-		if(!subscriberList.contains(topicName)) {
+	public void subscribeTopic(String topicName) {
+		try {
 			this.subscriber.subscribe(topicName, true);
-			subscriberList.add(topicName);
-		}
-		if(!topicList.contains(topicName)) {
-			topicList.add(topicName);
+			if(!topicList.contains(topicName)) {
+				topicList.add(topicName);
+			}
+		} catch (JMSException je) {
+			System.out.println("An error has occured during topic subscription.");
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
 		}
 	}
 	
 	@Override
 	public void unSubscribeTopic(String topicName) {
-		//this.subscriber.unSubscribeTopic(topicName);
-		subscriberList.remove(topicName);
+		try {
+			this.subscriber.unSubscribe(topicName);
+		} catch (JMSException je) {
+			System.out.println("An error has occured during topic unsubscription.");
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
+		}
 	}
 	
 	@Override
 	public ArrayList<BlogMessage> getBlogList() {
 		//needs modification to refresh topicList
 		//return this.subscriber.getBlogList();
-		return null;
+		return this.messageQueue;
 	}
 	
 	@Override
@@ -71,7 +85,12 @@ public class Client implements ClientAPI{
 	
 	@Override
 	public ArrayList<String> getSubscriberList() {
-		return subscriberList;
+		try {
+			return this.subscriber.getSubscribedTopics();
+		} catch (JMSException je) {
+			System.out.println("An error has occured during gettting subscriptions.");
+		}
+		return new ArrayList<String>();
 	}
 	
 	@Override

@@ -52,6 +52,14 @@ public class Subscriber {
         mc.setMessageListener(new SubscriberMessageListener(this.clientId, topic));
         this.consumers.put(topic, mc);
     }
+    
+    public void unSubscribe(String topic) throws JMSException {
+    	if (this.consumers.containsKey(topic)) {
+    		MessageConsumer mc = this.consumers.get(topic);
+    		mc.close();
+    		this.consumers.remove(mc);
+    	}
+    }
 
     public void closeConnection() throws JMSException {
         connection.close();
