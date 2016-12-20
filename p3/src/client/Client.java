@@ -2,6 +2,8 @@ package client;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -24,6 +26,7 @@ public class Client implements ClientAPI{
 		this.topicList = new ArrayList<String>();
 		this.messageQueue = new ArrayList<BlogMessage>();
 		//gui = new GuiAPI();
+		//gui = new GUI();
 	}
 	
 	@Override 
@@ -73,8 +76,6 @@ public class Client implements ClientAPI{
 	
 	@Override
 	public ArrayList<BlogMessage> getBlogList() {
-		//needs modification to refresh topicList
-		//return this.subscriber.getBlogList();
 		return this.messageQueue;
 	}
 	
