@@ -169,6 +169,24 @@ public class Client implements ClientAPI{
 		return topicList;
 	}
 	
+	@Override
+	public ArrayList<TopicMgtItem> getTopicManagementList() {
+		ArrayList<TopicMgtItem> list = new ArrayList<TopicMgtItem>();
+		ArrayList<String> subscriptions = getSubscriberList();
+		Set<TopicMgtItem> itemset = new HashSet<TopicMgtItem>();
+		for (String sub : subscriptions) {
+			TopicMgtItem topic = new TopicMgtItem(sub, true);
+			itemset.add(topic);
+		}
+		for (String sub : this.topicList) {
+			TopicMgtItem topic = new TopicMgtItem(sub, false);
+			itemset.add(topic);
+		}
+		list.addAll(itemset);
+		
+		return list;
+	}
+	
 	public void addTopic(String topic) {
 		if (!topicList.contains(topic))
 		this.topicList.add(topic);

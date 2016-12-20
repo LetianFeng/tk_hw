@@ -25,6 +25,6 @@ public interface ClientAPI {
 	
 	List<String> getTopicList();
 	
-	//List<> getTopicManagementList();
+	List<TopicMgtItem> getTopicManagementList();
 	
 }
