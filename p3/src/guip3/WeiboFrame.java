@@ -2,6 +2,8 @@ package guip3;
 
 
 import client.BlogMessage;
+import client.Client;
+import client.ClientAPI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,8 +38,9 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 	private JLayeredPane blogBoxGroupPanel;
 	private SubscriptionButton subButton;
 	private JLabel notificationLabel;
-	JScrollPane blogGroupPanelScrollPane;
+	private JScrollPane blogGroupPanelScrollPane;
 	private int blogMessageCurrentHeight = 0;
+	private ClientAPI clientAPI;
 
 	@Override
 	public void showNotification(String notification) {
@@ -76,6 +79,8 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		this.userName = userName;
 		initialize();
 		mainFrame = this;
+		clientAPI = new Client(this);
+		clientAPI.login(userName, avatarId);
 	}
 
 	protected void initialize() {
@@ -133,8 +138,9 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 				return;
 			}
 
-			BlogMessage blogMessage = new BlogMessage(textWord, new Date(), userName, avatarId);
-			showBlog(blogMessage);
+			clientAPI.sendBlog(textWord);
+//			BlogMessage blogMessage = new BlogMessage(textWord, new Date(), userName, avatarId);
+//			showBlog(blogMessage);
 			textContent.setText("");
 
 		}
