@@ -9,7 +9,9 @@ public interface ClientAPI {
 	//boolean login(String userName, int avatarNumber) throws JMSException;
 	boolean login(String userName, int avatarNumber);
 	
-	void subscribeTopic(String topicName) throws JMSException;
+	void subscribeTopic(String topicName);
+	
+	void followPerson(String userName);
 	
 	void unSubscribeTopic(String topicName);
 	

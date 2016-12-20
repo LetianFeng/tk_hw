@@ -65,6 +65,21 @@ public class Client implements ClientAPI{
 	}
 	
 	@Override
+	public void followPerson(String userName) {
+		try {
+			this.subscriber.subscribe(userName, false);
+			if(!topicList.contains(userName)) {
+				topicList.add(userName);
+			}
+		} catch (JMSException je) {
+			System.out.println("An error has occured during user subscription.");
+		} catch (Exception e) {
+			System.out.println("An error has occured.");
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
 	public void unSubscribeTopic(String topicName) {
 		try {
 			subscriber.unSubscribe(topicName);
@@ -135,6 +150,7 @@ public class Client implements ClientAPI{
 	}
 	
 	public void addTopic(String topic) {
+		if (!topicList.contains(topic))
 		this.topicList.add(topic);
 	}
 	

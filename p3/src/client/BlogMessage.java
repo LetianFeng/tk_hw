@@ -35,7 +35,8 @@ public class BlogMessage {
 	@Override
 	public boolean equals(Object bm) {
 		if (bm instanceof BlogMessage) {
-			return (this.date.equals(((BlogMessage) bm).getDate()) && this.content.equals(((BlogMessage) bm).getContent()));
+			return (this.date.equals(((BlogMessage) bm).getDate()) 
+					&& this.content.equals(((BlogMessage) bm).getContent()));
 		}
 		return false;
 	}
