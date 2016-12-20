@@ -2,6 +2,8 @@ package guip3;
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
+import client.TopicMgtItem;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -12,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -190,6 +193,7 @@ public class SettingFrame  extends JFrame{
 
 	        
 	    }
+//	 List<TopicMgtItem> getTopicManagementList(String prefix);
 /*
 	    void drawSubTable(ArrayList<Sublist> subList) {
 	        deawSubTableModel.setRowCount(0);
