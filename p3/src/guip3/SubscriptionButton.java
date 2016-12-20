@@ -1,5 +1,8 @@
 package guip3;
 
+import client.Client;
+import client.ClientAPI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -11,6 +14,7 @@ public class SubscriptionButton extends JButton {
     private boolean subscribe = false;
     private SubscriptionButton subButton;
     private String currentTopic = "";
+    private ClientAPI clientAPI;
 
     public void setCurrentTopic(String currentTopic) {
         this.currentTopic = currentTopic;
@@ -26,8 +30,9 @@ public class SubscriptionButton extends JButton {
         this.setVisible(true);
     }
 
-    public SubscriptionButton() {
+    public SubscriptionButton(final ClientAPI clientAPI) {
         subButton = this;
+        this.clientAPI = clientAPI;
         this.setBounds(activePoint.x + 10, activePoint.y - 20, 80, 20);
         this.setText("follow");
         this.addMouseListener(new MouseAdapter() {
@@ -36,7 +41,12 @@ public class SubscriptionButton extends JButton {
                 super.mouseClicked(e);
                 subButton.setVisible(false);
                 // make new subscription
-                System.out.println(currentTopic);
+                if(currentTopic.substring(0,2).equals("t.")) {
+                    clientAPI.subscribeTopic(currentTopic.substring(2,currentTopic.length()));
+                }
+                else {
+                    clientAPI.followPerson(currentTopic.substring(2,currentTopic.length()));
+                }
             }
         });
     }

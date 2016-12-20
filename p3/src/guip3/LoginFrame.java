@@ -54,13 +54,10 @@ public class LoginFrame  extends JFrame{
 	    }
 
 	public LoginFrame() {
-
 		initialize();
-		this.client = client;
 		loginFrame = this;
 		
 	}
-
 	
 	protected void initialize() {
 		this.setTitle(title);
@@ -160,20 +157,10 @@ public class LoginFrame  extends JFrame{
 					JOptionPane.showMessageDialog(null, "invalid user name!");
 				  }
 				  else {
-//					  if(client.login(userName,avatarId)){
 						WeiboFrame weiboframe = new WeiboFrame(avatarId, userName);
 					    weiboframe.setVisible(true);
 					    loginFrame.dispose();
-//					  }
-//					  else {
-//						  //  throw new JMSException;
-//							String msg = "Error connecting to the server.";
-//							JOptionPane.showMessageDialog(null, msg);
-//							System.out.println(msg);
-//						}
 				  }
-				  
-				
 			}
 		});
 

@@ -77,10 +77,10 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 	public WeiboFrame(int avatarId, String userName) {
 		this.avatarId = avatarId;
 		this.userName = userName;
-		initialize();
 		mainFrame = this;
 		clientAPI = new Client(this);
 		clientAPI.login(userName, avatarId);
+		initialize();
 	}
 
 	protected void initialize() {
@@ -169,7 +169,8 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
         
         btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-                  //to be done
+                  clientAPI.showBlogList();
+				notificationLabel.setVisible(false);
 			}
 		});
 
@@ -225,11 +226,11 @@ public class WeiboFrame  extends JFrame implements GuiAPI {
 		showBlog(blogMessage2);
 		showBlog(blogMessage3);
 
-		subButton = new SubscriptionButton();
+		subButton = new SubscriptionButton(clientAPI);
 		subButton.setVisible(false);
 		blogBoxGroupPanel.add(subButton, new Integer(2));
 	}
-	
+
 
 	public void lockMainFrame() {
 		this.mainFrame.setEnabled(false);

@@ -1,6 +1,7 @@
 package guip3;
 
 import client.BlogMessage;
+import client.ClientAPI;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
