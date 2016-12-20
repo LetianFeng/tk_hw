@@ -17,13 +17,8 @@ import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Subscriber {
-
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(Subscriber.class);
 
     private Client client;
     private String clientId;
