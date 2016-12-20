@@ -29,8 +29,10 @@ public class Subscriber {
     private Connection connection;
     private Session session;
     private Map<String, MessageConsumer> consumers = new HashMap<String, MessageConsumer>();
+    private Client client;
     
-    public Subscriber(String user, String url) throws JMSException {
+    public Subscriber(String user, String url, Client client) throws JMSException {
+    	this.client  = client;
 		this.clientId = user;
 		String host = (url == null || url.isEmpty()) ? ClientConfig.DEFAULT_BROKER_URL : url;
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
@@ -49,7 +51,7 @@ public class Subscriber {
     	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic;
         Topic t = this.session.createTopic(topic);
         MessageConsumer mc = this.session.createConsumer(t);
-        mc.setMessageListener(new SubscriberMessageListener(this.clientId, topic));
+        mc.setMessageListener(new SubscriberMessageListener(this.clientId, topic, this.client));
         this.consumers.put(topic, mc);
     }
     

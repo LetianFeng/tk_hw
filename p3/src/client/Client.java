@@ -2,6 +2,8 @@ package client;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.jms.JMSException;
@@ -29,7 +31,7 @@ public class Client implements ClientAPI{
 			this.userName = userName;
 			this.avatarNumber = avatarNumber;
 			this.publisher = new Publisher(userName, null);
-			this.subscriber = new Subscriber(userName, null);
+			this.subscriber = new Subscriber(userName, null, this);
 		} catch (JMSException je) {
 			System.out.println("An error has occured during login.");
 			return false;
@@ -67,8 +69,6 @@ public class Client implements ClientAPI{
 	
 	@Override
 	public ArrayList<BlogMessage> getBlogList() {
-		//needs modification to refresh topicList
-		//return this.subscriber.getBlogList();
 		return this.messageQueue;
 	}
 	
@@ -76,11 +76,17 @@ public class Client implements ClientAPI{
 	public void sendBlog(String blogContent) {
 		Calendar calendar = Calendar.getInstance();
 		Date sendDate = calendar.getTime();
-		BlogMessage blog = new BlogMessage(blogContent, sendDate, this.userName, this.avatarNumber);
+		BlogMessage bm = new BlogMessage(blogContent, sendDate, this.userName, this.avatarNumber);
 		ArrayList<String> topics = parseTopics(blogContent);
-		//this.publisher.sendBlog(blog, topics);//parse tag as topic
-		gui.showBlog(blog);//gui is not implemented, null pointer exception
-		
+		for(String topicName : topics) {
+			try {
+				this.publisher.publishMessage(MessageUtil.blogToJson(bm), topicName);
+				if(!topicList.contains(topicName))
+					topicList.add(topicName);
+			} catch (JMSException e) {
+				System.out.println("An error has occured during publish new blog.");
+			}
+		}
 	}
 	
 	@Override
@@ -103,6 +109,23 @@ public class Client implements ClientAPI{
 		ArrayList<String> topics = new ArrayList<String>();
 		topics.add("News");
 		return topics;
+	}
+	
+	public void storeNewBlog(BlogMessage bm) {
+		this.messageQueue.add(bm);
+		Collections.sort(messageQueue, new Comparator<BlogMessage>() {
+			public int compare(BlogMessage bm1, BlogMessage bm2) {
+				Date date1 = bm1.getDate();
+			    Date date2 = bm2.getDate();
+			    return date1.compareTo(date2);
+			}
+		});
+		//gui.showNotification(this.messageQueue.size()+ " unread blogs");
+		System.out.println(this.messageQueue.size()+ " unread blogs");
+	}
+	
+	public void sendbackOwnMessage(BlogMessage bm) {
+		gui.showBlog(bm);//gui is not implemented, null pointer exception
 	}
 	
 }
