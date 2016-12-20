@@ -30,7 +30,7 @@ public class Subscriber {
 		String host = (url == null || url.isEmpty()) ? ClientConfig.DEFAULT_BROKER_URL : url;
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
     	this.connection = connectionFactory.createConnection();
-    	this.connection.setClientID(user+"_"+System.currentTimeMillis()); 	
+    	this.connection.setClientID(user + "subscribe"); 	
     	this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
     	this.connection.start();
     	subscribe(ClientConfig.DEFAULT_PUBLIC_CHANNEL, true);

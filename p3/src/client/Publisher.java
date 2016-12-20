@@ -28,7 +28,7 @@ public class Publisher {
 		String host = (url == null || url.isEmpty()) ? ClientConfig.DEFAULT_BROKER_URL : url;
     	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
     	this.connection = connectionFactory.createConnection();
-    	this.connection.setClientID(user+"_"+System.currentTimeMillis()); 	
+    	this.connection.setClientID(user + "publish"); 	
     	this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
     	
     	System.out.println("fine before adding producer");
