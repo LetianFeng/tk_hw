@@ -1,10 +1,6 @@
 package client;
 
-import java.awt.EventQueue;
-
 import javax.jms.JMSException;
-
-import guip3.LoginFrame;
 
 public class test {
 	
@@ -18,7 +14,7 @@ public class test {
 		
 		Thread.sleep(1000);
 		
-		String blog = "{\"content\":\"first #test# blog\", \"date\": \"2016-12-25 12:59:59\", \"sender\": \"kecen\", \"avatar\": \"1\"}";
+		//String blog = "{\"content\":\"first #test# blog\", \"date\": \"2016-12-25 12:59:59\", \"sender\": \"kecen\", \"avatar\": \"1\"}";
 		String blogMsg = "Hello #test# world";
 		String blogMsg2 = "Hello #test2# aa #test# world";
 		client.sendBlog(blogMsg);

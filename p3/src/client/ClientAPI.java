@@ -2,8 +2,6 @@ package client;
 
 import java.util.List;
 
-import javax.jms.JMSException;
-
 public interface ClientAPI {
 	
 	/**

@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 public class MessageUtil {
 
 	public static BlogMessage jsonToBlog(String message) {
+		
 		Gson gson = new GsonBuilder()
 				.setDateFormat(ClientConfig.DEFAULT_DATE_FORMAT).create();
 		BlogMessage bm = gson.fromJson(message, BlogMessage.class);
@@ -17,6 +18,7 @@ public class MessageUtil {
 	}
 	
 	public static String blogToJson(BlogMessage bm) {
+		
 		Gson gson = new GsonBuilder()
 				.setDateFormat(ClientConfig.DEFAULT_DATE_FORMAT).create();
 		String json = gson.toJson(bm);
@@ -24,7 +26,7 @@ public class MessageUtil {
 	}
 	
 	public static ArrayList<String> parseTopics(String blogContent) {
-		//needs modification of whole function body
+
 		ArrayList<String> topics = new ArrayList<String>();
         Pattern pattern = Pattern.compile("\\#(.+?)\\#");
         Matcher matcher = pattern.matcher(blogContent);
@@ -33,5 +35,4 @@ public class MessageUtil {
         }
 		return topics;
 	}
-	
 }

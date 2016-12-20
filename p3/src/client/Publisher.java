@@ -8,13 +8,11 @@ import java.util.regex.Pattern;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
 
-import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class Publisher {
@@ -28,7 +26,7 @@ public class Publisher {
     	
     	this.clientId = user;
 		String host = (url == null || url.isEmpty()) ? ClientConfig.DEFAULT_BROKER_URL : url;
-    	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
+    	ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
     	this.connection = connectionFactory.createConnection();
     	this.connection.setClientID(user+"_"+System.currentTimeMillis()); 	
     	this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -39,6 +37,7 @@ public class Publisher {
     }
 
     public MessageProducer addProducer(String topic, boolean isTopic) throws JMSException {
+    	
         Pattern pattern = Pattern.compile("[T,F]\\..+");
         Matcher matcher = pattern.matcher(topic);
     	if (!matcher.matches()) {
@@ -51,6 +50,7 @@ public class Publisher {
     }
 
     public void closeConnection() throws JMSException {
+    	
         connection.close();
     }
 
@@ -67,6 +67,7 @@ public class Publisher {
     }
     
     public MessageProducer getProducer(String topic) {
+    	
     	if (this.producers.containsKey(topic)) {
     		return this.producers.get(topic);
     	} else {
