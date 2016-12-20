@@ -15,6 +15,8 @@ public interface ClientAPI {
 	
 	void unSubscribeTopic(String topicName);
 	
+	void unFollowPerson(String userName);
+	
 	void sendBlog(String blogContent);
 	
 	List<BlogMessage> getBlogList();

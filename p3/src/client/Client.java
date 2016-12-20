@@ -1,5 +1,7 @@
 package client;
 
+import guip3.WeiboFrame;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -27,6 +29,11 @@ public class Client implements ClientAPI{
 	public Client() {
 		this.topicList = new ArrayList<String>();
 		this.messageQueue = new ArrayList<BlogMessage>();
+	}
+	
+	public Client(WeiboFrame wbFrame) {
+        this();
+		gui = wbFrame;
 		//gui = new GuiAPI();
 		//gui = new GUI();
 	}
@@ -91,6 +98,7 @@ public class Client implements ClientAPI{
 		}
 	}
 	
+	@Override
 	public void unFollowPerson(String userName) {
 		try {
 			subscriber.unSubscribe(userName, false);
