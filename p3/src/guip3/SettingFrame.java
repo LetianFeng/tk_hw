@@ -1,5 +1,6 @@
 package guip3;
 
+import client.ClientConfig;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
 import client.TopicMgtItem;
@@ -47,12 +48,12 @@ public class SettingFrame  extends JFrame{
     private DefaultTableModel SubTableModel;
     private JScrollPane scrollPane;
 	private JFrame settingFrame;
-	private JFrame mainFrame;
+	private WeiboFrame mainFrame;
     
-	public SettingFrame(JFrame mainFrame) {
-		initialize();
+	public SettingFrame(WeiboFrame mainFrame) {
 		settingFrame = this;
 		this.mainFrame = mainFrame;
+		initialize();
 	}
 	
 	//main function for test
@@ -137,14 +138,14 @@ public class SettingFrame  extends JFrame{
 		});	
 		this.getContentPane().add(btnSavechange);
 		
-		    this.generateSubTable("User Name");
+		    this.generateSubTable("User Name", ClientConfig.USER_PREFEX);
 	        JScrollPane scrollPane = new JScrollPane(SubTable);
 	        this.getContentPane().add(scrollPane);
 	        scrollPane.setBounds(20, 90, 200, 300);
 	        //chooseRoomPanel.add(chooseRoomTable,BorderLayout.CENTER);
 	        JTableHeader tableHeader = SubTable.getTableHeader();
 	        
-	        this.generateSubTable("Topics");
+	        this.generateSubTable("Topics", ClientConfig.TOPIC_PREFIX);
 	        JScrollPane scrollPane2 = new JScrollPane(SubTable);
 	        this.getContentPane().add(scrollPane2);
 	        scrollPane2.setBounds(250, 90, 200, 300);
@@ -156,7 +157,7 @@ public class SettingFrame  extends JFrame{
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 	}
-	 private void generateSubTable(String ColumnName) {
+	 private void generateSubTable(String ColumnName, String topicPrefix) {
 	        SubTable = new JTable();
 	        SubTableModel = new DefaultTableModel() {
 	            public Class<?> getColumnClass(int column) {
@@ -182,29 +183,14 @@ public class SettingFrame  extends JFrame{
 	        
 	     // for test	        
 	        SubTableModel.setRowCount(0);
-	        for (int i = 0; i < 2; i++) {
-	           // Sublist currentSub = subList.get(i);
-	            SubTableModel.addRow(new Object[0]);
-	            SubTableModel.setValueAt(false, i, 0);
-	            SubTableModel.setValueAt("User", i, 1);
-	            
-	            
-	        }
 
-	        
-	    }
-//	 List<TopicMgtItem> getTopicManagementList(String prefix);
-/*
-	    void drawSubTable(ArrayList<Sublist> subList) {
-	        deawSubTableModel.setRowCount(0);
-	        for (int i = 0; i < subList.size(); i++) {
-	            Sublist currentSub = subList.get(i);
-	            SubTableModel.addRow(new Object[0]);
-	            SubTableModel.setValueAt(false, i, 0);
-	            SubTableModel.setValueAt("ss", i, 1);
-	            SubTableModel.setValueAt("ss", i, 2);
-	            SubTableModel.setValueAt("dd", i, 3);
-	        }
-	    }
-**/
+		 	List<TopicMgtItem> topicMgtItemList = mainFrame.getClientAPI().getTopicManagementList(topicPrefix);
+
+		 	for (int i =0; i < topicMgtItemList.size(); i++) {
+				SubTableModel.addRow(new Object[0]);
+				SubTableModel.setValueAt(topicMgtItemList.get(i).isSubscribed(), i, 0);
+				SubTableModel.setValueAt(topicMgtItemList.get(i).getTopic(), i, 1);
+			}
+
+		}
 }
