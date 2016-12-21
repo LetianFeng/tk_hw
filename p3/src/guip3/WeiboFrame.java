@@ -3,6 +3,7 @@ package guip3;
 import client.BlogMessage;
 import client.Client;
 import client.ClientAPI;
+import client.ClientConfig;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -77,13 +78,14 @@ public class WeiboFrame extends JFrame implements GuiAPI {
         clientAPI = new Client(this);
     }
 
-    public boolean login_initial() {
-        if(clientAPI.login(userName, avatarId)) {
+    public int login_initial() {
+        int status_code = clientAPI.login(userName, avatarId);
+        if(status_code == ClientConfig.NO_ERROR) {
             mainFrame = this;
             initialize();
-            return true;
+            return status_code;
         }
-        else return false;
+        else return status_code;
     }
 
     private void initialize() {
