@@ -3,22 +3,28 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="microblog">
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="exec" name="microblog">
     <property environment="env"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.8"/>
-    <property name="source" value="1.8"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
     <path id="JUnit 4.libraryclasspath">
         <pathelement location="../../../../../.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
         <pathelement location="../../../../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
     </path>
     <path id="microblog.classpath">
         <pathelement location="bin"/>
-        <pathelement location="lib/activemq-all-5.13.3.jar"/>
+        <pathelement location="lib/activemq-all-5.6.0.jar"/>
         <pathelement location="lib/gson-2.8.0.jar"/>
         <path refid="JUnit 4.libraryclasspath"/>
     </path>
+	<condition property="host" value="tcp://localhost:61616">
+	    <not>  
+	        <isset property="host"/>
+	    </not>
+	</condition>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
@@ -30,6 +36,7 @@
     </target>
     <target name="clean">
         <delete dir="bin"/>
+    	<delete dir="dist"/>
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
@@ -41,6 +48,35 @@
             <classpath refid="microblog.classpath"/>
         </javac>
     </target>
+  	<target name="dist" depends="build" description="package, output to JAR">
+		<!-- Create the distribution directory -->
+		<mkdir dir="dist" />
+		<!-- Put everything in ${build} into the {$projectName}-${DSTAMP}.jar file -->
+		<jar jarfile="dist/microblog.jar" basedir="bin" >	        
+			<zipgroupfileset dir="lib" includes="activemq-all-5.6.0.jar" />
+			<zipgroupfileset dir="lib" includes="gson-2.8.0.jar" />
+		    <manifest>
+			<!-- create an executable Jar -->
+			<attribute name="Main-Class" value="guip3.LoginFrame" />
+		    </manifest>
+		</jar>
+  	</target>
+	<target name="exec" depends="dist" description="execute jar">
+	  <exec executable="java">
+		<parallel>
+	  		<exec executable="java">
+	  			<arg value="-jar" />
+	    		<arg value="dist/microblog.jar" />
+	  			<arg value="${host}"/>
+	  		</exec>
+	  		<exec executable="java">
+	  			<arg value="-jar" />
+	    		<arg value="dist/microblog.jar" />
+	  			<arg value="${host}"/>
+	  		</exec>
+		</parallel>
+	  </exec>
+	</target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
