@@ -40,10 +40,12 @@ public class Subscriber {
     public void subscribe(String topic, Boolean isTopic) throws JMSException {
     	
     	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic.toUpperCase();
-        Topic t = this.session.createTopic(topic);
-        MessageConsumer mc = this.session.createConsumer(t);
-        mc.setMessageListener(new SubscriberMessageListener(topic, this.client));
-        this.consumers.put(topic, mc);
+    	if(!consumers.containsKey(topic)) {
+	        Topic t = this.session.createTopic(topic);
+	        MessageConsumer mc = this.session.createConsumer(t);
+	        mc.setMessageListener(new SubscriberMessageListener(topic, this.client));
+	        this.consumers.put(topic, mc);
+    	}
     }
     
     public void unSubscribe(String topic, boolean isTopic) throws JMSException {
@@ -51,6 +53,7 @@ public class Subscriber {
     	String t = isTopic ? ClientConfig.TOPIC_PREFIX + topic : ClientConfig.USER_PREFEX + topic.toUpperCase();
     	if (this.consumers.containsKey(t)) {
     		MessageConsumer mc = this.consumers.get(t);
+    		System.out.println("topic"+mc.toString()+ " unsubscribed");
     		mc.close();
     		this.consumers.remove(t);
     	}
