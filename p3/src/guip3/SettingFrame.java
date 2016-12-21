@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -56,6 +57,8 @@ public class SettingFrame  extends JFrame{
 	private List<TopicMgtItem> userMgtItemList;
 	private int i =0;
 	private int j =0;
+	private String subUser;
+	private String subTopic;
     
 	public SettingFrame(WeiboFrame mainFrame) {
 		settingFrame = this;
@@ -132,12 +135,21 @@ public class SettingFrame  extends JFrame{
 		Image settingImg = new ImageIcon(this.getClass().getResource("tick_green.png")).getImage();
         btnTick1.setIcon(new ImageIcon(settingImg));
         btnTick1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+			public void actionPerformed(ActionEvent arg0) {	
+			subUser = subContent1.getText();
+			int	count = subUser.length();
+			if(count == 0){
+					System.out.println("Can't send empty message!");
+					JOptionPane.showMessageDialog(null,"Can't send empty message!");
+					return;
+				}
+			else{
 				SubTableModel1.addRow(new Object[0]);
 				SubTableModel1.setValueAt(true, userMgtItemList.size()+i, 0);
 				SubTableModel1.setValueAt(subContent1.getText(),userMgtItemList.size()+i, 1);
 				i++;
+				subContent1.setText("");
+			}
 				
 			}
 		});	
@@ -149,11 +161,22 @@ public class SettingFrame  extends JFrame{
         btnTick2.setIcon(new ImageIcon(settingImg2));
         btnTick2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				subTopic = subContent2.getText();
+				int	count = subTopic.length();
+				if(count == 0){
+						System.out.println("Can't send empty message!");
+						JOptionPane.showMessageDialog(null,"Can't send empty message!");
+						return;
+					}
+				else {
 				SubTableModel2.addRow(new Object[0]);
 				SubTableModel2.setValueAt(true, topicMgtItemList.size()+j, 0);
 				SubTableModel2.setValueAt(subContent2.getText(),topicMgtItemList.size()+j, 1);
 				j++;
+				subContent2.setText("");
+				}
 			}
+				
 		});	
 		this.getContentPane().add(btnTick2);
 		
@@ -231,9 +254,7 @@ public class SettingFrame  extends JFrame{
 
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-	}
-
-
+	  }
 			
         }
 		}
