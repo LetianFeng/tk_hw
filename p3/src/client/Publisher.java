@@ -42,15 +42,10 @@ public class Publisher {
     	if (!matcher.matches()) {
         	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic.toUpperCase();
     	}
-    	if(!producers.containsKey(topic)) {
-	        Topic t = this.session.createTopic(topic);
-	        MessageProducer mp = this.session.createProducer(t);
-	        this.producers.put(topic, mp);
-	        System.out.println("topic"+mp.toString()+ " unsubscribed");
-	        return mp;
-    	}
-    	else
-    		return null;
+	    Topic t = this.session.createTopic(topic);
+	    MessageProducer mp = this.session.createProducer(t);
+	    this.producers.put(topic, mp);
+	    return mp;
     }
 
     public void closeConnection() throws JMSException {
