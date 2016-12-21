@@ -44,11 +44,18 @@ public class SettingFrame  extends JFrame{
     private JButton btnTick2;
     private JTextField subContent1;
     private JTextField subContent2;
-    private JTable SubTable;
-    private DefaultTableModel SubTableModel;
-    private JScrollPane scrollPane;
+    private JTable SubTable1;
+    private DefaultTableModel SubTableModel1;
+    private JScrollPane scrollPane1;
+    private JTable SubTable2;
+    private DefaultTableModel SubTableModel2;
+    private JScrollPane scrollPane2;
 	private JFrame settingFrame;
 	private WeiboFrame mainFrame;
+	private List<TopicMgtItem> topicMgtItemList;
+	private List<TopicMgtItem> userMgtItemList;
+	private int i =0;
+	private int j =0;
     
 	public SettingFrame(WeiboFrame mainFrame) {
 		settingFrame = this;
@@ -90,6 +97,10 @@ public class SettingFrame  extends JFrame{
 			}
 		});
 		this.getContentPane().setLayout(null);
+		
+	 	topicMgtItemList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
+	 	userMgtItemList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX);
+	 	
 		subInfo1 = new JLabel(subInfoContent1);
 		subInfo1.setBounds(20,50,400, 23);
 		this.getContentPane().add(subInfo1);
@@ -120,12 +131,30 @@ public class SettingFrame  extends JFrame{
 		btnTick1.setBounds(400, 400, 30, 30);
 		Image settingImg = new ImageIcon(this.getClass().getResource("tick_green.png")).getImage();
         btnTick1.setIcon(new ImageIcon(settingImg));
+        btnTick1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				SubTableModel1.addRow(new Object[0]);
+				SubTableModel1.setValueAt(true, userMgtItemList.size()+i, 0);
+				SubTableModel1.setValueAt(subContent1.getText(),userMgtItemList.size()+i, 1);
+				i++;
+				
+			}
+		});	
 		this.getContentPane().add(btnTick1);
 		
 		btnTick2 = new JButton();
 		btnTick2.setBounds(400, 450, 30, 30);
 		Image settingImg2 = new ImageIcon(this.getClass().getResource("tick_green.png")).getImage();
         btnTick2.setIcon(new ImageIcon(settingImg2));
+        btnTick2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				SubTableModel2.addRow(new Object[0]);
+				SubTableModel2.setValueAt(true, topicMgtItemList.size()+j, 0);
+				SubTableModel2.setValueAt(subContent2.getText(),topicMgtItemList.size()+j, 1);
+				j++;
+			}
+		});	
 		this.getContentPane().add(btnTick2);
 		
 		btnSavechange = new JButton("Save Changes and Submit");
@@ -138,28 +167,38 @@ public class SettingFrame  extends JFrame{
 		});	
 		this.getContentPane().add(btnSavechange);
 		
-		    this.generateSubTable("User Name", ClientConfig.USER_PREFEX);
-	        JScrollPane scrollPane = new JScrollPane(SubTable);
-	        this.getContentPane().add(scrollPane);
-	        scrollPane.setBounds(20, 90, 200, 300);
-	        //chooseRoomPanel.add(chooseRoomTable,BorderLayout.CENTER);
-	        JTableHeader tableHeader = SubTable.getTableHeader();
+        SubTable1 = new JTable();
+        SubTableModel1 = new DefaultTableModel() {
+            public Class<?> getColumnClass(int column) {
+
+                switch (column) {
+                    case 0:
+                        return Boolean.class;
+                    case 1:
+                        return String.class;
+
+                    default:
+                        return String.class;
+                }
+            }
+        };
+        SubTable1.setModel(SubTableModel1);
+        SubTableModel1.addColumn("Status");  
+        SubTableModel1.addColumn("User Name");        
+        SubTableModel1.setRowCount(0);
+        
+        for (int i =0; i < userMgtItemList.size(); i++) {
+			SubTableModel1.addRow(new Object[0]);
+			SubTableModel1.setValueAt(userMgtItemList.get(i).isSubscribed(), i, 0);
+			SubTableModel1.setValueAt(userMgtItemList.get(i).getTopic(), i, 1);
+
+		    
+	        JScrollPane scrollPane1 = new JScrollPane(SubTable1);
+	        this.getContentPane().add(scrollPane1);
+	        scrollPane1.setBounds(20, 90, 200, 300);
 	        
-	        this.generateSubTable("Topics", ClientConfig.TOPIC_PREFIX);
-	        JScrollPane scrollPane2 = new JScrollPane(SubTable);
-	        this.getContentPane().add(scrollPane2);
-	        scrollPane2.setBounds(250, 90, 200, 300);
-	        //chooseRoomPanel.add(chooseRoomTable,BorderLayout.CENTER);
-	        JTableHeader tableHeader2 = SubTable.getTableHeader();
-
-		this.setResizable(false);
-
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-	}
-	 private void generateSubTable(String ColumnName, String topicPrefix) {
-	        SubTable = new JTable();
-	        SubTableModel = new DefaultTableModel() {
+	        SubTable2 = new JTable();
+	        SubTableModel2 = new DefaultTableModel() {
 	            public Class<?> getColumnClass(int column) {
 
 	                switch (column) {
@@ -167,30 +206,36 @@ public class SettingFrame  extends JFrame{
 	                        return Boolean.class;
 	                    case 1:
 	                        return String.class;
-	                    case 2:
-	                        return String.class;
-	                    case 3:
-	                        return String.class;
+
 	                    default:
 	                        return String.class;
 	                }
 	            }
 	        };
-	        SubTable.setModel(SubTableModel);
-	        SubTableModel.addColumn("Status");
-	  
-	        SubTableModel.addColumn(ColumnName);
+	        SubTable2.setModel(SubTableModel2);
+	        SubTableModel2.addColumn("Status");  
+	        SubTableModel2.addColumn("Topics");        
+	        SubTableModel2.setRowCount(0);
 	        
-	     // for test	        
-	        SubTableModel.setRowCount(0);
+	        for (int j =0; j < topicMgtItemList.size(); j++) {
+				SubTableModel2.addRow(new Object[0]);
+				SubTableModel2.setValueAt(topicMgtItemList.get(j).isSubscribed(), j, 0);
+				SubTableModel2.setValueAt(topicMgtItemList.get(j).getTopic(), j, 1);
+				
+	        JScrollPane scrollPane2 = new JScrollPane(SubTable2);
+	        this.getContentPane().add(scrollPane2);
+	        scrollPane2.setBounds(250, 90, 200, 300);
 
-		 	List<TopicMgtItem> topicMgtItemList = mainFrame.getClientAPI().getTopicManagementList(topicPrefix);
 
-		 	for (int i =0; i < topicMgtItemList.size(); i++) {
-				SubTableModel.addRow(new Object[0]);
-				SubTableModel.setValueAt(topicMgtItemList.get(i).isSubscribed(), i, 0);
-				SubTableModel.setValueAt(topicMgtItemList.get(i).getTopic(), i, 1);
-			}
+		this.setResizable(false);
 
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+	}
+
+
+			
+        }
 		}
+
 }
