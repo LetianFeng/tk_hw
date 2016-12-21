@@ -52,8 +52,6 @@ public class SettingFrame extends JFrame {
 	private WeiboFrame mainFrame;
 	private List<TopicMgtItem> topicMgtItemList;
 	private List<TopicMgtItem> userMgtItemList;
-	private int i = 0;
-	private int j = 0;
 	private String subUser;
 	private String subTopic;
 
@@ -139,10 +137,10 @@ public class SettingFrame extends JFrame {
 					return;
 				} else {
 					SubTableModel1.addRow(new Object[0]);
-					SubTableModel1.setValueAt(true, userMgtItemList.size() + i, 0);
-					SubTableModel1.setValueAt(subContent1.getText(), userMgtItemList.size() + i, 1);
+					SubTableModel1.setValueAt(true, userMgtItemList.size(), 0);
+					SubTableModel1.setValueAt(subContent1.getText(), userMgtItemList.size(), 1);
 					userMgtItemList.add(new TopicMgtItem(subContent1.getText(),true));
-					i++;
+				
 					subContent1.setText("");
 				}
 
@@ -164,9 +162,9 @@ public class SettingFrame extends JFrame {
 					return;
 				} else {
 					SubTableModel2.addRow(new Object[0]);
-					SubTableModel2.setValueAt(true, topicMgtItemList.size() + j, 0);
-					SubTableModel2.setValueAt(subContent2.getText(), topicMgtItemList.size() + j, 1);
-					j++;
+					SubTableModel2.setValueAt(true, topicMgtItemList.size(), 0);
+					SubTableModel2.setValueAt(subContent2.getText(), topicMgtItemList.size(), 1);
+					
 					topicMgtItemList.add(new TopicMgtItem(subContent2.getText(),true));
 					subContent2.setText("");
 				}
@@ -210,10 +208,10 @@ public class SettingFrame extends JFrame {
           	        int row = e.getFirstRow();
           	        int column = e.getColumn();
 
-          	        if (column == 0)
+          	        if ((column == 0) && row < userMgtItemList.size() )
           	        {
           	        	if(userMgtItemList.get(row).isSubscribed())
-          	        		userMgtItemList.get(row).unsubscribe();
+          	        	   userMgtItemList.get(row).unsubscribe();
           	        	else{
           	        		userMgtItemList.get(row).subscribe();
           	        	}
@@ -260,7 +258,7 @@ public class SettingFrame extends JFrame {
           	        int row = e.getFirstRow();
           	        int column = e.getColumn();
 
-          	        if (column == 0)
+          	        if (column == 0 && row < topicMgtItemList.size())
           	        {
           	        	if(topicMgtItemList.get(row).isSubscribed())
           	        		topicMgtItemList.get(row).unsubscribe();
