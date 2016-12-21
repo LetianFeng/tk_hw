@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.jms.InvalidClientIDException;
 import javax.jms.JMSException;
 
 import org.apache.log4j.BasicConfigurator;
@@ -38,22 +40,25 @@ public class Client implements ClientAPI{
 	}
 	
 	@Override 
-	public boolean login(String userName, int avatarNumber) {
+	public int login(String userName, int avatarNumber) {
 		
 		try {
 			this.userName = userName;
 			this.avatarNumber = avatarNumber;
 			this.publisher = new Publisher(userName, null);
 			this.subscriber = new Subscriber(userName, null, this);
+		} catch (InvalidClientIDException ue) {
+			System.out.println("Duplicate user name.");
+			return ClientConfig.INVALID_USER_NAME_ERROR;
 		} catch (JMSException je) {
-			System.out.println("An error has occured during login.");
-			return false;
+			System.out.println("Activemq doesn't start up.");
+			return ClientConfig.ACTIVEMQ_NOT_START_UP_ERROR;
 		} catch (Exception e) {
 			System.out.println("An error has occured.");
 			e.printStackTrace();
-			return false;
+			return ClientConfig.UNKNOWN_ERROR;
 		}
-		return true;
+		return ClientConfig.NO_ERROR;
 	}
 	
 	@Override
