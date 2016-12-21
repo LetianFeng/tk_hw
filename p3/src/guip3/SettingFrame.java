@@ -243,9 +243,25 @@ public class SettingFrame  extends JFrame{
 			btnSavechange.setBounds(250, 550, 200, 25);
 			btnSavechange.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					// send new subscription list to control unit
+                    for(TopicMgtItem currentTopic : topicMgtItemList) {
+                            if(currentTopic.isSubscribed())
+                             mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX).add(currentTopic);
+                            else{
+                             mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX).remove(currentTopic);
+                            }
+                    }
+                    
+                    for(TopicMgtItem currentUser : userMgtItemList ) {
+                        if(currentUser.isSubscribed())
+                         mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX).add(currentUser);
+                        else{
+                        	mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX).remove(currentUser);
+                        }
+                    
+                }
 					settingFrame.dispatchEvent(new WindowEvent(settingFrame, WindowEvent.WINDOW_CLOSING));
 				}
+				
 			});	
 			this.getContentPane().add(btnSavechange);
 			
