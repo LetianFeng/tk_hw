@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="exec" name="microblog">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="../../../../../.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        <pathelement location="../../../../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="microblog.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/activemq-all-5.6.0.jar"/>
+        <pathelement location="lib/gson-2.8.0.jar"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+    </path>
+	<condition property="host" value="tcp://localhost:61616">
+	    <not>  
+	        <isset property="host"/>
+	    </not>
+	</condition>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    	<delete dir="dist"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="microblog.classpath"/>
+        </javac>
+    </target>
+  	<target name="dist" depends="build" description="package, output to JAR">
+		<!-- Create the distribution directory -->
+		<mkdir dir="dist" />
+		<!-- Put everything in ${build} into the {$projectName}-${DSTAMP}.jar file -->
+		<jar jarfile="dist/microblog.jar" basedir="bin" >	        
+			<zipgroupfileset dir="lib" includes="activemq-all-5.6.0.jar" />
+			<zipgroupfileset dir="lib" includes="gson-2.8.0.jar" />
+		    <manifest>
+			<!-- create an executable Jar -->
+			<attribute name="Main-Class" value="guip3.LoginFrame" />
+		    </manifest>
+		</jar>
+  	</target>
+	<target name="exec" depends="dist" description="execute jar">
+	  <exec executable="java">
+		<parallel>
+	  		<exec executable="java">
+	  			<arg value="-jar" />
+	    		<arg value="dist/microblog.jar" />
+	  			<arg value="${host}"/>
+	  		</exec>
+	  		<exec executable="java">
+	  			<arg value="-jar" />
+	    		<arg value="dist/microblog.jar" />
+	  			<arg value="${host}"/>
+	  		</exec>
+		</parallel>
+	  </exec>
+	</target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="LoginFrame">
+        <java classname="guip3.LoginFrame" failonerror="true" fork="yes">
+            <arg line="-id server1 -receiver ka:localhost:9876"/>
+            <classpath refid="microblog.classpath"/>
+        </java>
+    </target>
+    <target name="SubscriberTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="client.SubscriberTest" todir="${junit.output.dir}"/>
+            <classpath refid="microblog.classpath"/>
+        </junit>
+    </target>
+    <target name="SubscriberTest.testGetGreeting">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="client.SubscriberTest" todir="${junit.output.dir}"/>
+            <classpath refid="microblog.classpath"/>
+        </junit>
+    </target>
+    <target name="test">
+        <java classname="client.test" failonerror="true" fork="yes">
+            <classpath refid="microblog.classpath"/>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
