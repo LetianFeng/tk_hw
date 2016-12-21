@@ -18,6 +18,14 @@ public class TopicMgtItem {
 		return this.subscribed;
 	}
 	
+	public void subscribe() {
+		this.subscribed = true;
+	}
+	
+	public void unsubscribe() {
+		this.subscribed = false;
+	}
+	
 	@Override
 	public boolean equals(Object item) {
 		if (item instanceof TopicMgtItem) {

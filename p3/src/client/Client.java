@@ -233,7 +233,9 @@ public class Client implements ClientAPI{
 	
 	public void notifyGui() {
 		
-		int count = this.messageQueue.size();
+		Set<BlogMessage> hs = new HashSet<>();
+		hs.addAll(this.messageQueue);	
+		int count = hs.size();
 		String msg = "You have " + count + " unread messages.";
 		this.gui.showNotification(msg);
 	}
