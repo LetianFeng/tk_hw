@@ -10,6 +10,8 @@ import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -33,7 +35,7 @@ public class BlogBox extends JPanel {
     final private int width;
     private Point activeTopicPoint = new Point(0, 0);
 
-    public BlogBox (BlogMessage blogMessage, int x, int y, int width, WeiboFrame mainFrame) {
+    public BlogBox (BlogMessage blogMessage, int x, int y, int width, final WeiboFrame mainFrame) {
         this.startY = y;
         this.width = width;
         this.blogMessage = blogMessage;
@@ -51,6 +53,15 @@ public class BlogBox extends JPanel {
         this.setLayout(null);
         this.setBounds(x, y, width, height);
         initialize(messageArea);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                mainFrame.getSubButton().setVisible(false);
+            }
+        });
+
         this.setVisible(true);
     }
 
@@ -74,6 +85,14 @@ public class BlogBox extends JPanel {
     }
 
     private void drawMessageArea(JTextArea messageArea) {
+
+        messageArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                mainFrame.getSubButton().setVisible(false);
+            }
+        });
 
         messageArea.setLineWrap(true);
         messageArea.setEditable(false);
@@ -244,6 +263,8 @@ public class BlogBox extends JPanel {
         buttonPanel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(userName.equals(mainFrame.getUserName()))
+                    return;
                 activeTopicPoint = buttonPanel.getLocation();
                 activeTopicPoint.y += startY;
                 if(activeTopicPoint.y < 20)
