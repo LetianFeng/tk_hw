@@ -11,7 +11,7 @@ public interface ClientAPI {
 	 * @param avatarNumber the avatar index of the chosen profile picture
 	 * @return
 	 */
-	boolean login(String userName, int avatarNumber);
+	int login(String userName, int avatarNumber);
 	
 	/**
 	 * follow the topic identified by topicName

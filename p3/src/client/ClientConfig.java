@@ -8,4 +8,8 @@ public class ClientConfig {
 	public static String DEFAULT_PUBLIC_CHANNEL = "PUBLIC";
 	public static int DEFAULT_TIMEOUT = 1000;
 	public static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+	public static int NO_ERROR = 0;
+	public static int INVALID_USER_NAME_ERROR = 1;
+	public static int ACTIVEMQ_NOT_START_UP_ERROR  = 2;
+	public static int UNKNOWN_ERROR = 3;
 }
