@@ -1,11 +1,9 @@
 package guip3;
 
 import client.ClientConfig;
-
 import client.TopicMgtItem;
 
 import java.awt.Image;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -55,7 +53,6 @@ public class SettingFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 mainFrame.setEnabled(true);
-
             }
         });
         this.getContentPane().setLayout(null);
@@ -100,15 +97,19 @@ public class SettingFrame extends JFrame {
                 if (count == 0) {
                     System.out.println("Can't send empty message!");
                     JOptionPane.showMessageDialog(null, "Can't send empty message!");
-                    return;
                 } else {
+                    for (TopicMgtItem currentUser : userMgtItemList) {
+                        if(currentUser.getTopic().toUpperCase().equals(subUser.toUpperCase())) {
+                            JOptionPane.showMessageDialog(null, "this user is already existed!");
+                            return;
+                        }
+                    }
                     SubTableModel1.addRow(new Object[0]);
                     SubTableModel1.setValueAt(true, userMgtItemList.size(), 0);
-                    SubTableModel1.setValueAt(subContent1.getText(), userMgtItemList.size(), 1);
-                    userMgtItemList.add(new TopicMgtItem(subContent1.getText(), true));
+                    SubTableModel1.setValueAt(subContent1.getText().toUpperCase(), userMgtItemList.size(), 1);
+                    userMgtItemList.add(new TopicMgtItem(subContent1.getText().toUpperCase(), true));
                     subContent1.setText("");
                 }
-
             }
         });
         this.getContentPane().add(btnTick1);
@@ -124,12 +125,17 @@ public class SettingFrame extends JFrame {
                 if (count == 0) {
                     System.out.println("Can't send empty message!");
                     JOptionPane.showMessageDialog(null, "Can't send empty message!");
-                    return;
                 } else {
+                    for (TopicMgtItem currentTopic : topicMgtItemList) {
+                        if(currentTopic.getTopic().toUpperCase().equals(subTopic.toUpperCase())) {
+                            JOptionPane.showMessageDialog(null, "this topic is already existed!");
+                            return;
+                        }
+                    }
                     SubTableModel2.addRow(new Object[0]);
                     SubTableModel2.setValueAt(true, topicMgtItemList.size(), 0);
-                    SubTableModel2.setValueAt(subContent2.getText(), topicMgtItemList.size(), 1);
-                    topicMgtItemList.add(new TopicMgtItem(subContent2.getText(), true));
+                    SubTableModel2.setValueAt(subContent2.getText().toUpperCase(), topicMgtItemList.size(), 1);
+                    topicMgtItemList.add(new TopicMgtItem(subContent2.getText().toUpperCase(), true));
                     subContent2.setText("");
                 }
             }
