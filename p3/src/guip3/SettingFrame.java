@@ -236,17 +236,17 @@ public class SettingFrame extends JFrame {
 
                 for (TopicMgtItem currentTopic : topicMgtItemList) {
                     if (currentTopic.isSubscribed())
-                        mainFrame.getClientAPI().subscribeTopic(currentTopic.getTopic());
+                        mainFrame.getClientAPI().subscribeTopic(currentTopic.getTopic().toUpperCase());
                     else {
-                        mainFrame.getClientAPI().unSubscribeTopic(currentTopic.getTopic());
+                        mainFrame.getClientAPI().unSubscribeTopic(currentTopic.getTopic().toUpperCase());
                     }
                 }
 
                 for (TopicMgtItem currentUser : userMgtItemList) {
                     if (currentUser.isSubscribed())
-                        mainFrame.getClientAPI().followPerson(currentUser.getTopic());
+                        mainFrame.getClientAPI().followPerson(currentUser.getTopic().toUpperCase());
                     else {
-                        mainFrame.getClientAPI().unFollowPerson(currentUser.getTopic());
+                        mainFrame.getClientAPI().unFollowPerson(currentUser.getTopic().toUpperCase());
                     }
                 }
                 settingFrame.dispatchEvent(new WindowEvent(settingFrame, WindowEvent.WINDOW_CLOSING));
