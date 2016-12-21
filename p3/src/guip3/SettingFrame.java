@@ -1,20 +1,17 @@
 package guip3;
 
 import client.ClientConfig;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import client.TopicMgtItem;
-
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
+
 import java.awt.Image;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -89,8 +86,6 @@ public class SettingFrame extends JFrame {
 				Constant.settingFrameHeight);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				mainFrame.setEnabled(true);
@@ -144,6 +139,7 @@ public class SettingFrame extends JFrame {
 					SubTableModel1.addRow(new Object[0]);
 					SubTableModel1.setValueAt(true, userMgtItemList.size() + i, 0);
 					SubTableModel1.setValueAt(subContent1.getText(), userMgtItemList.size() + i, 1);
+					userMgtItemList.add(new TopicMgtItem(subContent1.getText(),true));
 					i++;
 					subContent1.setText("");
 				}
@@ -169,6 +165,7 @@ public class SettingFrame extends JFrame {
 					SubTableModel2.setValueAt(true, topicMgtItemList.size() + j, 0);
 					SubTableModel2.setValueAt(subContent2.getText(), topicMgtItemList.size() + j, 1);
 					j++;
+					topicMgtItemList.add(new TopicMgtItem(subContent2.getText(),true));
 					subContent2.setText("");
 				}
 			}
@@ -229,9 +226,9 @@ public class SettingFrame extends JFrame {
 		for (int j = 0; j < topicMgtItemList.size(); j++) {
 			SubTableModel2.addRow(new Object[0]);
 			SubTableModel2.setValueAt(topicMgtItemList.get(j).isSubscribed(), j, 0);
-			SubTableModel2.setValueAt(topicMgtItemList.get(j).getTopic(), j, 1);
+			SubTableModel2.setValueAt(topicMgtItemList.get(j).getTopic(), j, 1);	
 		}
-
+	
 		JScrollPane scrollPane2 = new JScrollPane(SubTable2);
 		this.getContentPane().add(scrollPane2);
 		scrollPane2.setBounds(250, 90, 200, 300);
@@ -240,19 +237,21 @@ public class SettingFrame extends JFrame {
 		btnSavechange.setBounds(250, 550, 200, 25);
 		btnSavechange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+	
 				for (TopicMgtItem currentTopic : topicMgtItemList) {
 					if (currentTopic.isSubscribed())
-						mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX).add(currentTopic);
+						
+						mainFrame.getClientAPI().subscribeTopic(currentTopic.getTopic());
 					else {
-						mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX).remove(currentTopic);
+						mainFrame.getClientAPI().unSubscribeTopic(currentTopic.getTopic());
 					}
 				}
 
 				for (TopicMgtItem currentUser : userMgtItemList) {
 					if (currentUser.isSubscribed())
-						mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX).add(currentUser);
+						mainFrame.getClientAPI().followPerson(currentUser.getTopic());
 					else {
-						mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX).remove(currentUser);
+						mainFrame.getClientAPI().unFollowPerson(currentUser.getTopic());
 					}
 
 				}
@@ -261,9 +260,7 @@ public class SettingFrame extends JFrame {
 
 		});
 		this.getContentPane().add(btnSavechange);
-
 		this.setResizable(false);
-
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 	}
