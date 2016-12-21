@@ -42,10 +42,10 @@ public class Publisher {
     	if (!matcher.matches()) {
         	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic.toUpperCase();
     	}
-        Topic t = this.session.createTopic(topic);
-        MessageProducer mp = this.session.createProducer(t);
-        this.producers.put(topic, mp);
-        return mp;
+	    Topic t = this.session.createTopic(topic);
+	    MessageProducer mp = this.session.createProducer(t);
+	    this.producers.put(topic, mp);
+	    return mp;
     }
 
     public void closeConnection() throws JMSException {
@@ -61,7 +61,8 @@ public class Publisher {
         	mp.send(textMessage);
         } else {
         	MessageProducer mp_t = addProducer(topic.toUpperCase(), true);
-        	mp_t.send(textMessage);
+        	if(mp_t != null)
+        		mp_t.send(textMessage);
         }
     }
     
