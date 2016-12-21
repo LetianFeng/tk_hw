@@ -53,7 +53,7 @@
 		<mkdir dir="dist" />
 		<!-- Put everything in ${build} into the {$projectName}-${DSTAMP}.jar file -->
 		<jar jarfile="dist/microblog.jar" basedir="bin" >	        
-			<zipgroupfileset dir="lib" includes="activemq-all-5.6.0.jar" />
+			<zipgroupfileset dir="lib" includes="activemq-all-5.13.3.jar" />
 			<zipgroupfileset dir="lib" includes="gson-2.8.0.jar" />
 		    <manifest>
 			<!-- create an executable Jar -->
@@ -62,7 +62,6 @@
 		</jar>
   	</target>
 	<target name="exec" depends="dist" description="execute jar">
-	  <exec executable="java">
 		<parallel>
 	  		<exec executable="java">
 	  			<arg value="-jar" />
@@ -75,7 +74,6 @@
 	  			<arg value="${host}"/>
 	  		</exec>
 		</parallel>
-	  </exec>
 	</target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
