@@ -26,7 +26,7 @@ public class LoginFrame  extends JFrame{
 	final static private Color grey = Color.LIGHT_GRAY;
     
 	//main function of the project start here
-	 public static void main(String[] args) {
+	 public static void main(final String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
 	            public void run() {
 	                try {
@@ -43,12 +43,17 @@ public class LoginFrame  extends JFrame{
 	        });
 	    }
 
+	public LoginFrame() {
+		initialize(null);
+		loginFrame = this;
+	}
+	 
 	public LoginFrame(String url) {
 		initialize(url);
 		loginFrame = this;
 	}
 	
-	private void initialize(String url) {
+	private void initialize(final String url) {
 		this.setTitle(title);
 		this.setBounds(Constant.loginFrameX, Constant.loginFrameY, Constant.loginFrameWidth, Constant.loginFrameHeight);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
