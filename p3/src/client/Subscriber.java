@@ -53,7 +53,6 @@ public class Subscriber {
     	String t = isTopic ? ClientConfig.TOPIC_PREFIX + topic : ClientConfig.USER_PREFEX + topic.toUpperCase();
     	if (this.consumers.containsKey(t)) {
     		MessageConsumer mc = this.consumers.get(t);
-    		System.out.println("topic"+mc.toString()+ " unsubscribed");
     		mc.close();
     		this.consumers.remove(t);
     	}
