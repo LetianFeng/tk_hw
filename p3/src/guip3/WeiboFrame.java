@@ -72,10 +72,10 @@ public class WeiboFrame extends JFrame implements GuiAPI {
         return subButton;
     }
 
-    public WeiboFrame(int avatarId, String userName) {
+    public WeiboFrame(int avatarId, String userName, String url) {
         this.avatarId = avatarId;
         this.userName = userName;
-        clientAPI = new Client(this);
+        clientAPI = new Client(this, url);
     }
 
     public int login_initial() {

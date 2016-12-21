@@ -20,7 +20,7 @@
         <pathelement location="lib/gson-2.8.0.jar"/>
         <path refid="JUnit 4.libraryclasspath"/>
     </path>
-	<condition property="host" value="tcp://localhost:61616">
+	<condition property="host" value="tcp://127.0.0.1:61616">
 	    <not>  
 	        <isset property="host"/>
 	    </not>

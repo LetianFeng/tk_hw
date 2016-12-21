@@ -30,7 +30,11 @@ public class LoginFrame  extends JFrame{
 	        EventQueue.invokeLater(new Runnable() {
 	            public void run() {
 	                try {
-	                    LoginFrame loginframe = new LoginFrame();
+	                	String url = "";
+	                	if (args.length > 1) {
+	                		url = args[1];
+	                	}
+	                    LoginFrame loginframe = new LoginFrame(url);
 	                    loginframe.setVisible(true);
 	                } catch (Exception e) {
 	                    e.printStackTrace();
@@ -39,12 +43,12 @@ public class LoginFrame  extends JFrame{
 	        });
 	    }
 
-	public LoginFrame() {
-		initialize();
+	public LoginFrame(String url) {
+		initialize(url);
 		loginFrame = this;
 	}
 	
-	private void initialize() {
+	private void initialize(String url) {
 		this.setTitle(title);
 		this.setBounds(Constant.loginFrameX, Constant.loginFrameY, Constant.loginFrameWidth, Constant.loginFrameHeight);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -132,7 +136,7 @@ public class LoginFrame  extends JFrame{
 					JOptionPane.showMessageDialog(null, "invalid user name!");
 				}
 				else {
-					WeiboFrame weiboframe = new WeiboFrame(avatarId, userName);
+					WeiboFrame weiboframe = new WeiboFrame(avatarId, userName, url);
 					int status_code = weiboframe.login_initial();
 					if(status_code == ClientConfig.NO_ERROR) {
 						weiboframe.setVisible(true);

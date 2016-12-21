@@ -25,6 +25,7 @@ public class Client implements ClientAPI{
 	private ArrayList<String> topicList;
 	private ArrayList<BlogMessage> messageQueue;
 	private GuiAPI gui;
+	private String host;
 	
 	public Client() {
 		
@@ -33,10 +34,11 @@ public class Client implements ClientAPI{
 		this.messageQueue = new ArrayList<BlogMessage>();
 	}
 	
-	public Client(WeiboFrame wbFrame) {
+	public Client(WeiboFrame wbFrame, String url) {
 		
         this();
 		gui = wbFrame;
+		host = url;
 	}
 	
 	@Override 
@@ -45,8 +47,8 @@ public class Client implements ClientAPI{
 		try {
 			this.userName = userName;
 			this.avatarNumber = avatarNumber;
-			this.publisher = new Publisher(userName, null);
-			this.subscriber = new Subscriber(userName, null, this);
+			this.publisher = new Publisher(userName, host);
+			this.subscriber = new Subscriber(userName, host, this);
 		} catch (InvalidClientIDException ue) {
 			System.out.println("Duplicate user name.");
 			return ClientConfig.INVALID_USER_NAME_ERROR;

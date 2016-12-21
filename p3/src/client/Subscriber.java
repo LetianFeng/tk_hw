@@ -40,10 +40,14 @@ public class Subscriber {
     public void subscribe(String topic, Boolean isTopic) throws JMSException {
     	
     	topic = (isTopic ? ClientConfig.TOPIC_PREFIX : ClientConfig.USER_PREFEX) + topic.toUpperCase();
-        Topic t = this.session.createTopic(topic);
-        MessageConsumer mc = this.session.createConsumer(t);
-        mc.setMessageListener(new SubscriberMessageListener(topic, this.client));
-        this.consumers.put(topic, mc);
+        Topic t = this.session.createTopic(topic);       
+        if (!this.consumers.containsKey(topic)) {
+            MessageConsumer mc = this.session.createConsumer(t);
+            mc.setMessageListener(new SubscriberMessageListener(topic, this.client));
+        	this.consumers.put(topic, mc);
+        }
+        
+        System.out.println("subscribe " + topic);
     }
     
     public void unSubscribe(String topic, boolean isTopic) throws JMSException {
@@ -52,7 +56,9 @@ public class Subscriber {
     	if (this.consumers.containsKey(t)) {
     		MessageConsumer mc = this.consumers.get(t);
     		mc.close();
-    		this.consumers.remove(t);
+    		MessageConsumer removed = this.consumers.remove(t);
+    		
+    		System.out.println("unscribe " + topic + (removed == null ? " doesn't exist" : "exist and removed"));
     	}
     }
 
