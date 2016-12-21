@@ -1,5 +1,7 @@
 package guip3;
 
+import client.ClientConfig;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -135,8 +137,25 @@ public class LoginFrame  extends JFrame{
 				}
 				else {
 					WeiboFrame weiboframe = new WeiboFrame(avatarId, userName);
-					weiboframe.setVisible(true);
-					loginFrame.dispose();
+					int status_code = weiboframe.login_initial();
+					if(status_code == ClientConfig.NO_ERROR) {
+						weiboframe.setVisible(true);
+						loginFrame.dispose();
+					}
+					else {
+						weiboframe.dispose();
+						switch (status_code) {
+							case ClientConfig.INVALID_USER_NAME_ERROR:
+								JOptionPane.showMessageDialog(null, "duplicate user name!");
+								break;
+							case ClientConfig.ACTIVEMQ_NOT_START_UP_ERROR:
+								JOptionPane.showMessageDialog(null, "can't connect to server!");
+								break;
+							case ClientConfig.UNKNOWN_ERROR:
+								JOptionPane.showMessageDialog(null, "unknown error occurs!");
+								break;
+						}
+					}
 				}
 			}
 		});
