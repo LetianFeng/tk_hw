@@ -22,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -193,12 +195,34 @@ public class SettingFrame extends JFrame {
 		SubTableModel1.addColumn("User Name");
 		SubTableModel1.setRowCount(0);
 
+
 		for (int i = 0; i < userMgtItemList.size(); i++) {
 			SubTableModel1.addRow(new Object[0]);
 			SubTableModel1.setValueAt(userMgtItemList.get(i).isSubscribed(), i, 0);
 			SubTableModel1.setValueAt(userMgtItemList.get(i).getTopic(), i, 1);
 		}
 
+		SubTableModel1.addTableModelListener(new TableModelListener() {
+            @Override
+		      public void tableChanged(TableModelEvent e) {
+          	  if (e.getType() == TableModelEvent.UPDATE)
+          	    {
+          	        int row = e.getFirstRow();
+          	        int column = e.getColumn();
+
+          	        if (column == 0)
+          	        {
+          	        	if(userMgtItemList.get(row).isSubscribed())
+          	        		userMgtItemList.get(row).unsubscribe();
+          	        	else{
+          	        		userMgtItemList.get(row).subscribe();
+          	        	}
+          	        }
+          	    }  
+		      }
+		    });
+		
+		
 		JScrollPane scrollPane1 = new JScrollPane(SubTable1);
 		this.getContentPane().add(scrollPane1);
 		scrollPane1.setBounds(20, 90, 200, 300);
@@ -228,6 +252,25 @@ public class SettingFrame extends JFrame {
 			SubTableModel2.setValueAt(topicMgtItemList.get(j).isSubscribed(), j, 0);
 			SubTableModel2.setValueAt(topicMgtItemList.get(j).getTopic(), j, 1);	
 		}
+		SubTableModel2.addTableModelListener(new TableModelListener() {
+            @Override
+		      public void tableChanged(TableModelEvent e) {
+          	  if (e.getType() == TableModelEvent.UPDATE)
+          	    {
+          	        int row = e.getFirstRow();
+          	        int column = e.getColumn();
+
+          	        if (column == 0)
+          	        {
+          	        	if(topicMgtItemList.get(row).isSubscribed())
+          	        		topicMgtItemList.get(row).unsubscribe();
+          	        	else{
+          	        		topicMgtItemList.get(row).subscribe();
+          	        	}
+          	        }
+          	    }  
+		      }
+		    });
 	
 		JScrollPane scrollPane2 = new JScrollPane(SubTable2);
 		this.getContentPane().add(scrollPane2);
