@@ -135,8 +135,15 @@ public class LoginFrame  extends JFrame{
 				}
 				else {
 					WeiboFrame weiboframe = new WeiboFrame(avatarId, userName);
-					weiboframe.setVisible(true);
-					loginFrame.dispose();
+					if(weiboframe.login_initial()) {
+						weiboframe.setVisible(true);
+						loginFrame.dispose();
+					}
+					else {
+						weiboframe.dispose();
+						JOptionPane.showMessageDialog(null, "fail to log in!");
+					}
+
 				}
 			}
 		});

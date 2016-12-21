@@ -75,9 +75,15 @@ public class WeiboFrame extends JFrame implements GuiAPI {
         this.avatarId = avatarId;
         this.userName = userName;
         clientAPI = new Client(this);
-        clientAPI.login(userName, avatarId);
-        mainFrame = this;
-        initialize();
+    }
+
+    public boolean login_initial() {
+        if(clientAPI.login(userName, avatarId)) {
+            mainFrame = this;
+            initialize();
+            return true;
+        }
+        else return false;
     }
 
     private void initialize() {
