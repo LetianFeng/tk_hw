@@ -25,11 +25,12 @@ public class BlogBox extends JPanel {
 
     final static int pixelPerLine = 17;
     final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    final private WeiboFrame mainFrame;
     final private BlogMessage blogMessage;
     final private String messageContent;
     final private int startY;
     final private int width;
-    final private WeiboFrame mainFrame;
     private Point activeTopicPoint = new Point(0, 0);
 
     public BlogBox (BlogMessage blogMessage, int x, int y, int width, WeiboFrame mainFrame) {
@@ -169,12 +170,12 @@ public class BlogBox extends JPanel {
                     List<TopicMgtItem> topicList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
                     boolean subscriberStatus = false;
                     for(TopicMgtItem currentTopic : topicList) {
-                        if(currentTopic.getTopic().equals(topic))
+                        if(currentTopic.getTopic().equals(topic.toUpperCase()))
                             if(currentTopic.isSubscribed())
                                 subscriberStatus = true;
                     }
                     mainFrame.getSubButton().setSubscribe(subscriberStatus);
-                    mainFrame.getSubButton().setCurrentTopic("t."+topic);
+                    mainFrame.getSubButton().setCurrentTopic("t."+topic.toUpperCase());
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
                 }
             });
@@ -196,12 +197,12 @@ public class BlogBox extends JPanel {
                     List<TopicMgtItem> topicList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
                     boolean subscriberStatus = false;
                     for(TopicMgtItem currentTopic : topicList) {
-                        if(currentTopic.getTopic().equals(topic))
+                        if(currentTopic.getTopic().equals(topic.toUpperCase()))
                             if(currentTopic.isSubscribed())
                                 subscriberStatus = true;
                     }
                     mainFrame.getSubButton().setSubscribe(subscriberStatus);
-                    mainFrame.getSubButton().setCurrentTopic("t."+topic);
+                    mainFrame.getSubButton().setCurrentTopic("t."+topic.toUpperCase());
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
                 }
             });
@@ -221,12 +222,12 @@ public class BlogBox extends JPanel {
                     List<TopicMgtItem> topicList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.TOPIC_PREFIX);
                     boolean subscriberStatus = false;
                     for(TopicMgtItem currentTopic : topicList) {
-                        if(currentTopic.getTopic().equals(topic))
+                        if(currentTopic.getTopic().equals(topic.toUpperCase()))
                             if(currentTopic.isSubscribed())
                                 subscriberStatus = true;
                     }
                     mainFrame.getSubButton().setSubscribe(subscriberStatus);
-                    mainFrame.getSubButton().setCurrentTopic("t."+topic);
+                    mainFrame.getSubButton().setCurrentTopic("t."+topic.toUpperCase());
                     mainFrame.getSubButton().updateButton(activeTopicPoint);
                 }
             });
@@ -250,12 +251,12 @@ public class BlogBox extends JPanel {
                 List<TopicMgtItem> subscriberList = mainFrame.getClientAPI().getTopicManagementList(ClientConfig.USER_PREFEX);
                 boolean subscriberStatus = false;
                 for(TopicMgtItem subscriber : subscriberList) {
-                    if(subscriber.getTopic().equals(userName))
+                    if(subscriber.getTopic().equals(userName.toUpperCase()))
                         if(subscriber.isSubscribed())
                             subscriberStatus = true;
                 }
                 mainFrame.getSubButton().setSubscribe(subscriberStatus);
-                mainFrame.getSubButton().setCurrentTopic("u."+userName);
+                mainFrame.getSubButton().setCurrentTopic("u."+userName.toUpperCase());
                 mainFrame.getSubButton().updateButton(activeTopicPoint);
             }
         });

@@ -9,11 +9,10 @@ import java.awt.event.MouseEvent;
 
 public class SubscriptionButton extends JButton {
 
-    private Point activePoint = new Point(0,20);
-    private boolean subscribe = false;
     private SubscriptionButton subButton;
-    private String currentTopic = "";
-    private ClientAPI clientAPI;
+    private Point activePoint = new Point(0,20);
+    private String currentTopic = "public";
+    private boolean subscribe = false;
 
     public void setSubscribe(boolean subscribe) {
         this.subscribe = subscribe;
@@ -35,7 +34,6 @@ public class SubscriptionButton extends JButton {
 
     public SubscriptionButton(final ClientAPI clientAPI) {
         subButton = this;
-        this.clientAPI = clientAPI;
         this.setBounds(activePoint.x + 10, activePoint.y - 20, 100, 20);
         this.setText("follow");
         this.addMouseListener(new MouseAdapter() {

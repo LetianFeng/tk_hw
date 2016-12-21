@@ -13,20 +13,17 @@ import javax.swing.*;
 
 public class LoginFrame  extends JFrame{
 	private String title = "Welcome to fantastic MicroBlog!";
-	private JTextField textUsername;
-    private JLabel username;
-    private JButton btnLogin;
+	private JTextField userNameTextField;
     private JButton btnAvatar1;
     private JButton btnAvatar2;
     private JButton btnAvatar3;
     private JButton btnAvatar4;
-    private JLabel avatar;
 	private JFrame loginFrame;
-    public int avatarId = 1;
+    private int avatarId = 1;
 
 	final static private Color grey = Color.LIGHT_GRAY;
     
-	//main function for test
+	//main function of the project start here
 	 public static void main(String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
 	            public void run() {
@@ -45,7 +42,7 @@ public class LoginFrame  extends JFrame{
 		loginFrame = this;
 	}
 	
-	protected void initialize() {
+	private void initialize() {
 		this.setTitle(title);
 		this.setBounds(Constant.loginFrameX, Constant.loginFrameY, Constant.loginFrameWidth, Constant.loginFrameHeight);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -56,19 +53,19 @@ public class LoginFrame  extends JFrame{
 			}
 		});
 		this.getContentPane().setLayout(null);
+
+		JLabel userNameLabel = new JLabel("User Name:");
+		userNameLabel.setBounds(100, 125, 81, 23);
+		this.getContentPane().add(userNameLabel);
+
+		JLabel avatarLabel = new JLabel("Avatar:");
+		avatarLabel.setBounds(100, 50, 81, 23);
+		this.getContentPane().add(avatarLabel);
 		
-		username = new JLabel("User Name:");
-		username.setBounds(100, 125, 81, 23);
-		this.getContentPane().add(username);
-		
-		avatar = new JLabel("Avatar:");
-		avatar.setBounds(100, 50, 81, 23);
-		this.getContentPane().add(avatar);
-		
-		textUsername = new JTextField();
-		textUsername.setBounds(200, 125, 105, 21);
-		textUsername.setColumns(10);
-		this.getContentPane().add(textUsername);
+		userNameTextField = new JTextField();
+		userNameTextField.setBounds(200, 125, 105, 21);
+		userNameTextField.setColumns(10);
+		this.getContentPane().add(userNameTextField);
 		
 		btnAvatar1 = new JButton();
 		btnAvatar1.setBounds(200, 50, 50, 50);
@@ -93,8 +90,7 @@ public class LoginFrame  extends JFrame{
 				avatarId = 2;
 				updateAvatarBackground();
 			}
-		});	
-        
+		});
         this.getContentPane().add(btnAvatar2);
         
 		btnAvatar3 = new JButton();
@@ -107,8 +103,7 @@ public class LoginFrame  extends JFrame{
 				avatarId = 3;
 				updateAvatarBackground();
 			}
-		});	
-		
+		});
         this.getContentPane().add(btnAvatar3);
         
 		btnAvatar4 = new JButton();
@@ -124,7 +119,7 @@ public class LoginFrame  extends JFrame{
 		});	
         this.getContentPane().add(btnAvatar4);
 
-		btnLogin = new JButton("Log In");
+		JButton btnLogin = new JButton("Log In");
 		btnLogin.setForeground(Color.BLACK);
 		btnLogin.setBackground(Color.LIGHT_GRAY);
 		btnLogin.setFont(new Font("Ebrima", Font.PLAIN, 12));
@@ -132,7 +127,7 @@ public class LoginFrame  extends JFrame{
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String userName = textUsername.getText();
+				String userName = userNameTextField.getText();
 
 				if(userName.equals("")) {
 					System.out.println("invalid user name!");
@@ -147,7 +142,6 @@ public class LoginFrame  extends JFrame{
 		});
 
 		this.getContentPane().add(btnLogin);
-
 		this.setResizable(false);
 	}
 
