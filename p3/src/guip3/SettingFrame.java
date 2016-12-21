@@ -179,17 +179,7 @@ public class SettingFrame  extends JFrame{
 				
 		});	
 		this.getContentPane().add(btnTick2);
-		
-		btnSavechange = new JButton("Save Changes and Submit");
-		btnSavechange.setBounds(250, 550, 200, 25);
-		btnSavechange.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// send new subscription list to control unit
-				settingFrame.dispatchEvent(new WindowEvent(settingFrame, WindowEvent.WINDOW_CLOSING));
-			}
-		});	
-		this.getContentPane().add(btnSavechange);
-		
+			
         SubTable1 = new JTable();
         SubTableModel1 = new DefaultTableModel() {
             public Class<?> getColumnClass(int column) {
@@ -249,7 +239,16 @@ public class SettingFrame  extends JFrame{
 	        this.getContentPane().add(scrollPane2);
 	        scrollPane2.setBounds(250, 90, 200, 300);
 
-
+	        btnSavechange = new JButton("Save Changes and Submit");
+			btnSavechange.setBounds(250, 550, 200, 25);
+			btnSavechange.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					// send new subscription list to control unit
+					settingFrame.dispatchEvent(new WindowEvent(settingFrame, WindowEvent.WINDOW_CLOSING));
+				}
+			});	
+			this.getContentPane().add(btnSavechange);
+			
 		this.setResizable(false);
 
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
