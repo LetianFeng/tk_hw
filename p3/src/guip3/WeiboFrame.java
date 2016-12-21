@@ -59,6 +59,10 @@ public class WeiboFrame extends JFrame implements GuiAPI {
         this.repaint();
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     public ClientAPI getClientAPI() {
         return clientAPI;
     }
