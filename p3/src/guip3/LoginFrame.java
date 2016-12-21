@@ -71,8 +71,7 @@ public class LoginFrame  extends JFrame{
 		
 		btnAvatar1 = new JButton();
 		btnAvatar1.setBounds(200, 50, 50, 50);
-		Image btnAvatar1Img = new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(1))).getImage();
-        btnAvatar1.setIcon(new ImageIcon(btnAvatar1Img));
+        btnAvatar1.setIcon(new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(1))));
 
 		btnAvatar1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -84,8 +83,7 @@ public class LoginFrame  extends JFrame{
         
 		btnAvatar2 = new JButton();
 		btnAvatar2.setBounds(255, 50, 50, 50);
-		Image btnAvatar2Img = new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(2))).getImage();
-        btnAvatar2.setIcon(new ImageIcon(btnAvatar2Img));
+        btnAvatar2.setIcon(new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(2))));
         
 		btnAvatar2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -97,8 +95,7 @@ public class LoginFrame  extends JFrame{
         
 		btnAvatar3 = new JButton();
 		btnAvatar3.setBounds(310, 50, 50, 50);
-		Image btnAvatar3Img = new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(3))).getImage();
-        btnAvatar3.setIcon(new ImageIcon(btnAvatar3Img));
+        btnAvatar3.setIcon(new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(3))));
         
 		btnAvatar3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -110,8 +107,7 @@ public class LoginFrame  extends JFrame{
         
 		btnAvatar4 = new JButton();
 		btnAvatar4.setBounds(365, 50, 50, 50);
-		Image btnAvatar4Img = new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(4))).getImage();
-        btnAvatar4.setIcon(new ImageIcon(btnAvatar4Img));
+        btnAvatar4.setIcon(new ImageIcon(this.getClass().getResource(Constant.bigAvatar.get(4))));
         
 		btnAvatar4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

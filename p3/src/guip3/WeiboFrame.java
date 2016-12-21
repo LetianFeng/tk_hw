@@ -137,8 +137,7 @@ public class WeiboFrame extends JFrame implements GuiAPI {
 
         JButton btnSetting = new JButton();
         btnSetting.setBounds(440, 10, 30, 30);
-        Image settingImg = new ImageIcon(this.getClass().getResource("Settings-icon.png")).getImage();
-        btnSetting.setIcon(new ImageIcon(settingImg));
+        btnSetting.setIcon(new ImageIcon(this.getClass().getResource("Settings-icon.png")));
         this.getContentPane().add(btnSetting);
         btnSetting.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -150,8 +149,7 @@ public class WeiboFrame extends JFrame implements GuiAPI {
 
         JButton btnRefresh = new JButton();
         btnRefresh.setBounds(400, 10, 30, 30);
-        Image refreshImg = new ImageIcon(this.getClass().getResource("Apps-Dialog-Refresh-icon.png")).getImage();
-        btnRefresh.setIcon(new ImageIcon(refreshImg));
+        btnRefresh.setIcon(new ImageIcon(this.getClass().getResource("Apps-Dialog-Refresh-icon.png")));
         this.getContentPane().add(btnRefresh);
         btnRefresh.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -163,8 +161,7 @@ public class WeiboFrame extends JFrame implements GuiAPI {
         JLabel avatar = new JLabel();
         avatar.setBounds(10, 5, 50, 50);
         String avatarPath = Constant.bigAvatar.get(avatarId);
-        Image avatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
-        avatar.setIcon(new ImageIcon(avatarImg));
+        avatar.setIcon(new ImageIcon(this.getClass().getResource(avatarPath)));
         this.getContentPane().add(avatar);
 
         JLabel userNameLabel = new JLabel(userName);

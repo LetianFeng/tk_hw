@@ -78,8 +78,7 @@ public class BlogBox extends JPanel {
         avatarLabel.setBounds(0, 0, 20, 20);
 
         String avatarPath = Constant.smallAvatar.get(blogMessage.getAvatar());
-        Image avatarImg = new ImageIcon(this.getClass().getResource(avatarPath)).getImage();
-        avatarLabel.setIcon(new ImageIcon(avatarImg));
+        avatarLabel.setIcon(new ImageIcon(this.getClass().getResource(avatarPath)));
         avatarLabel.setVisible(true);
         this.add(avatarLabel);
     }
