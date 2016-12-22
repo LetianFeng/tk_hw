@@ -31,8 +31,8 @@ public class LoginFrame  extends JFrame{
 	            public void run() {
 	                try {
 	                	String url = "";
-	                	if (args.length > 1) {
-	                		url = args[1];
+	                	if (args.length > 0) {
+	                		url = args[0];
 	                	}
 	                    LoginFrame loginframe = new LoginFrame(url);
 	                    loginframe.setVisible(true);
