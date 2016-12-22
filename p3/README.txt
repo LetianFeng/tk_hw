@@ -3,7 +3,7 @@ build.xml is provided in the root folder, use ant to build the project.
 
 == Execution ==
 Running Ant script will spawn 2 micro blog clients.
-The basic setup for ActiveMQ is 5.6.0 running on tcp:localhost:61616. This url can be set using a command line argument. (Eg. java microblog.jar tcp:192.168.1.100:61616)
+The basic setup for ActiveMQ is 5.6.0 running on tcp://localhost:61616. This url can be set using a command line argument. (Eg. java microblog.jar tcp://192.168.1.100:61616)
 
 == Blog User Manual ==
 1 Hashtags are used at the beginning and the end of text to specify a tag (e.g #tag#).
