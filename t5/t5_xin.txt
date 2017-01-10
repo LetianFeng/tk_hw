@@ -1,0 +1,33 @@
+Task 1.
+1)
+  Router 1, Router 2, Router 3, Router 4, Router 5,   Router 6
+A:          1 FLTR(F),
+B:          1 FLTR(F),2 FLTR(F),2 FLTR(F),
+C:          1 FLTR(F),2 FLTR(F),2 FLTR(F),3&4 FLTR(F),
+D:          1 FLTR(F),2 FLTR(F),2 FLTR(F),3&4 FLTR(F),5 FLTR(F)
+
+2)
+
+Task 2.
+1)Channel based(Topic based):
+Subscriber subscribe for a channel ID, while channel ID is the unique recognized information during pub/sub routing process and has to be explicit used for each published message. Every two channel IDs doesn't have any intersections.
+Type based:
+Similar with channel based, but channel IDs could have intersections and hierarchies with each other, it means to subscribe one channel could be as same as to subscribe all its subchannels.
+Subject based:
+Publisher sends the messages with subject information as message header, while subject is not a exact information for routing such as channel or type, subscriber will subscribe the rules to filter all the subjects (e.g. regular expressions over strings, comparison with key/value-pairs) and don't need to exactly equal to the subjects. It provides a more flexible subscription, but the routing will be hence more complex.
+Content based:
+The subject has to be provided by publisher when the meesages are sent out with subject based addressing, but with content based addressing, the message will directly sent with its content (data of message body), and will also be filtered directly with its content, no more subject is needed for the message.
+
+2)Channel based(Topic based):
+The filter will exactly compare the channel IDs (e.g. strings or integer values)
+Type based:
+The filter will compare the type IDs with a hierarchical table.
+Subject based:
+The filter will process the subject (with e.g. regular expression or value comparision) to ensure whether it is suitable for each filter.
+Content based:
+The filter will process the content (data of message body) to ensure whether it is suitable for each filter.
+
+Task 3.
+a)Hierarchical, the childen server is unidirectional connected with parent server.
+b)Acyclic Peer-to-Peer, each server is bidirectional connected with other servers and there are no cycles between them.
+c)Generic Peer-to-Peer, each server is bidirectional connected with other servers and cycles between them could be existed.
