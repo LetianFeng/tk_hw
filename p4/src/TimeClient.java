@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,7 +21,11 @@ public class TimeClient {
 
 	public TimeClient() {
 
+		history = new LinkedList<>();
 		try {
+
+			minD = Double.MAX_VALUE;
+			NTPRequest minRequest = null;
 
 			for (int i = 0; i < NUM_OF_TRIES; i++) {
 				socket = new Socket(InetAddress.getByName(hostUrl), PORT);
@@ -33,21 +38,20 @@ public class TimeClient {
 				request.setT4(new Date().getTime());
 				request.calculateOandD();
 
-				System.out.println("T1: " + request.getT1());
-				System.out.println("T2: " + request.getT2());
-				System.out.println("T3: " + request.getT3());
-				System.out.println("T4: " + request.getT4());
-				System.out.println("O: " + request.getO());
-				System.out.println("D: " + request.getD());
-				System.out.println("------------------------");
+				this.printRequest(request, i);
 
+				history.add(request);
+				if (minD > request.getD()) {
+					minD = request.getD();
+					minRequest = request;
+				}
 				threadSleep(300);
 
-				
 				socket.close();
-				
 			}
 
+			System.out.println("The selected NTP Request :");
+			this.printRequest(minRequest, history.indexOf(minRequest));
 			
 			socket.close();
 
@@ -58,6 +62,17 @@ public class TimeClient {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void printRequest(NTPRequest request, int i) {
+		System.out.println("NTP Request " + (i+1) + ":");
+		System.out.println("T1: " + request.getT1());
+		System.out.println("T2: " + request.getT2());
+		System.out.println("T3: " + request.getT3());
+		System.out.println("T4: " + request.getT4());
+		System.out.println("O: " + request.getO());
+		System.out.println("D: " + request.getD());
+		System.out.println("------------------------");
 	}
 
 	private void sendNTPRequest(NTPRequest request) {
