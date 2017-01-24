@@ -20,14 +20,14 @@ public class TimeClient {
 		history = new ArrayList<>();
 		try {
 
-			NTPRequest minRequest = null;
+			NTPRequest tmpNTPRequest;
 
 			for (int i = 0; i < NUM_OF_TRIES; i++) {
 				socket = new Socket(InetAddress.getByName(hostUrl), PORT);
 
-				minNTPrequest = new NTPRequest();
-				minNTPrequest.setT1(new Date().getTime());
-				sendNTPRequest(minNTPrequest);
+				tmpNTPRequest = new NTPRequest();
+				tmpNTPRequest.setT1(new Date().getTime());
+				sendNTPRequest(tmpNTPRequest);
 
 				ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 				NTPRequest request = (NTPRequest) inputStream.readObject();
@@ -55,8 +55,8 @@ public class TimeClient {
 					}
 				});
 
-			minRequest = resultList.get(0);
-			this.printResult(minRequest, history.indexOf(minRequest));
+			this.minNTPrequest = resultList.get(0);
+			this.printResult(this.minNTPrequest, history.indexOf(this.minNTPrequest));
 			
 			socket.close();
 
@@ -104,7 +104,7 @@ public class TimeClient {
 		int delay = 0;
 		Random rand = new Random();
 		delay = rand.nextInt(end - start + 1) + start;
-		System.out.println("Simulated Server to Client delay is: " + delay);
+		//System.out.println("Simulated Server to Client delay is: " + delay);
 		threadSleep((long)delay);
 	}
 

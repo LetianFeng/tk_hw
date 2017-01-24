@@ -87,7 +87,7 @@ public class TimeServer {
 		int delay = 0;
 		Random rand = new Random();
 		delay = rand.nextInt(end - start + 1) + start;
-		System.out.println("Simulated Client to Server delay is: " + delay);
+		//System.out.println("Simulated Client to Server delay is: " + delay);
 		threadSleep((long)delay);
 	}
 
