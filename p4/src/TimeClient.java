@@ -4,17 +4,13 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TimeClient {
 	private static String hostUrl = "127.0.0.1";
 	private static int PORT = 27780;
 	private static int NUM_OF_TRIES = 10;
-	
-	private Double minD;
+
 	private NTPRequest minNTPrequest;
 	private Socket socket;
 	private List<NTPRequest> history;
@@ -24,7 +20,6 @@ public class TimeClient {
 		history = new ArrayList<>();
 		try {
 
-			minD = Double.MAX_VALUE;
 			NTPRequest minRequest = null;
 
 			for (int i = 0; i < NUM_OF_TRIES; i++) {
@@ -46,17 +41,21 @@ public class TimeClient {
 					history.remove(0);
 				history.add(request);
 
-				if (minD > request.getD()) {
-					minD = request.getD();
-					minRequest = request;
-				}
-
 				threadSleep(300);
 
 				socket.close();
 			}
 
+			List<NTPRequest> resultList = new ArrayList<>(history);
+			Collections.sort(resultList, new Comparator<NTPRequest>() {
+				public int compare(NTPRequest r1, NTPRequest r2) {
+						Double d1 = r1.getD();
+						Double d2 = r2.getD();
+					    return d1.compareTo(d2);
+					}
+				});
 
+			minRequest = resultList.get(0);
 			this.printResult(minRequest, history.indexOf(minRequest));
 			
 			socket.close();
@@ -71,7 +70,7 @@ public class TimeClient {
 	}
 
 	private void printResult(NTPRequest request, int i) {
-		System.out.println("NTP Request Connection No." + (i+1) + " is selected!");
+		System.out.println("NTP Request Connection No." + (i+1) + " in the last 8 Connections is selected!");
 		System.out.println("The time difference is: " + request.getO());
 		System.out.println("The corresponding accuracy of the approximation is: " + request.getD());
 		System.out.println("------------------------");
