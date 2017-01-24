@@ -11,6 +11,7 @@ public class TimeClient {
 	private static int PORT = 27780;
 	private static int NUM_OF_TRIES = 10;
 
+	private Double minD;
 	private NTPRequest minNTPrequest;
 	private Socket socket;
 	private List<NTPRequest> history;
@@ -46,16 +47,14 @@ public class TimeClient {
 				socket.close();
 			}
 
-			List<NTPRequest> resultList = new ArrayList<>(history);
-			Collections.sort(resultList, new Comparator<NTPRequest>() {
-				public int compare(NTPRequest r1, NTPRequest r2) {
-						Double d1 = r1.getD();
-						Double d2 = r2.getD();
-					    return d1.compareTo(d2);
-					}
-				});
+			this.minD = Double.MAX_VALUE;
+			for (NTPRequest request : history) {
+				if (this.minD > request.getD()) {
+					this.minD = request.getD();
+					this.minNTPrequest = request;
+				}
+			}
 
-			this.minNTPrequest = resultList.get(0);
 			this.printResult(this.minNTPrequest, history.indexOf(this.minNTPrequest));
 			
 			socket.close();
