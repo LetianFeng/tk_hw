@@ -69,20 +69,20 @@ public class TimeClient {
 	}
 
 	private void printResult(NTPRequest request, int i) {
-		System.out.println("NTP Request Connection No." + (i+1) + " in the last 8 Connections is selected!");
-		System.out.println("The time difference is: " + request.getO());
-		System.out.println("The corresponding accuracy of the approximation is: " + request.getD());
+		System.out.println("[Client] NTP Request Connection No." + (i+1) + " in the last 8 Connections is selected!");
+		System.out.println("[Client] The time difference is: " + request.getO());
+		System.out.println("[Client] The corresponding accuracy of the approximation is: " + request.getD());
 		System.out.println("------------------------");
 	}
 
 	private void printRequest(NTPRequest request, int i) {
-		System.out.println("NTP Request Connection No." + (i+1) + ":");
-		System.out.println("T1: " + request.getT1());
-		System.out.println("T2: " + request.getT2());
-		System.out.println("T3: " + request.getT3());
-		System.out.println("T4: " + request.getT4());
-		System.out.println("O: " + request.getO());
-		System.out.println("D: " + request.getD());
+		System.out.println("[Client] NTP Request Connection No." + (i+1) + ":");
+		System.out.println("[Client] T1: " + request.getT1());
+		System.out.println("[Client] T2: " + request.getT2());
+		System.out.println("[Client] T3: " + request.getT3());
+		System.out.println("[Client] T4: " + request.getT4());
+		System.out.println("[Client] O: " + request.getO());
+		System.out.println("[Client] D: " + request.getD());
 		System.out.println("------------------------");
 	}
 
