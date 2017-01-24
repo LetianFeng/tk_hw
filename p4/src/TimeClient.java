@@ -4,6 +4,9 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +23,8 @@ public class TimeClient {
 	private List<NTPRequest> history;
 
 	public TimeClient() {
-
-		history = new LinkedList<>();
+		
+		history = new ArrayList<>();
 		try {
 
 			minD = Double.MAX_VALUE;
@@ -42,15 +45,20 @@ public class TimeClient {
 
 				this.printRequest(request, i);
 
+				if (history.size() == 8)
+					history.remove(0);
 				history.add(request);
+
 				if (minD > request.getD()) {
 					minD = request.getD();
 					minRequest = request;
 				}
+
 				threadSleep(300);
 
 				socket.close();
 			}
+
 
 			System.out.println("The selected NTP Request :");
 			this.printRequest(minRequest, history.indexOf(minRequest));
