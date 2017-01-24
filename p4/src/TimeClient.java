@@ -30,6 +30,7 @@ public class TimeClient {
 				sendNTPRequest(minNTPrequest);
 				ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 				NTPRequest request = (NTPRequest) inputStream.readObject();
+				communicationDelay();
 				request.setT4(new Date().getTime());
 				request.calculateOandD();
 
@@ -63,7 +64,7 @@ public class TimeClient {
 	private void sendNTPRequest(NTPRequest request) {
 		//
 		try {
-			communicationDelay();
+			//communicationDelay();
 			ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 			outputStream.writeObject(request);
 		} catch (IOException e) {
@@ -77,6 +78,7 @@ public class TimeClient {
 		int delay = 0;
 		Random rand = new Random();
 		delay = rand.nextInt(end - start + 1) + start;
+		System.out.println("Sever to Client delay is: " + delay);
 		threadSleep((long)delay);
 	}
 

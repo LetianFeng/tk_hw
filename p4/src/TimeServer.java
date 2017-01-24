@@ -14,12 +14,11 @@ public class TimeServer {
 		try {
 			serverSocket = new ServerSocket(PORT);
 			System.out.println("Server started on port: " + PORT);
-			//
 
 			while (true) {
 				Socket socket = serverSocket.accept();
-				NTPRequestHandler ntpRequestHandler = new NTPRequestHandler(socket);
-				ntpRequestHandler.run();
+				communicationDelay();
+				(new Thread(new NTPRequestHandler(socket))).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,6 +75,16 @@ public class TimeServer {
 			}
 		}
 
+	}
+	
+	private void communicationDelay() {
+		int start = 10;
+		int end = 100;
+		int delay = 0;
+		Random rand = new Random();
+		delay = rand.nextInt(end - start + 1) + start;
+		System.out.println("Client to Server delay is: " + delay);
+		threadSleep((long)delay);
 	}
 
 }
