@@ -61,7 +61,7 @@ public class TimeServer {
 			try {
 				ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
 				NTPRequest request = (NTPRequest) inputStream.readObject();
-				request.setT2(new Date().getTime());
+				request.setT2(new Date().getTime() + 1200);
 				sendNTPAnswer(request);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -71,7 +71,7 @@ public class TimeServer {
 		private void sendNTPAnswer(NTPRequest request) {
 			///
 			try {
-				request.setT3(new Date().getTime());
+				request.setT3(new Date().getTime() +1200);
 				ObjectOutputStream outputStream = new ObjectOutputStream(client.getOutputStream());
 				outputStream.writeObject(request);
 			} catch (Exception e) {
