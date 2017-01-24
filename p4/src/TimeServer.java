@@ -14,11 +14,14 @@ public class TimeServer {
 		try {
 			serverSocket = new ServerSocket(PORT);
 			System.out.println("Server started on port: " + PORT);
+			int i = 1;
 
 			while (true) {
 				Socket socket = serverSocket.accept();
 				communicationDelay();
+				System.out.print("NTP Request Connection No." + i++ + ": new Thread(");
 				(new Thread(new NTPRequestHandler(socket))).start();
+				System.out.println("---------------------------------");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,6 +50,7 @@ public class TimeServer {
 		private Socket client;
 
 		public NTPRequestHandler(Socket client) {
+			System.out.println(this.toString() + ")");
 			this.client = client;
 		}
 

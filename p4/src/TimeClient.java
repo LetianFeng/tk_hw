@@ -4,6 +4,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -19,8 +20,12 @@ public class TimeClient {
 	private List<NTPRequest> history;
 
 	public TimeClient() {
-
+		
+		history = new ArrayList<>();
 		try {
+
+			minD = Double.MAX_VALUE;
+			NTPRequest minRequest = null;
 
 			for (int i = 0; i < NUM_OF_TRIES; i++) {
 				socket = new Socket(InetAddress.getByName(hostUrl), PORT);
@@ -28,27 +33,32 @@ public class TimeClient {
 				minNTPrequest = new NTPRequest();
 				minNTPrequest.setT1(new Date().getTime());
 				sendNTPRequest(minNTPrequest);
+
 				ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 				NTPRequest request = (NTPRequest) inputStream.readObject();
 				communicationDelay();
 				request.setT4(new Date().getTime());
 				request.calculateOandD();
 
-				System.out.println("T1: " + request.getT1());
-				System.out.println("T2: " + request.getT2());
-				System.out.println("T3: " + request.getT3());
-				System.out.println("T4: " + request.getT4());
-				System.out.println("O: " + request.getO());
-				System.out.println("D: " + request.getD());
-				System.out.println("------------------------");
+				this.printRequest(request, i);
+
+				if (history.size() == 8)
+					history.remove(0);
+				history.add(request);
+
+				if (minD > request.getD()) {
+					minD = request.getD();
+					minRequest = request;
+				}
 
 				threadSleep(300);
 
-				
 				socket.close();
-				
 			}
 
+
+			System.out.println("The selected NTP Request :");
+			this.printRequest(minRequest, history.indexOf(minRequest));
 			
 			socket.close();
 
@@ -59,6 +69,17 @@ public class TimeClient {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void printRequest(NTPRequest request, int i) {
+		System.out.println("NTP Request Connection No." + (i+1) + ":");
+		System.out.println("T1: " + request.getT1());
+		System.out.println("T2: " + request.getT2());
+		System.out.println("T3: " + request.getT3());
+		System.out.println("T4: " + request.getT4());
+		System.out.println("O: " + request.getO());
+		System.out.println("D: " + request.getD());
+		System.out.println("------------------------");
 	}
 
 	private void sendNTPRequest(NTPRequest request) {
@@ -78,7 +99,7 @@ public class TimeClient {
 		int delay = 0;
 		Random rand = new Random();
 		delay = rand.nextInt(end - start + 1) + start;
-		System.out.println("Sever to Client delay is: " + delay);
+		System.out.println("Server to Client delay is: " + delay);
 		threadSleep((long)delay);
 	}
 
