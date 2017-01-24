@@ -57,8 +57,7 @@ public class TimeClient {
 			}
 
 
-			System.out.println("The selected NTP Request :");
-			this.printRequest(minRequest, history.indexOf(minRequest));
+			this.printResult(minRequest, history.indexOf(minRequest));
 			
 			socket.close();
 
@@ -69,6 +68,13 @@ public class TimeClient {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void printResult(NTPRequest request, int i) {
+		System.out.println("NTP Request Connection No." + (i+1) + " is selected!");
+		System.out.println("The time difference is: " + request.getO());
+		System.out.println("The corresponding accuracy of the approximation is: " + request.getD());
+		System.out.println("------------------------");
 	}
 
 	private void printRequest(NTPRequest request, int i) {
@@ -99,7 +105,7 @@ public class TimeClient {
 		int delay = 0;
 		Random rand = new Random();
 		delay = rand.nextInt(end - start + 1) + start;
-		System.out.println("Server to Client delay is: " + delay);
+		System.out.println("Simulated Server to Client delay is: " + delay);
 		threadSleep((long)delay);
 	}
 
