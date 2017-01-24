@@ -42,9 +42,17 @@ public class NTPRequest implements Serializable{
 	public void setT4(long t4) {
 		this.t4 = t4;
 	}
+	public double getO() {
+		return o;
+	}
+	public double getD() {
+		return d;
+	}
 	
 	public void calculateOandD() {
 		////
+		d = t2 - t1 + t4 - t3;
+		o = 0.5*(t2 - t1 + t3 - t4);
 	}
 	
 }
