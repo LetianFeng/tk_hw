@@ -4,6 +4,9 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +22,8 @@ public class TimeClient {
 	private List<NTPRequest> history;
 
 	public TimeClient() {
+		
+		history = new ArrayList<NTPRequest>();
 
 		try {
 
@@ -33,6 +38,7 @@ public class TimeClient {
 				communicationDelay();
 				request.setT4(new Date().getTime());
 				request.calculateOandD();
+				history.add(request);
 
 				System.out.println("T1: " + request.getT1());
 				System.out.println("T2: " + request.getT2());
@@ -47,6 +53,15 @@ public class TimeClient {
 				
 				socket.close();
 				
+				Collections.sort(history, new Comparator<NTPRequest>() {
+					public int compare(NTPRequest r1, NTPRequest r2) {
+						Double d1 = r1.getD();
+						Double d2 = r2.getD();
+					    return d1.compareTo(d2);
+					}
+				});
+				
+				System.out.println("Estimated O: " + history.get(0).getO());
 			}
 
 			
