@@ -33,6 +33,7 @@ public class TimeClient {
 				minNTPrequest = new NTPRequest();
 				minNTPrequest.setT1(new Date().getTime());
 				sendNTPRequest(minNTPrequest);
+
 				ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 				NTPRequest request = (NTPRequest) inputStream.readObject();
 				communicationDelay();
@@ -66,7 +67,7 @@ public class TimeClient {
 	}
 
 	private void printRequest(NTPRequest request, int i) {
-		System.out.println("NTP Request " + (i+1) + ":");
+		System.out.println("NTP Request Connection No." + (i+1) + ":");
 		System.out.println("T1: " + request.getT1());
 		System.out.println("T2: " + request.getT2());
 		System.out.println("T3: " + request.getT3());
@@ -93,7 +94,7 @@ public class TimeClient {
 		int delay = 0;
 		Random rand = new Random();
 		delay = rand.nextInt(end - start + 1) + start;
-		System.out.println("Sever to Client delay is: " + delay);
+		System.out.println("Server to Client delay is: " + delay);
 		threadSleep((long)delay);
 	}
 
