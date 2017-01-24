@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 import java.util.Random;
 
 public class TimeServer {
@@ -15,6 +16,11 @@ public class TimeServer {
 			System.out.println("Server started on port: " + PORT);
 			//
 
+			while (true) {
+				Socket socket = serverSocket.accept();
+				NTPRequestHandler ntpRequestHandler = new NTPRequestHandler(socket);
+				ntpRequestHandler.run();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			try {
@@ -49,10 +55,25 @@ public class TimeServer {
 		public void run() {
 			///
 
+			try {
+				ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
+				NTPRequest request = (NTPRequest) inputStream.readObject();
+				request.setT2(new Date().getTime());
+				sendNTPAnswer(request);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		private void sendNTPAnswer(NTPRequest request) {
 			///
+			try {
+				request.setT3(new Date().getTime());
+				ObjectOutputStream outputStream = new ObjectOutputStream(client.getOutputStream());
+				outputStream.writeObject(request);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

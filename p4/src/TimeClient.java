@@ -4,6 +4,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.Random;
 
 public class TimeClient {
@@ -20,6 +21,21 @@ public class TimeClient {
 			for (int i = 0; i < 10; i++) {
 				socket = new Socket(InetAddress.getByName(hostUrl), PORT);
 
+				minNTPrequest = new NTPRequest();
+				minNTPrequest.setT1(new Date().getTime());
+				sendNTPRequest(minNTPrequest);
+				ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+				NTPRequest request = (NTPRequest) inputStream.readObject();
+				request.setT4(new Date().getTime());
+
+				System.out.println(request.getT1());
+				System.out.println(request.getT2());
+				System.out.println(request.getT3());
+				System.out.println(request.getT4());
+				System.out.println("------------------------");
+
+				threadSleep(300);
+
 				
 				socket.close();
 				
@@ -32,12 +48,20 @@ public class TimeClient {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void sendNTPRequest(NTPRequest request) {
 		//
 
+		try {
+			ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+			outputStream.writeObject(request);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void threadSleep(long millis) {
