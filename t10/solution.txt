@@ -1,0 +1,35 @@
+Task1
+
+a) The voting sets provided don't comply with Maekawa's algorithm's requirements:
+	- process 8 is not in the 8th voting set, V8
+	- V1 and V4 doesn't overlap at all
+
+b)  V1: (1 2 5 7)
+	V2: (2 4 5 7)
+	V3: (1 3 5 7 8)
+	V4: (3 4 5 6 8) -- adding 5
+	V5: (1 3 5 7) 
+	V6: (1 2 4 6 8)
+	V7: (2 4 6 7 8)
+	V8: (1 2 3 6 8) -- adding 8
+
+	This will make the voting sets valid for algorithm execution.
+
+c) Fairness condition 1: all voting sets should have the same size
+   Fairness condition 2: each process should belong to the same number of voting sets, M
+   The above voting sets don't satisfy the fairness conditions:
+    - |V1| != |V6| for example
+    - p3 is involved in 4 voting sets while p2 is involved in 5 voting sets for example
+
+d)  V1: (1 2 3 5 7)
+	V2: (2 4 5 6 7)
+	V3: (1 3 5 7 8)
+	V4: (3 4 5 6 8)
+	V5: (1 3 4 5 7) 
+	V6: (1 2 4 6 8)
+	V7: (2 4 6 7 8)
+	V8: (1 2 3 6 8)
+
+	The above voting sets satisfy both fairness condition.
+
+e) No, it doesn't avoid deadlocks. Extending Maekawa's algorithm to use a logic clock such that queued requests with a happened-before order can be processed with priority 	instead of being choked in the queue while the process wait for all other process to reply.
