@@ -2,8 +2,6 @@ package message;
 
 public class MarkerMessage extends Message {
 
-    private int accountId;
-
     public MarkerMessage(int accountId) {
         super();
         this.accountId = accountId;
@@ -15,9 +13,5 @@ public class MarkerMessage extends Message {
         super(message);
         int space = message.indexOf(' ');
         this.accountId = Integer.valueOf(message.substring(space+1));
-    }
-
-    public int getAccountId() {
-        return accountId;
     }
 }

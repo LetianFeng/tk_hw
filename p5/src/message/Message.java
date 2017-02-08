@@ -2,7 +2,8 @@ package message;
 
 public class Message {
 
-    String messageBody;
+    private String messageBody;
+    protected int accountId;
 
     public Message() {
         messageBody = "";
@@ -18,8 +19,12 @@ public class Message {
         return messageBody;
     }
 
-    public void setMessageBody(String messageBody) {
+    protected void setMessageBody(String messageBody) {
         this.messageBody = messageBody;
+    }
+
+    public int getAccountId() {
+        return accountId;
     }
 
     public boolean isTransaction() {
