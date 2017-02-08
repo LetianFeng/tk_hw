@@ -40,9 +40,6 @@ public class Fifo implements Runnable{
                 if (messageQueue.isEmpty())
                     continue;
 
-                if (!messageQueue.get(0).isTransaction())
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(500, 1500));
-
                 // otherwise send message to receiver
                 account.responseServerMessage(messageQueue.remove(0));
             }
