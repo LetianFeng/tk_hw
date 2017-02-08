@@ -89,18 +89,20 @@ public class Account implements Runnable {
 	        printTransaction(transactionMessage);
 	        achieveTransactionAmount(transactionMessage.getAmount());
         	if(snapshot) {
-        		if(transactionMessage.getAccountId() == 0 && isRecordingChannel0 == true)
+        		if(transactionMessage.getAccountId() == 0 && isRecordingChannel0)
         			channelRecord0.add(transactionMessage);
-        		if(transactionMessage.getAccountId() == 1 && isRecordingChannel1 == true)
+        		if(transactionMessage.getAccountId() == 1 && isRecordingChannel1)
         			channelRecord1.add(transactionMessage);
-        		if(transactionMessage.getAccountId() == 2 && isRecordingChannel2 == true)
+        		if(transactionMessage.getAccountId() == 2 && isRecordingChannel2)
         			channelRecord2.add(transactionMessage);
-        		return;
         	}
         }
         else {
             MarkerMessage markerMessage = new MarkerMessage(message.getMessageBody());
-            printMarker(markerMessage);
+            if(markerMessage.getAccountId() == 3)
+            	gui.output("Snapshot: Initiator Account" + (this.id + 1));
+            else
+            	printMarker(markerMessage);
             responseMarker(markerMessage);
         }
     }
