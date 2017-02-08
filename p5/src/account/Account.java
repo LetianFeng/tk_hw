@@ -84,38 +84,27 @@ public class Account implements Runnable {
     }
 
     public void responseServerMessage(Message message) {
-        // todo: Zhen, record the channel state when the snapshot algorithm starts
         if(message.isTransaction()) {
 	        TransactionMessage transactionMessage = new TransactionMessage(message.getMessageBody());
 	        printTransaction(transactionMessage);
 	        achieveTransactionAmount(transactionMessage.getAmount());
         	if(snapshot) {
-        		System.out.printf("local state recoded!");
-        		if(transactionMessage.getAccountId() == 0 && isRecordingChannel0 == true) {
+        		if(transactionMessage.getAccountId() == 0 && isRecordingChannel0 == true)
         			channelRecord0.add(transactionMessage);
-        			return;
-        		}
-        		if(transactionMessage.getAccountId() == 1 && isRecordingChannel1 == true) {
+        		if(transactionMessage.getAccountId() == 1 && isRecordingChannel1 == true)
         			channelRecord1.add(transactionMessage);
-        			return;
-        		}
-        		if(transactionMessage.getAccountId() == 2 && isRecordingChannel2 == true) {
+        		if(transactionMessage.getAccountId() == 2 && isRecordingChannel2 == true)
         			channelRecord2.add(transactionMessage);
-        			return;
-        		}
-        		System.out.printf("Wrong account id!");
         		return;
         	}
         }
         else {
             MarkerMessage markerMessage = new MarkerMessage(message.getMessageBody());
-            System.out.printf("Marker form account " + markerMessage.getAccountId() + " to account " + this.id + "\n");
             printMarker(markerMessage);
             responseMarker(markerMessage);
         }
     }
 
-    // todo: Zhen, add marker message response service, show the current snapshot of process and change its state
     public synchronized void responseMarker(MarkerMessage message) {
     	if(message.getAccountId() == 3) {
     		snapshot = true;
@@ -222,7 +211,6 @@ public class Account implements Runnable {
         MarkerMessage message = new MarkerMessage(id);
         for(UdpClient udpClient : udpClients) {
             udpClient.sendMessage(message);
-            //System.out.println("mark of account" + message.getAccountId() + "is sent");
         }
     }
 }
