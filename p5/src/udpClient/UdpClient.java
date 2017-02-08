@@ -34,16 +34,6 @@ public class UdpClient implements Runnable {
             DatagramPacket sendPacket = new DatagramPacket(bytes , bytes.length , host , udpPort);
             clientSocket.send(sendPacket);
 
-            byte[] buffer = new byte[1500];
-            /*
-            DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-            clientSocket.receive(reply);
-
-            byte[] data = reply.getData();
-            datagram = new String(data, 0, reply.getLength());
-            if(!datagram.equals("Ok"))
-                System.out.println("Transaction Failed!");
-			*/
         } catch(IOException e) {
             e.printStackTrace();
         }

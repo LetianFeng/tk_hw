@@ -103,7 +103,7 @@ public class Gui extends JFrame {
             }
 
             int sum_money = gui.account0.getMoney() + gui.account1.getMoney() + gui.account2.getMoney();
-            //System.out.println(sum_money);
+            System.out.println("current sum of all three account is: " + String.valueOf(sum_money) + '.');
         }
     }
 

@@ -53,11 +53,6 @@ public class UdpServer implements Runnable {
                     channel.add(message);
                 }
 
-
-                byte[] sendData = "Ok".getBytes();
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
-                        receivePacket.getAddress(), receivePacket.getPort());
-                serverSocket.send(sendPacket);
             }
 
         } catch (IOException e) {
