@@ -165,20 +165,20 @@ public class Account implements Runnable {
     }
     
     private void printLocalState() {
-    	String localStateOutput = null;
-    	if(this.id == 0) {
-    		localStateOutput = "Account0 local state: " + this.localState + ", C10: " +
-    				sum(channelRecord1) + ", C20: " + sum(channelRecord2);
-    	}
-    	if(this.id == 1) {
-    		localStateOutput = "Account1 local state: " + this.localState + ", C01: " +
-    				sum(channelRecord0) + ", C21: " + sum(channelRecord2);
-    	}
-    	if(this.id == 2) {
-    		localStateOutput = "Account2 local state: " + this.localState + ", C02: " +
-    				sum(channelRecord0) + ", C12: " + sum(channelRecord1);
-    	}
-    	gui.output(localStateOutput);
+        String localStateOutput = null;
+        if(this.id == 0) {
+            localStateOutput = "Account1 local state: " + this.localState + ", C21: " +
+                    sum(channelRecord1) + ", C31: " + sum(channelRecord2);
+        }
+        if(this.id == 1) {
+            localStateOutput = "Account2 local state: " + this.localState + ", C12: " +
+                    sum(channelRecord0) + ", C32: " + sum(channelRecord2);
+        }
+        if(this.id == 2) {
+            localStateOutput = "Account3 local state: " + this.localState + ", C13: " +
+                    sum(channelRecord0) + ", C23: " + sum(channelRecord1);
+        }
+        gui.output(localStateOutput);
     }
     
     private int sum(ArrayList<TransactionMessage> list) {
