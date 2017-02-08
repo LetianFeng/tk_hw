@@ -30,7 +30,6 @@ public class Gui extends JFrame {
         (new Thread(account2)).start();
     }
 
-    // todo: Shule, optional, if this GUI is ugly, make it become beautiful.
     private void initInterface() {
 
         this.setTitle("Snapshot Algorithm Show");
@@ -39,7 +38,6 @@ public class Gui extends JFrame {
         this.setResizable(false);
         this.setLayout(null);
 
-        // todo: Shule, add scroll bar with auto scroll function to the main message area.
         jsp = new JScrollPane();
         monitorOutput = new JTextArea("");
         jsp.setViewportView(monitorOutput);

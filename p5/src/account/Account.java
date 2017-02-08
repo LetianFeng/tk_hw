@@ -194,13 +194,12 @@ public class Account implements Runnable {
     }
 
     public void printTransaction(TransactionMessage message) {
-        gui.output("from " + String.valueOf(message.getAccountId()+1) + " to " + String.valueOf(id+1)
-                + " : $" + String.valueOf(message.getAmount()));
+        gui.output("Transaction from " + String.valueOf(message.getAccountId()+1) + " to " +
+                String.valueOf(id+1) + " : $" + String.valueOf(message.getAmount()));
     }
 
     public void printMarker(MarkerMessage message) {
-        gui.output("from " + String.valueOf(message.getAccountId()+1) + " to " + String.valueOf(id+1)
-                + " marker.");
+        gui.output("Marker from " + String.valueOf(message.getAccountId()+1) + " to " + String.valueOf(id+1));
     }
 
     public int getMoney() {
