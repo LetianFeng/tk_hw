@@ -19,7 +19,7 @@ public class ButtonPanel extends JPanel {
 
         this.setLayout(null);
 
-        JLabel accountNameLabel = new JLabel("account " + String.valueOf(accountId));
+        JLabel accountNameLabel = new JLabel("account " + String.valueOf(accountId+1));
         accountNameLabel.setBounds(this.getWidth()/6, 0, this.getWidth()/3, this.getHeight()/3);
         accountNameLabel.setVisible(true);
         this.add(accountNameLabel);
