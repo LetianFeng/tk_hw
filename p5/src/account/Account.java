@@ -101,6 +101,7 @@ public class Account implements Runnable {
         		}
         		if(transactionMessage.getAccountId() == 2 && isRecordingChannel2 == true) {
         			channelRecord2.add(transactionMessage);
+        			return;
         		}
         		System.out.printf("Wrong account id!");
         		return;
@@ -147,6 +148,9 @@ public class Account implements Runnable {
 	    		if(!isRecordingChannel0 && !isRecordingChannel1 && !isRecordingChannel2) {
 	    			snapshot = false;
 	    			printLocalState();
+	    			channelRecord0.clear();
+	    			channelRecord1.clear();
+	    			channelRecord2.clear();
 	    		}
 	    	}
 	    	else {
