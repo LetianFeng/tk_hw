@@ -7,6 +7,7 @@ import udpClient.UdpClient;
 import udpServer.UdpServer;
 import gui.Gui;
 
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Account implements Runnable {
@@ -17,6 +18,15 @@ public class Account implements Runnable {
     private int[] otherUdpPort;
     private Gui gui;
     private UdpClient[] udpClients;
+    
+    private boolean snapshot;
+    private boolean isRecordingChannel0;
+    private boolean isRecordingChannel1;
+    private boolean isRecordingChannel2;
+    private ArrayList<TransactionMessage> channelRecord0;
+    private ArrayList<TransactionMessage> channelRecord1;
+    private ArrayList<TransactionMessage> channelRecord2;
+    private int localState;
 
     public Account(int ownUdpPort, int[] otherUdpPort, Gui gui, int id) {
         this.id = id;
@@ -26,6 +36,15 @@ public class Account implements Runnable {
         this.otherUdpPort = otherUdpPort;
         this.udpClients = new UdpClient[otherUdpPort.length];
         gui.updateMoney(id, money);
+        
+        snapshot = false;
+        isRecordingChannel0 = false;
+        isRecordingChannel1 = false;
+        isRecordingChannel2 = false;
+        channelRecord0 = new ArrayList<TransactionMessage>();
+        channelRecord1 = new ArrayList<TransactionMessage>();
+        channelRecord2 = new ArrayList<TransactionMessage>();
+        localState = this.money;
     }
 
     @Override
@@ -67,22 +86,114 @@ public class Account implements Runnable {
     public void responseServerMessage(Message message) {
         // todo: Zhen, record the channel state when the snapshot algorithm starts
         if(message.isTransaction()) {
-            TransactionMessage transactionMessage = new TransactionMessage(message.getMessageBody());
-            printTransaction(transactionMessage);
-            achieveTransactionAmount(transactionMessage.getAmount());
+	        TransactionMessage transactionMessage = new TransactionMessage(message.getMessageBody());
+	        printTransaction(transactionMessage);
+	        achieveTransactionAmount(transactionMessage.getAmount());
+        	if(snapshot) {
+        		System.out.printf("local state recoded!");
+        		if(transactionMessage.getAccountId() == 0 && isRecordingChannel0 == true) {
+        			channelRecord0.add(transactionMessage);
+        			return;
+        		}
+        		if(transactionMessage.getAccountId() == 1 && isRecordingChannel1 == true) {
+        			channelRecord1.add(transactionMessage);
+        			return;
+        		}
+        		if(transactionMessage.getAccountId() == 2 && isRecordingChannel2 == true) {
+        			channelRecord2.add(transactionMessage);
+        		}
+        		System.out.printf("Wrong account id!");
+        		return;
+        	}
         }
         else {
             MarkerMessage markerMessage = new MarkerMessage(message.getMessageBody());
+            System.out.printf("Marker form account " + markerMessage.getAccountId() + " to account " + this.id + "\n");
             printMarker(markerMessage);
             responseMarker(markerMessage);
         }
     }
 
     // todo: Zhen, add marker message response service, show the current snapshot of process and change its state
-    public void responseMarker(MarkerMessage message) {
-
+    public synchronized void responseMarker(MarkerMessage message) {
+    	if(message.getAccountId() == 3) {
+    		snapshot = true;
+    		isRecordingChannel0 = true;
+    		isRecordingChannel1 = true;
+    		isRecordingChannel2 = true;
+    		if(this.id == 0) {
+    			isRecordingChannel0 = false;
+    		}
+    		if(this.id == 1) {
+    			isRecordingChannel1 = false;
+    		}
+    		if(this.id == 2) {
+    			isRecordingChannel2 = false;
+    		}
+        	localState = this.money;
+    		sendMarkerMessage();
+    	}
+    	else {
+	    	if(snapshot) {
+	    		if(message.getAccountId() == 0) {
+	    			isRecordingChannel0 = false;
+	    		}
+	    		if(message.getAccountId() == 1) {
+	    			isRecordingChannel1 = false;
+	    		}
+	    		if(message.getAccountId() == 2) {
+	    			isRecordingChannel2 = false;
+	    		}
+	    		if(!isRecordingChannel0 && !isRecordingChannel1 && !isRecordingChannel2) {
+	    			snapshot = false;
+	    			printLocalState();
+	    		}
+	    	}
+	    	else {
+	    		snapshot = true;
+	    		isRecordingChannel0 = true;
+	    		isRecordingChannel1 = true;
+	    		isRecordingChannel2 = true;
+	    		if(message.getAccountId() == 0 || this.id == 0) {
+	    			isRecordingChannel0 = false;
+	    		}
+	    		if(message.getAccountId() == 1 || this.id == 1) {
+	    			isRecordingChannel1 = false;
+	    		}
+	    		if(message.getAccountId() == 2 || this.id == 2) {
+	    			isRecordingChannel2 = false;
+	    		}
+	        	localState = this.money;
+	    		sendMarkerMessage();
+	    	}
+    	}
     }
-
+    
+    private void printLocalState() {
+    	String localStateOutput = null;
+    	if(this.id == 0) {
+    		localStateOutput = "Account0 local state: " + this.localState + ", C10: " +
+    				sum(channelRecord1) + ", C20: " + sum(channelRecord2);
+    	}
+    	if(this.id == 1) {
+    		localStateOutput = "Account1 local state: " + this.localState + ", C01: " +
+    				sum(channelRecord0) + ", C21: " + sum(channelRecord2);
+    	}
+    	if(this.id == 2) {
+    		localStateOutput = "Account2 local state: " + this.localState + ", C02: " +
+    				sum(channelRecord0) + ", C12: " + sum(channelRecord1);
+    	}
+    	gui.output(localStateOutput);
+    }
+    
+    private int sum(ArrayList<TransactionMessage> list) {
+    	int result = 0;
+    	for(TransactionMessage msg : list) {
+    		result += msg.getAmount();
+    	}
+    	return result;
+    }
+    
     public boolean achieveTransactionAmount(int amount) {
         money = money + amount;
         gui.updateMoney(id, money);
@@ -105,7 +216,9 @@ public class Account implements Runnable {
 
     public void sendMarkerMessage() {
         MarkerMessage message = new MarkerMessage(id);
-        for(UdpClient udpClient : udpClients)
+        for(UdpClient udpClient : udpClients) {
             udpClient.sendMessage(message);
+            //System.out.println("mark of account" + message.getAccountId() + "is sent");
+        }
     }
 }

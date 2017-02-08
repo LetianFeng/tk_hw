@@ -1,6 +1,7 @@
 package gui;
 
 import account.Account;
+import message.MarkerMessage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.awt.*;
 public class Gui extends JFrame {
 
     private static int[] ports = {30000, 30001, 30002};
+    private JScrollPane jsp;
     private JTextArea monitorOutput;
     private ButtonPanel buttonAccount0;
     private ButtonPanel buttonAccount1;
@@ -38,11 +40,14 @@ public class Gui extends JFrame {
         this.setLayout(null);
 
         // todo: Shule, add scroll bar with auto scroll function to the main message area.
+        jsp = new JScrollPane();
         monitorOutput = new JTextArea("");
-        monitorOutput.setBounds(0, 0, this.getWidth()*2/3, this.getHeight());
+        jsp.setViewportView(monitorOutput);
+        jsp.setBounds(0, 0, this.getWidth()*2/3, this.getHeight());
         monitorOutput.setVisible(true);
-        monitorOutput.setFont(new Font("monospaced", Font.PLAIN, 24));
-        this.add(monitorOutput);
+        monitorOutput.setFont(new Font("monospaced", Font.PLAIN, 12));
+        this.add(jsp);
+        jsp.setVisible(true);
 
         buttonAccount0 = new ButtonPanel(0, this);
         buttonAccount0.setBounds(this.getWidth()*2/3, 0, this.getWidth()/3, this.getHeight()/3);
@@ -78,10 +83,11 @@ public class Gui extends JFrame {
     }
 
     public void sendMarker(int id) {
+    	MarkerMessage fakeMarker = new MarkerMessage(3);
         switch (id) {
-            case 0 : account0.sendMarkerMessage(); break;
-            case 1 : account1.sendMarkerMessage(); break;
-            case 2 : account2.sendMarkerMessage(); break;
+            case 0 : account0.responseServerMessage(fakeMarker); break;
+            case 1 : account1.responseServerMessage(fakeMarker); break;
+            case 2 : account2.responseServerMessage(fakeMarker); break;
             default: break;
         }
     }
@@ -99,7 +105,7 @@ public class Gui extends JFrame {
             }
 
             int sum_money = gui.account0.getMoney() + gui.account1.getMoney() + gui.account2.getMoney();
-            System.out.println(sum_money);
+            //System.out.println(sum_money);
         }
     }
 
